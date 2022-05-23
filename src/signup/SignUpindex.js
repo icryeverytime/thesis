@@ -122,23 +122,23 @@ class SignUp extends React.Component{
     render()
     {
         return(
-            <form onSubmit={this.handleSubmit}>        
+            <form id="form" onSubmit={this.handleSubmit}>        
                 <h1>Register an account</h1>
                 {
                     this.state.firstnamerequired===true &&
                     <p className="error">First name is required</p>
                 }   
-                <input type="text" placeholder="First name" name="firstname" value={this.state.firstname} onChange={this.handleChange} onBlur={this.handleChange} className={this.state.firstnamerequired ? 'inputvalid':''} required/>        
+                <input id="input" type="text" placeholder="First name" name="firstname" value={this.state.firstname} onChange={this.handleChange} onBlur={this.handleChange} className={this.state.firstnamerequired ? 'inputvalid':''} required/>        
                 {
                     this.state.lastnamerequired===true &&
                     <p className="error">Last name is required</p>
                 } 
-                <input type="text"  name="lastname" placeholder="Last name" value={this.state.lastname} onChange={this.handleChange} onBlur={this.handleChange} className={this.state.lastnamerequired ? 'inputvalid':''} required/>
+                <input id="input" type="text"  name="lastname" placeholder="Last name" value={this.state.lastname} onChange={this.handleChange} onBlur={this.handleChange} className={this.state.lastnamerequired ? 'inputvalid':''} required/>
                 {
                     this.state.usernamerequired===true &&
                     <p className="error">Username is required</p>
                 } 
-                <input type="text" name="username" placeholder="Username" value={this.state.username} onChange={this.handleChange} onBlur={this.handleChange} className={this.state.usernamerequired ? 'inputvalid':''} required/>       
+                <input id="input" type="text" name="username" placeholder="Username" value={this.state.username} onChange={this.handleChange} onBlur={this.handleChange} className={this.state.usernamerequired ? 'inputvalid':''} required/>       
                 {
                     this.state.emailrequired===true &&
                     <p className="error">Email is required</p>
@@ -147,12 +147,12 @@ class SignUp extends React.Component{
                     this.state.emailmatch===true &&
                     <p className="error">Email is invalid</p>
                 }  
-                <input type="email"  placeholder="Email" name="email" value={this.state.email} onChange={this.handleChange} onBlur={this.secondchange} className={(this.state.emailrequired||this.state.emailmatch) ? 'inputvalid':''} required/>
+                <input id="input" type="email"  placeholder="Email" name="email" value={this.state.email} onChange={this.handleChange} onBlur={this.secondchange} className={(this.state.emailrequired||this.state.emailmatch) ? 'inputvalid':''} required/>
                 {
                     this.state.passwordrequired===true &&
                     <p className="error">Password is required</p>
                 } 
-                <input type="password" name="password" placeholder="Password"value={this.state.password} onChange={this.handleChange} onBlur={this.handleChange} className={this.state.passwordrequired ? 'inputvalid':''} required/>
+                <input id="input" type="password" name="password" placeholder="Password"value={this.state.password} onChange={this.handleChange} onBlur={this.handleChange} className={this.state.passwordrequired ? 'inputvalid':''} required/>
                 {
                     this.state.confirmpasswordrequired===true &&
                     <p className="error">Confirm password is required</p>
@@ -161,8 +161,8 @@ class SignUp extends React.Component{
                     this.state.equalpassword===true &&
                     <p className="error">Passwords don't matchup</p>
                 } 
-                <input type="password" name="confirmpassword" placeholder="Confirm password" value={this.state.confirmpassword} onChange={this.secondchange} onBlur={this.secondchange} className={(this.state.confirmpasswordrequired || this.state.equalpassword) ? 'inputvalid':''} required/>
-                <input type="submit" value="Submit" />
+                <input id="input" type="password" name="confirmpassword" placeholder="Confirm password" value={this.state.confirmpassword} onChange={this.secondchange} onBlur={this.secondchange} className={(this.state.confirmpasswordrequired || this.state.equalpassword) ? 'inputvalid':''} required/>
+                <input id="input" type="submit" value="Submit" />
             </form>
         );
     }
