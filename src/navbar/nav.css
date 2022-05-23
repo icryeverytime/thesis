@@ -4,23 +4,186 @@ ul{
     padding: 0;
     overflow: hidden;
     background-color: black;
-}
-li{
     display: inline-block;
-    color:white;
-    padding: 16px 18px;
-    text-align: center;
-    
+    width: 100%;
 }
-li a{
-    display: block;
+ a{
     color: white;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    text-align: center;
+    display: inline-block;
     text-align: center;
     text-decoration: none;
+    font-weight: 300;
 }
-li:hover{
+/* For Desktop View */
+
+@media screen and (min-width: 1800px) {
+    #navbusca{
+      margin-left: 600px;
+    }
+    #input2{
+        width: 450px;
+    }
+    #inputsubmit{
+        width: 100px;
+    }
+  }
+  @media screen and (max-width: 1800px) and (min-width:1675px)  {
+    #navbusca{
+      margin-left: 500px;
+    }
+    #input2{
+        width: 450px;
+    }
+  }
+@media screen and (max-width: 1800px) and (min-width:856px)  {
+    #navbusca{
+      margin-left: 500px;
+    }
+    #input2{
+        width: 450px;
+    }
+  }
+  @media screen and (max-width: 1675px) and (min-width:1585px) {
+    #navbusca{
+      margin-left: 400px;
+    }
+  }
+  @media screen and (max-width:1585px) and (min-width:1450px){
+    #navbusca{
+        margin-left: 350px;
+    }   
+  }
+  @media screen and (max-width:1450px) and (min-width:1250px){
+      #navbusca{
+          margin-left: 250px;
+      }
+  }
+  @media screen and (max-width:1250px) and (min-width:1150px){
+    #navbusca{
+        margin-left: 200px;
+    }
+  }
+  @media screen and (max-width:1150px) and (min-width:1075px){
+    #navbusca{
+        margin-left: 150px;
+    }
+  }
+  @media screen and (max-width:1075px) and (min-width:975px){
+    #navbusca{
+        margin-left: 100px;
+    }
+  }
+  @media screen and (max-width:975px) and (min-width:915px){
+    #navbusca{
+        margin-left: 50px;
+    }
+  }
+  @media screen and (max-width:915px) and (min-width:856px){
+    #navbusca{
+        margin-left: 0px;
+    }
+    
+  }
+  @media screen and (max-width:856px) and (min-width:760px){
+    #navbusca{
+        margin-left: 40px;
+    }
+    #input2{
+        width: 350px;
+    }
+  }
+  @media screen and (max-width:760px){
+      #navbusca{
+          margin-left: 0px;
+      }
+  }
+  @media screen and (max-width:760px) and (min-width:690px){
+    #input2{
+        width: 325px;
+    }
+  }
+  @media screen and (max-width:690px) and (min-width:638px){
+    #input2{
+        width: 275px;
+    }
+  }
+  @media screen and (max-width:638px) and (min-width:586px){
+    #input2{
+        width: 225px;
+    }
+  }
+  @media screen and (min-width:540px) {
+      a{
+          width: 100px;
+      }
+  }  
+  @media  screen and (max-width:540px) and (min-width: 415px){
+      a{
+          width: 75px;
+      }
+  }
+  @media screen and (max-width:586px) and (min-width:468px){
+    #input2{
+        width: 175px;
+    }
+  }
+  @media screen and (max-width:468px) and (min-width:415px){
+      #input2{
+          width: 125px;
+      }
+  }
+  @media screen and (min-width: 415px){
+      #threebars{
+          display: none;
+      }
+      #x{
+          display: none;
+      }
+      #navbusca{
+        display: inline;
+      }
+  }
+  @media screen and (max-width:415px) {
+      .nonresponsive{
+          display: none;
+      }
+      .responsive{
+        display: block;
+      }
+      a{
+          width: 100%;
+      }
+      #input2{
+          width: 90%;
+          margin-left: auto;
+          margin-right: auto;
+          margin-bottom: 5px;
+      }
+  }
+#navbusca{
+    text-align: center;
+    margin-top: 0px;
+}
+#input2{
+    line-height: 30px;
+    padding: 0px;
+    text-align: center;
+}
+#inputsubmit{
+    line-height: 30px;
+    padding: 0px;
+    text-align: center;
+}
+a:hover{
     background-color: grey;
+    font-weight: 500;
 }
-.activo li{
-    color: blue;
+.active{
+    font-weight: 500;
+}
+.right{
+    float: right;
 }
