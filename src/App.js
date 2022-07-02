@@ -3,7 +3,7 @@ import Navbar from './navbar/navindex';
 import Home from './home/homeindex';
 import Login from './login/loginindex';
 import SignUp from './signup/SignUpindex';
-import {BrowserRouter as Router,Routes,Route} from 'react-router-dom';
+import {HashRouter as Router,Routes,Route} from 'react-router-dom';
 function App() {
   return (
     <Router>
