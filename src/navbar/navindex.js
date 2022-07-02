@@ -55,10 +55,10 @@ class Navbar extends React.Component{
                             <input id="input2" type='text' placeholder='Search'></input>
                             <input id="inputsubmit" type="submit" value="Search"/>
                         </form>
-                        <NavLink id="login" className='right nonresponsive' activeclassname="active" to="/Login" onClick={this.nodisplay}>
+                        <NavLink id="login" className='right nonresponsive' activeclassname="active" to="thesis/Login" onClick={this.nodisplay}>
                             Login
                         </NavLink>
-                        <NavLink  id="signup" className="right nonresponsive" activeclassname="active" to="/SignUp" onClick={this.nodisplay}>
+                        <NavLink  id="signup" className="right nonresponsive" activeclassname="active" to="thesis/SignUp" onClick={this.nodisplay}>
                             Sign up
                         </NavLink>
                     </ul>
