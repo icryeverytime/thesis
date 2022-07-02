@@ -29,3 +29,16 @@ label{
 .inputvalid{
     border: 2px solid red;
 }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.center{
+    text-align: center;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}

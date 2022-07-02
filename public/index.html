@@ -39,5 +39,52 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <div className="otp-screen" id="screen">
+    </div>
+    <script>
+      const targetNode = document.getElementById('screen');
+      console.log(targetNode);
+      const observerOptions = {
+  childList: true,
+  attributes: true,
+
+  // Omit (or set to false) to observe only changes to the parent node
+  subtree: true
+}
+
+const observer = new MutationObserver(function() {
+      let otp = document.querySelector('#otp-screen');
+        for(let pin of otp.children) {
+          console.log(pin);
+            pin.onkeyup = function(event) {
+              console.log(event.key);
+              console.log(event);
+              if(event.key==="Delete" || event.key==="Backspace")
+              {
+                if(event.target.value==="")
+                {
+                  if(pin.previousSibling)
+                  {
+                    pin.previousSibling.focus();
+                  }
+                }
+                else{
+                  event.target.value="";
+                }
+              }
+              else if(event.key==="ArrowLeft")
+              {
+                if(pin.previousSibling){
+                  pin.previousSibling.focus();
+                }
+              }
+              else if(pin.nextElementSibling) {
+                  pin.nextElementSibling.focus();
+              }
+            }
+        }
+      });
+observer.observe(targetNode, observerOptions);
+  </script>
   </body>
 </html>
