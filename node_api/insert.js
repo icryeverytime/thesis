@@ -1,6 +1,8 @@
 const { getChart } = require('billboard-top-100');
-const mongodb = require('mongodb').MongoClient;
-const uri = 'mongodb://localhost:27017';
+
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const uri = "mongodb+srv://icryeverytime:kC5JEsU4HQifXL2@billboard.fdyddwq.mongodb.net/?retryWrites=true&w=majority";
+
 let date_time = new Date();
 
 // get current date
@@ -12,7 +14,7 @@ let month = ("0" + (date_time.getMonth() + 1)).slice(-2);
 
 // get current year
 let year = date_time.getFullYear();
-let chartdate='2022-05-21';
+let chartdate='2022-06-19';
 // prints date in YYYY-MM-DD format
 let currentdate=year + "-" + month + "-" + date;
 let yearnumber=parseInt(year);
@@ -21,6 +23,7 @@ let daynumber=parseInt(date);
 console.log(currentdate);
 // date format YYYY-MM-DD
 function promesa(fecha){
+  
   return new Promise((resolve,reject)=>{
     getChart('billboard-200', fecha, (err, chart) => {
       if (err) reject(err);
@@ -28,6 +31,7 @@ function promesa(fecha){
     });
   }) 
 }
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 let currentday,currentmonth,currentyear;
 async function main()
 {
@@ -40,6 +44,17 @@ async function main()
         console.log(err)
       }
       else{
+        var insert=await collection.insertMany(data,async function(err,res){
+          if(err)
+          {
+             console.log(err)
+          }
+          else{
+            console.log("Inserted")
+            console.log(res)
+          }
+          
+      })
         con.db('music').collection('billboard200').insertOne({chart:resultado},(err,results)=>{
           if(err)
           {
@@ -51,7 +66,6 @@ async function main()
         }) 
       }
     })
-
     chartdate=resultado.nextWeek.date;
     let split=chartdate.split('-');
     currentday=parseInt(split[2]);

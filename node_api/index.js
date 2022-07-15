@@ -9,7 +9,7 @@ const mongoose = require('mongoose');
 const nodemailer=require('nodemailer');
 
 /*Conexion a la base de datos de mongo*/
-mongoose.connect('mongodb://localhost:27017/music',{useNewUrlParser:true,useUnifiedTopology:true})
+mongoose.connect('mongodb+srv://icryeverytime:kC5JEsU4HQifXL2@billboard.fdyddwq.mongodb.net/music?retryWrites=true&w=majority',{useNewUrlParser:true,useUnifiedTopology:true})
                 .then(()=>console.log('Base de datos conectada correctamente'))
                 .catch(e=>console.log(e));
 app.use(cors());
@@ -41,8 +41,8 @@ app.post('/store-data',async function(req,res){
     let lastname=req.body.user.lastname;
     let username=req.body.user.username;
     let email=req.body.user.email;
-    let password=cryptr.encrypt(req.body.user.password);
     let emailverified="false";
+    let password=cryptr.encrypt(req.body.user.password);
     let code=Math.floor(100000 + Math.random() * 900000);
     let body=JSON.parse(JSON.stringify({"firstname":firstname,"lastname":lastname,"email":email,"username":username,"password":password,"emailverified":emailverified,"code":code}))
     console.log("entered");
@@ -74,11 +74,11 @@ app.post('/store-data',async function(req,res){
     }catch(error){
         const mes=error.message;
         console.log(error.message);
-        if(mes.includes("duplicate key error collection: music.user index: username_1"))
+        if(mes.includes("usernameunique"))
         {
             res.status(409).send({message: "username duplicate"});
         }
-        else if(mes.includes("duplicate key error collection: music.user index: email_1"))
+        else if(mes.includes("myUniqueIndex"))
         {
             res.status(409).send({message: "email duplicate"})
         }
