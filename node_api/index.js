@@ -90,15 +90,23 @@ app.post('/verifyemail', async function(req,res){
     let code=req.body.verify.code;
     try{
         const usuario=await User.findOne({username:user})
-        console.log(usuario);
+        console.log(usuario["_id"]);
         if(usuario.code===code)
         {
+            const update=await User.findByIdAndUpdate(usuario["_id"],{emailverified: 'true'})
+            console.log(update)
             console.log("Igual");
+            res.status(200).send({message: "Email verified"})
+        }
+        else{
+            console.log("Not the same")
+            res.status(400).send({message: "Wrong Code"})
         }
     }catch(error)
     {
+        console.log(error)
     }
 })
 app.listen(port,(req,res)=>{
-    console.log("Express api is running on port 6000");
+    console.log("Express api is running on port "+port);
 })

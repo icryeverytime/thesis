@@ -1,7 +1,7 @@
 import React from 'react';
 import validator from 'validator';
 import '../signup/signup.css';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 class SignUp extends React.Component{
     constructor(props){
         super(props);
@@ -137,6 +137,7 @@ class SignUp extends React.Component{
         }
     }
     async send(user){
+        
         const { value: formValues } =await Swal.fire({
             title: 'Insert code sent to email',
             html:
@@ -162,7 +163,6 @@ class SignUp extends React.Component{
                     ]
             }
         })
-        console.log(formValues);
         const code=formValues.toString().replaceAll(',','');
         fetch('http://localhost:3001/verifyemail',{
             method: 'POST',
@@ -178,7 +178,28 @@ class SignUp extends React.Component{
             }
         })
     }).then(async function(response){
-            console.log(response);
+        response.json().then((data)=>{
+            console.log(data.message);
+            if(data.message==="Wrong Code")
+            {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Wrong Code',
+                    footer: '<Button href="">Resend Code</Button>'
+                  })
+            }
+            else{
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Email verified',
+                    text: 'You can now login!'
+                  }).then((result)=>{
+                      if(result.isConfirmed){
+                          window.location.href="/#/thesis/Logi"
+                      }
+                  })
+            }
+        })
     })
     }
     handleSubmit=(event)=> {
