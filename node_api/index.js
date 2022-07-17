@@ -36,6 +36,9 @@ let transporter = nodemailer.createTransport({
         expires: 1484314697598
     }
   });
+app.post('/generatecode',async function(req,res){
+    
+})
 app.post('/store-data',async function(req,res){
     let firstname=req.body.user.firstname;
     let lastname=req.body.user.lastname;
