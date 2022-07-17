@@ -195,7 +195,7 @@ class SignUp extends React.Component{
                     text: 'You can now login!'
                   }).then((result)=>{
                       if(result.isConfirmed){
-                          window.location.href="/#/thesis/Logi"
+                          window.location.href="/#/thesis/Login"
                       }
                   })
             }
