@@ -87,6 +87,38 @@ app.post('/store-data',async function(req,res){
         }
     }
 })
+app.post('/resendcode',async function(req,res){
+    console.log(req.body.verify)
+    let user=req.body.verify.username
+    let code=Math.floor(100000 + Math.random() * 900000);
+    try{
+        let use=await User.findOneAndUpdate({username:user},{code:code})
+        console.log("use: "+use.email)
+        let firstname=use.firstname
+        let email=use.email
+        let lastname=use.lastname
+        console.log(email)
+        transporter.sendMail({
+            from: 'internetcompany68@gmail.com',
+            to: email,
+            subject: 'Verify your email',
+            text: 'Email verification',
+            html: '<div style="text-align:center; width: 700px;margin-left: auto; margin-right: auto; border: 1px solid black;"><h2 style="background-color: #0096c7; color: white;">Music Site</h2><p>Hi '+firstname+' '+lastname+'! The last step to your registration <br>is verifying your email with the code below.</p><br><br><p>'+code+'</p><br><br><p>If you did not request an email verification you can safely ignore this email.</p></div>', 
+            auth: {
+              type: 'OAuth2',
+              user: 'internetcompany68@gmail.com',
+              clientId: '965546171874-7e227ia6k5begapiu3mhe6bnu57eu7cq.apps.googleusercontent.com',
+              clientSecret: 'ApCBEdpK8Wp8Uh0am4biRWqS',
+              refreshToken: '1//04mDIVjFNGsChCgYIARAAGAQSNwF-L9IraXWWN3E-EAtadj2zog8TQIq8mvncyVUBFhtiJgDVuNmKwGX1dbtXW-proPavBC3u0jk',
+              accessToken: 'ya29.a0ARrdaM8N6y0Ch4YYz4kosEeWpcfECFivxKsGqOPWtleSYq4wMYo3ZEDGbUZ4n-WcU3UN-TSqmSxxBJPK2neRfA41q15e0-PuwnjZXN5CadOJjMGZgZD8c-g36c3QQtEVchrPc8n5qkE1a3mpAugxLcx_oudO',
+              expires: 1484314697598
+            }
+            });
+    }catch(error)
+    {
+        console.log(error)
+    }
+})
 app.post('/verifyemail', async function(req,res){
     console.log(req.body);
     let user=req.body.verify.username;
