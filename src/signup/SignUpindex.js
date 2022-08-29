@@ -136,9 +136,28 @@ class SignUp extends React.Component{
             this.setState({formvalid: false})
         }
     }
-    async send(user){
-        
-        const { value: formValues } =await Swal.fire({
+    trouble(){
+        console.log("trouble")
+    }
+    async send(aux){
+        if(aux===1)
+        {
+            console.log("resend")
+            fetch('http://localhost:3001/resendcode',{
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+            "verify":{
+                "username": this.state.username
+            }
+        })
+    })
+        }
+        await Swal.fire({
             title: 'Insert code sent to email',
             html:
                 '<div className="otp-screen" id="otp-screen">'+
@@ -147,23 +166,24 @@ class SignUp extends React.Component{
                 '<input id="input_3" type="text" maxlength="1" class="center" size="1" required>' +
                 '<input id="input_4" type="text" maxlength="1" class="center" size="1" required>' +
                 '<input id="input_5" type="text" maxlength="1" class="center" size="1" required>' +
-                '<input id="input_6" type="text" maxlength="1" class="center" size="1" required>'+
+                '<input id="input_6" type="text" maxlength="1" class="center" size="1" required>'+ 
                 '</div>',
             focusConfirm: false,
             allowOutsideClick: false,
-            target: document.getElementById('otp-screen2'),
-            preConfirm: () => {
-                return [
-                    document.getElementById('input_1').value,
-                    document.getElementById('input_2').value,
-                    document.getElementById('input_3').value,
-                    document.getElementById('input_4').value,
-                    document.getElementById('input_5').value,
-                    document.getElementById('input_6').value
-                    ]
+            showCancelButton: true,
+            showCloseButton:true,
+            cancelButtonText:"Resend Code",
+            target: document.getElementById('otp-screen2')
+        }).then(result=>{
+            console.log(result)
+            if(result.isDismissed===true)
+            {
+                this.send(1)
             }
-        })
-        const code=formValues.toString().replaceAll(',','');
+            else if(result.isConfirmed===true)
+            {
+                const code=document.getElementById('input_1').value+document.getElementById('input_2').value+document.getElementById('input_3').value+document.getElementById('input_4').value+document.getElementById('input_5').value+document.getElementById('input_6').value
+        console.log("code: "+code)
         fetch('http://localhost:3001/verifyemail',{
             method: 'POST',
             mode: 'cors',
@@ -201,6 +221,8 @@ class SignUp extends React.Component{
             }
         })
     })
+            }
+        })
     }
     handleSubmit=(event)=> {
         let self=this;
@@ -225,7 +247,7 @@ class SignUp extends React.Component{
                 console.log(data.message);
                 if(data.message==="inserted")
                 {
-                    self.send(self.state.username);
+                    self.send();
                 }
                 else if(data.message==="username duplicate")
                 {
