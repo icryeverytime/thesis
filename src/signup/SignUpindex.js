@@ -1,148 +1,81 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import validator from "validator";
 import Swal from "sweetalert2";
 import './animation.css'
-class SignUp extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      firstname: "",
-      lastname: "",
-      username: "",
-      email: "",
-      password: "",
-      confirmpassword: "",
-      firstnamerequired: false,
-      lastnamerequired: false,
-      usernamerequired: false,
-      usernameexist: false,
-      emailrequired: false,
-      emailexist: false,
-      passwordrequired: false,
-      confirmpasswordrequried: false,
-      equalpassword: false,
-      emailmatch: false,
-      formvalid: false,
-    };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-  secondchange = (event) => {
-    this.handleChange(event);
-    if (
-      event.target.getAttribute("name") === "confirmpassword" &&
-      this.state.confirmpasswordrequried !== ""
-    ) {
-      if (event.target.value !== this.state.password) {
-        this.setState({ equalpassword: true });
-      } else {
-        this.setState({ equalpassword: false });
-      }
+function SignUp(){
+  const [firstname,setFirstname]=useState("")
+  const [lastname,setLastname]=useState("")
+  const [username,setUsername]=useState("")
+  const [email,setEmail]=useState("")
+  const [password,setPassword]=useState("")
+  const [confirmpassword,setConfirmpassword]=useState("")
+  const [firstnamerequired,setFirstnamerequired]=useState(null)
+  const [lastnamerequired,setLastnamerequired]=useState(null)
+  const [usernamerequired,setUsernamerequired]=useState(null)
+  const [usernameexist,setUsernameexist]=useState(null)
+  const [emailrequired,setEmailrequired]=useState(null)
+  const [emailexist,setEmailexist]=useState(null)
+  const [passwordrequired,setPasswordrequired]=useState(null)
+  const [confirmpasswordrequired,setConfirmpasswordrequired]=useState(null)
+  const [equalpassword,setEqualpassword]=useState(null)
+  const [emailmatch,setEmailmatch]=useState(null)
+  const [formvalid,setFormvalid]=useState(null)
+  useEffect(()=>{
+    if(firstname==="" && firstnamerequired!==null)
+    {
+      setFirstnamerequired(true)
     }
-    if (
-      event.target.getAttribute("name") === "password" &&
-      this.state.confirmpasswordrequried !== ""
-    ) {
-      if (event.target.value !== this.state.confirmpassword) {
-        this.setState({ equalpassword: true });
-      } else {
-        this.setState({ equalpassword: false });
-      }
+    else if(firstnamerequired!==null){
+      setFirstnamerequired(false)
     }
-    if (
-      event.target.getAttribute("name") === "email" &&
-      this.state.emailrequired === false
-    ) {
-      if (validator.isEmail(event.target.value)) {
-        this.setState({ emailmatch: false });
-      } else {
-        this.setState({ emailmatch: true });
-      }
+  },[firstname,firstnamerequired])
+  useEffect(()=>{
+    if(lastname==="" && lastnamerequired!==null)
+    {
+      setLastnamerequired(true)
     }
-    this.validateform();
-  };
-
-  handleChange(event) {
-    this.setState({ [event.target.getAttribute("name")]: event.target.value });
-    if (event.target.getAttribute("name") === "firstname") {
-      if (event.target.value === "") {
-        this.setState({ firstnamerequired: true });
-      } else {
-        this.setState({ firstnamerequired: false });
-      }
-    } else if (event.target.getAttribute("name") === "lastname") {
-      if (event.target.value === "") {
-        this.setState({ lastnamerequired: true });
-      } else {
-        this.setState({ lastnamerequired: false });
-      }
-    } else if (event.target.getAttribute("name") === "username") {
-      this.setState({ usernameexist: false });
-      if (event.target.value === "") {
-        this.setState({ usernamerequired: true });
-      } else {
-        this.setState({ usernamerequired: false });
-      }
-    } else if (event.target.getAttribute("name") === "email") {
-      this.setState({ emailexist: false });
-      if (event.target.value === "") {
-        this.setState({ emailrequired: true });
-      } else {
-        this.setState({ emailrequired: false });
-      }
-      if (validator.isEmail(event.target.value)) {
-        this.setState({ emailmatch: false });
-      }
-    } else if (event.target.getAttribute("name") === "password") {
-      if (event.target.value === "") {
-        this.setState({ passwordrequired: true });
-      } else {
-        this.setState({ passwordrequired: false });
-      }
-      if (
-        this.state.confirmpassword !== "" &&
-        this.state.confirmpassword !== this.state.password
-      ) {
-        this.setState({ equalpassword: true });
-      } else {
-        this.setState({ equalpassword: false });
-      }
-    } else if (event.target.getAttribute("name") === "confirmpassword") {
-      if (event.target.value === "") {
-        this.setState({ confirmpasswordrequired: true });
-      } else {
-        this.setState({ confirmpasswordrequired: false });
-      }
+    else if(lastnamerequired!==null){
+      setLastnamerequired(false)
     }
-    this.validateform();
-  }
-  validateform = () => {
-    if (
-      this.state.email !== "" &&
-      this.state.firstname !== "" &&
-      this.state.lastname !== "" &&
-      this.state.email !== "" &&
-      this.state.username !== "" &&
-      this.state.email !== "" &&
-      this.state.password !== "" &&
-      this.state.confirmpassword !== ""
-    ) {
-      if (
-        this.state.emailmatch === false &&
-        this.state.confirmpassword === this.state.password
-      ) {
-        this.setState({ formvalid: true });
-      } else {
-        this.setState({ formvalid: false });
-      }
-    } else {
-      this.setState({ formvalid: false });
+  },[lastname,lastnamerequired])
+  useEffect(()=>{
+    if(username==="" && usernamerequired!==null)
+    {
+      setUsernamerequired(true)
     }
-  };
-  trouble() {
-    console.log("trouble");
-  }
-  async send(aux) {
+    else if(usernamerequired!==null){
+      setUsernamerequired(false)
+    }
+  },[username,usernamerequired])
+  useEffect(()=>{
+    if(email==="" && emailrequired!==null )
+    {
+      setEmailrequired(true)
+    }
+    else if(emailrequired!==null){
+      setEmailrequired(false)
+    }
+  },[email,emailrequired])
+  useEffect(()=>{
+    if(password==="" && passwordrequired!==null)
+    {
+      setPasswordrequired(true)
+    }
+    else if(passwordrequired!==null){
+      setPasswordrequired(false)
+    }
+  },[password,passwordrequired])
+  useEffect(()=>{
+    if(confirmpassword==="" && confirmpasswordrequired!==null)
+    {
+      setConfirmpasswordrequired(true)
+    }
+    else if(confirmpasswordrequired!==null){
+      setConfirmpasswordrequired(false)
+    }
+  },[confirmpassword,confirmpasswordrequired])
+  
+  async function send(aux) {
     if (aux === 1) {
       console.log("resend");
       fetch("http://localhost:3001/resendcode", {
@@ -154,7 +87,7 @@ class SignUp extends React.Component {
         },
         body: JSON.stringify({
           verify: {
-            username: this.state.username,
+            username: username,
           },
         }),
       });
@@ -198,7 +131,7 @@ class SignUp extends React.Component {
           },
           body: JSON.stringify({
             verify: {
-              username: this.state.username,
+              username: username,
               code: code,
             },
           }),
@@ -227,7 +160,7 @@ class SignUp extends React.Component {
       }
     });
   }
-  handleSubmit = (event) => {
+  function handleSubmit (event)  {
     let self = this;
     fetch("http://localhost:3001/store-data", {
       method: "POST",
@@ -238,11 +171,11 @@ class SignUp extends React.Component {
       },
       body: JSON.stringify({
         user: {
-          firstname: this.state.firstname,
-          lastname: this.state.lastname,
-          username: this.state.username,
-          email: this.state.email,
-          password: this.state.password,
+          firstname: firstname,
+          lastname: lastname,
+          username: username,
+          email: email,
+          password: password,
         },
       }),
     }).then(async function (response) {
@@ -259,119 +192,116 @@ class SignUp extends React.Component {
     });
     event.preventDefault();
   };
-  render() {
     return (
         <div className="pt-20 pb-10 h-screen" id="css-selector">
             <form
         className="flex flex-col justify-center items-center pt-5 pb-5 xs:mx-12 sm:mx-28 md:mx-48 lg:mx-64 xl:mx-80 2xl:mx-96 rounded bg-dodger-blue shadow-2xl drop-shadow-2xl"
-        onSubmit={this.handleSubmit}
+        onSubmit={()=>handleSubmit()}
       >
         <h1 className="text-white text-2xl">Register an account</h1>
         <p className="text-white">Already have an account sign in</p>
-        {this.state.firstnamerequired === true && (
+        {firstnamerequired === true && (
           <p className="text-red-600 font-black">First name is required</p>
         )}
         <input
           type="text"
-      
           placeholder="First name"
           name="firstname"
-          value={this.state.firstname}
-          onChange={this.handleChange}
-          onBlur={this.handleChange}
-          
-          className={this.state.firstnamerequired ? "border-4 border-red-600 w-56 h-8 p-0 my-2.5 text-center" : "w-56 h-8 p-0 my-2.5 text-center"}
+          value={firstname}
+          onChange={(e)=>setFirstname(e.target.value)}
+          onBlur={()=>{if(firstnamerequired===null){setFirstnamerequired(false)}}}
+          className={firstnamerequired ? "border-4 border-red-600 w-56 h-8 p-0 my-2.5 text-center" : "w-56 h-8 p-0 my-2.5 text-center"}
           required
         />
-        {this.state.lastnamerequired === true && (
+        {lastnamerequired === true && (
           <p className="text-red-600 font-black">Last name is required</p>
         )}
         <input
           type="text"
           name="lastname"
           placeholder="Last name"
-          value={this.state.lastname}
-          onChange={this.handleChange}
-          onBlur={this.handleChange}
-          className={this.state.lastnamerequired ? "border-4 border-red-600 w-56 h-8 p-0 my-2.5 text-center" : "w-56 h-8 p-0 my-2.5 text-center"}
+          value={lastname}
+          onChange={(e)=>setLastname(e.target.value)}
+          onBlur={()=>{if(lastnamerequired===null){setLastnamerequired(false)}}}
+          className={lastnamerequired ? "border-4 border-red-600 w-56 h-8 p-0 my-2.5 text-center" : "w-56 h-8 p-0 my-2.5 text-center"}
           required
         />
-        {this.state.usernamerequired === true && (
+        {usernamerequired === true && (
           <p className="text-red-600 font-black">Username is required</p>
         )}
-        {this.state.usernameexist === true && (
+        {usernameexist === true && (
           <p className="text-red-600 font-black">Username is already in use</p>
         )}
         <input
           type="text"
           name="username"
           placeholder="Username"
-          value={this.state.username}
-          onChange={this.handleChange}
-          onBlur={this.handleChange}
+          value={username}
+          onChange={(e)=>setUsername(e.target.value)}
+          onBlur={()=>{if(usernamerequired===null){setUsernamerequired(false)}}}
           className={
-            this.state.usernamerequired || this.state.usernameexist
+            usernamerequired || usernameexist
               ? "border-4 border-red-600 w-56 h-8 p-0 my-2.5 text-center" : "w-56 h-8 p-0 my-2.5 text-center"
           }
           required
         />
-        {this.state.emailrequired === true && (
+        {emailrequired === true && (
           <p className="text-red-600 font-black">Email is required</p>
         )}
-        {this.state.emailmatch === true &&
-          this.state.emailrequired === false && (
+        {emailmatch === true &&
+          emailrequired === false && (
             <p className="text-red-600 font-black">Email is invalid</p>
           )}
-        {this.state.emailexist === true && (
+        {emailexist === true && (
           <p className="text-red-600 font-black">Email is already in use</p>
         )}
         <input
           type="email"
           placeholder="Email"
           name="email"
-          value={this.state.email}
-          onChange={this.handleChange}
-          onBlur={this.secondchange}
+          value={email}
+          onChange={(e)=>setEmail(e.target.value)}
+          onBlur={()=>{if(emailrequired===null){setEmailrequired(false)}}}
           className={
-            this.state.emailrequired ||
-            this.state.emailmatch ||
-            this.state.emailexist
+            emailrequired ||
+            emailmatch ||
+            emailexist
               ? "border-4 border-red-600 w-56 h-8 p-0 my-2.5 text-center" : "w-56 h-8 p-0 my-2.5 text-center"
           }
           required
         />
-        {this.state.passwordrequired === true && (
+        {passwordrequired === true && (
           <p className="text-red-600 font-black">Password is required</p>
         )}
         <input
           type="password"
           name="password"
           placeholder="Password"
-          value={this.state.password}
-          onChange={this.secondchange}
-          onBlur={this.secondchange}
-          className={this.state.passwordrequired ? "border-4 border-red-600 w-56 h-8 p-0 my-2.5 text-center" : "w-56 h-8 p-0 my-2.5 text-center"}
+          value={password}
+          onChange={(e)=>setPassword(e.target.value)}
+          onBlur={()=>{if(passwordrequired===null){setPasswordrequired(false)}}}
+          className={passwordrequired ? "border-4 border-red-600 w-56 h-8 p-0 my-2.5 text-center" : "w-56 h-8 p-0 my-2.5 text-center"}
           required
         />
-        {this.state.confirmpasswordrequired === true && (
+        {confirmpasswordrequired === true && (
           <p className="text-red-600 font-black">
             Confirm password is required
           </p>
         )}
-        {this.state.equalpassword === true &&
-          this.state.confirmpasswordrequired === false && (
+        {equalpassword === true &&
+          confirmpasswordrequired === false && (
             <p className="text-red-600 font-black">Passwords don't matchup</p>
           )}
         <input
           type="password"
           name="confirmpassword"
           placeholder="Confirm password"
-          value={this.state.confirmpassword}
-          onChange={this.secondchange}
-          onBlur={this.secondchange}
+          value={confirmpassword}
+          onChange={(e)=>setConfirmpassword(e.target.value)}
+          onBlur={()=>{if(confirmpasswordrequired===null){setConfirmpasswordrequired(false)}}}
           className={
-            this.state.confirmpasswordrequired ||
-            (this.state.equalpassword && this.state.confirmpassword !== "")
+            confirmpasswordrequired ||
+            (equalpassword && confirmpassword !== "")
               ? "border-4 border-red-600 w-56 h-8 p-0 my-2.5 text-center" : "w-56 h-8 p-0 my-2.5 text-center"
           }
           required
@@ -380,6 +310,5 @@ class SignUp extends React.Component {
       </form>
         </div>
     );
-  }
 }
 export default SignUp;
