@@ -5,16 +5,14 @@ function Navbar()
 {
   const [display, setdisplay] = useState(null)
   useEffect(() => { 
+    var three=document.getElementById('threebars');
+      var flex=document.getElementById('flex')
     if(display===true)
     {
-      var three=document.getElementById('threebars');
-      var flex=document.getElementById('flex')
       flex.className="flex flex-col xs:flex-row space-between"
       three.className="hidden";
     }
     else if(display===false){
-      var three=document.getElementById('threebars');
-      var flex=document.getElementById('flex')
       flex.className='hidden xs:flex xs:flex-row space-between'
       three.className='xs:hidden text-sm sm:text-md md:text-xl text-white hover:text-white/80 py-2 px-1 sm:py-3 sm:px-3 hover:bg-persian-blue font-bold hover:font-black'
     }

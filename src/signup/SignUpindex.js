@@ -48,7 +48,11 @@ function SignUp(){
     }
   },[username,usernamerequired])
   useEffect(()=>{
-    if(email==="" && emailrequired!==null )
+    if(validator.isEmail(email))
+    {
+      console.log("Prueba");
+    }
+    if(email==="" && emailrequired!==null)
     {
       setEmailrequired(true)
     }
