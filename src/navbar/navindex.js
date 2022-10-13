@@ -27,7 +27,7 @@ class Navbar extends React.Component {
           <button
             id="threebars"
             className="xs:hidden text-sm sm:text-md md:text-xl text-white hover:text-white/80 py-2 px-1 sm:py-3 sm:px-3 hover:bg-persian-blue font-bold hover:font-black"
-            onClick={this.display} 
+            onClick={this.display}
           >
             Three
           </button>

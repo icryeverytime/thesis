@@ -1,12 +1,16 @@
 import React from 'react';
+import img_header from '../Assets/header.png';
 
 class Home extends React.Component{
  render()
  {
      return(
-        <h1 className="text-3xl font-bold underline">
-      Hello world!
-    </h1>
+        
+
+      <img src={img_header} width="500" height="600"></img>
+
+
+
      );
  }
 }
