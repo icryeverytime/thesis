@@ -5,7 +5,7 @@ function Home(){
      return(
         
 
-      <img src={img_header} width="500" height="600"></img>
+      <img src={img_header} width="500" height="600" alt='test'></img>
 
 
 
