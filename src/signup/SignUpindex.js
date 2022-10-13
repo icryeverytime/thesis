@@ -376,7 +376,7 @@ class SignUp extends React.Component {
           }
           required
         />
-        <input className="bg-purple text-white p-2 hover:cursor-pointer rounded hover:text-white/80" type="submit" value="Submit" />
+        <input className="py-4 bg-purple w-80 rounded text-blue-50 font-bold hover:bg-blue-700" type="submit" value="Submit" />
       </form>
         </div>
     );
