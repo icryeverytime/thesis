@@ -1,9 +1,9 @@
 import './App.css';
-import Navbar from './navbar/navindex';
-import Home from './home/homeindex';
-import Login from './login/loginindex';
-import SignUp from './signup/SignUpindex';
+import Navbar from './navbar/navindex'
 import {HashRouter,Routes,Route} from 'react-router-dom';
+import Home from './home/homeindex';
+import Login from './login/loginindex'
+import SignUp from './signup/SignUpindex'
 function App() {
   return (
     <HashRouter>
@@ -16,4 +16,4 @@ function App() {
     </HashRouter>
   );
 }
-export default App;
+export default App; 
