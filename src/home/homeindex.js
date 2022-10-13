@@ -1,9 +1,7 @@
 import React from 'react';
 import img_header from '../Assets/header.png';
 
-class Home extends React.Component{
- render()
- {
+function Home(){
      return(
         
 
@@ -12,6 +10,5 @@ class Home extends React.Component{
 
 
      );
- }
 }
 export default Home;
