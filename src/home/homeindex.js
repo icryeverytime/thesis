@@ -45,7 +45,7 @@ function Home(){
             to sell yourself!
           </h1>
           <p class="leading-normal text-base md:text-2xl mb-8 text-center md:text-left">
-            Sub-hero message, not too long and not too short. Make it just right!
+            Sub-hero message, not too long and not too short. c: Make it just right!
           </p>
 
           <form class="bg-gray-900 opacity-75 w-full shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4">
