@@ -11,8 +11,7 @@ import { faSignIn } from '@fortawesome/free-solid-svg-icons'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { faFileLines } from '@fortawesome/free-solid-svg-icons'
 
-//<FontAwesomeIcon icon="fa-brands fa-facebook" />
-import IndexDropdown from "./IndexDropdown";
+//import IndexDropdown from "./IndexDropdown";
 
 export default function Navbar(props) {
   const [navbarOpen, setNavbarOpen] = React.useState(false);
@@ -62,7 +61,7 @@ export default function Navbar(props) {
             </ul>
             <ul className="flex flex-col lg:flex-row list-none lg:ml-auto">
               <li className="flex items-center">
-                <IndexDropdown />
+                
               </li>
               <li className="flex items-center">
                 <a

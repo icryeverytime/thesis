@@ -12,9 +12,14 @@ import imgLogin from '../Assets/img/login.jpg';
 import imgProfile from '../Assets/img/profile.jpg';
 import imgLanding from '../Assets/img/landing.jpg';
 import headphones from '../Assets/img/headphones.jpg';
+
 import pattern from '../Assets/img/home.jpg';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHeadphones } from '@fortawesome/free-solid-svg-icons'
+import { faChartBar } from '@fortawesome/free-solid-svg-icons'
+import { faPieChart } from '@fortawesome/free-solid-svg-icons'
+
 
 import IndexNavbar from "../components/Navbars/IndexNavbar.js";
 import Footer from "../components/Footers/Footer.js";
@@ -134,14 +139,14 @@ function Home(){
                   <div className="relative flex flex-col mt-4">
                     <div className="px-4 py-5 flex-auto">
                       <div className="text-blueGray-500 p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-white">
-                        <i className="fas fa-sitemap"></i>
+                        
+                        <i className="text-gray text-xl leading-lg"><FontAwesomeIcon icon={faHeadphones} /></i>
                       </div>
                       <h6 className="text-xl mb-1 font-semibold">
-                        CSS Components
+                        Listen new styles
                       </h6>
                       <p className="mb-4 text-blueGray-500">
-                        Notus React comes with a huge number of Fully Coded CSS
-                        components.
+                        Discover why that song has managed to reach another 
                       </p>
                     </div>
                   </div>
@@ -164,9 +169,9 @@ function Home(){
                   <div className="relative flex flex-col min-w-0 mt-4">
                     <div className="px-4 py-5 flex-auto">
                       <div className="text-blueGray-500 p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-white">
-                        <i className="fas fa-newspaper"></i>
+                      <i className="text-gray text-xl leading-lg"><FontAwesomeIcon icon={faPieChart} /></i>
                       </div>
-                      <h6 className="text-xl mb-1 font-semibold">Pages</h6>
+                      <h6 className="text-xl mb-1 font-semibold">Create Charts</h6>
                       <p className="mb-4 text-blueGray-500">
                         This extension also comes with 3 sample pages. They are
                         fully coded so you can start working instantly.
