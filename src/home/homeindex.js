@@ -1,40 +1,56 @@
 import React from 'react';
 import { Link } from "react-router-dom";
+import componentBtn from '../Assets/img/component-btn.png';
 
-import IndexNavbar from "./components/Navbars/IndexNavbar.js";
-import Footer from "./components/Footers/Footer.js";
+import componentProfile from '../Assets/img/component-profile-card.png';
+import componentInfo from '../Assets/img/component-info-card.png';
+import componentInfo2 from '../Assets/img/component-info-2.png';
+import componentMenu from '../Assets/img/component-menu.png';
+import componentBtnPink from '../Assets/img/component-btn-pink.png';
+import documentation from '../Assets/img/documentation.png';
+import imgLogin from '../Assets/img/login.jpg';
+import imgProfile from '../Assets/img/profile.jpg';
+import imgLanding from '../Assets/img/landing.jpg';
+import headphones from '../Assets/img/headphones.jpg';
+import pattern from '../Assets/img/home.jpg';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+import IndexNavbar from "../components/Navbars/IndexNavbar.js";
+import Footer from "../components/Footers/Footer.js";
+
+
 
 function Home(){
      return(
         
 
 
+//<div className="bg-[url('Assets/header.png')] leading-normal tracking-normal text-indigo-400 m-6 bg-cover bg-fixed" ></div>
 
 
-
-
+//<IndexNavbar fixed />
 
 <>
-      <IndexNavbar fixed />
+
+<IndexNavbar fixed />
       <section className="header relative pt-16 items-center flex h-screen max-h-860-px">
         <div className="container mx-auto items-center flex flex-wrap">
           <div className="w-full md:w-8/12 lg:w-6/12 xl:w-6/12 px-4">
             <div className="pt-32 sm:pt-0">
               <h2 className="font-semibold text-4xl text-blueGray-600">
-                Notus React - A beautiful extension for Tailwind CSS.
+                Music Background - A place to find out what is everyone listening to.
               </h2>
-              <p className="mt-4 text-lg leading-relaxed text-blueGray-500">
-                Notus React is Free and Open Source. It does not change any of
-                the CSS from{" "}
+              <p className="mt-4 text-lg leading-relaxed text-blueGray-500" >
+              Discover trough easy-to-read graphs the historical background of your favorite genre, for how long it has been on billboard’s top 100 and more.{" "}
                 <a
                   href="https://tailwindcss.com/?ref=creativetim"
                   className="text-blueGray-600"
                   target="_blank"
                 >
-                  Tailwind CSS
+                  Find out more...
                 </a>
-                . It features multiple HTML elements and it comes with dynamic
-                components for ReactJS, Vue and Angular.
+                
               </p>
               <div className="mt-12">
                 <a
@@ -49,7 +65,7 @@ function Home(){
                   className="github-star ml-1 text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-blueGray-700 active:bg-blueGray-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150"
                   target="_blank"
                 >
-                  Github Star
+                  Top Charts
                 </a>
               </div>
             </div>
@@ -58,7 +74,7 @@ function Home(){
 
         <img
           className="absolute top-0 b-auto right-0 pt-16 sm:w-6/12 -mt-48 sm:mt-0 w-10/12 max-h-860px"
-          src={require("./assets/img/pattern_react.png").default}
+          src={pattern}
           alt="..."
         />
       </section>
@@ -89,7 +105,8 @@ function Home(){
               <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded-lg bg-lightBlue-500">
                 <img
                   alt="..."
-                  src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=80"
+                  src={headphones}
+                  //src="https://www.educative.io/cdn-cgi/image/f=auto,fit=contain,w=1200/api/page/4877311942852608/image/download/4733561971146752"
                   className="w-full align-middle rounded-t-lg"
                 />
                 <blockquote className="relative p-8 mb-4">
@@ -99,19 +116,13 @@ function Home(){
                     viewBox="0 0 583 95"
                     className="absolute left-0 w-full block h-95-px -top-94-px"
                   >
-                    <polygon
-                      points="-30,95 583,95 583,65"
-                      className="text-lightBlue-500 fill-current"
-                    ></polygon>
+                    
                   </svg>
                   <h4 className="text-xl font-bold text-white">
-                    Great for your awesome project
+                    See whats everyone talking about
                   </h4>
                   <p className="text-md font-light mt-2 text-white">
-                    Putting together a page has never been easier than matching
-                    together pre-made components. From landing pages
-                    presentation to login areas, you can easily customise and
-                    built your pages.
+                  Discover hundreds of blogs from people like you that have found patterns and secrets behind the statistics we publish each week
                   </p>
                 </blockquote>
               </div>
@@ -236,32 +247,38 @@ function Home(){
               <div className="relative flex flex-col min-w-0 w-full mb-6 mt-48 md:mt-0">
                 <img
                   alt="..."
-                  src={require("./assets/img/component-btn.png").default}
+                  src={componentBtn}
+                  //src={require("./assets/img/component-btn.png").default}
                   className="w-full align-middle rounded absolute shadow-lg max-w-100-px z-3 left-145-px -top-29-px"
                 />
                 <img
                   alt="..."
-                  src={require("./assets/img/component-profile-card.png").default}
+                  src={componentProfile}
+                  //src={require("./assets/img/component-profile-card.png").default}
                   className="w-full align-middle rounded-lg absolute shadow-lg -top-160-px left-260-px max-w-210-px"
                 />
                 <img
                   alt="..."
-                  src={require("./assets/img/component-info-card.png").default}
+                  src={componentInfo}
+                  //src={require("./assets/img/component-info-card.png").default}
                   className="w-full align-middle rounded-lg absolute shadow-lg max-w-180-px -top-225-px left-40-px z-2"
                 />
                 <img
                   alt="..."
-                  src={require("./assets/img/component-info-2.png").default}
+                  src={componentInfo2}
+                  //src={require("./assets/img/component-info-2.png").default}
                   className="w-full align-middle rounded-lg absolute shadow-2xl max-w-200-px -left-50-px top-25-px"
                 />
                 <img
                   alt="..."
-                  src={require("./assets/img/component-menu.png").default}
+                  src={componentMenu}
+                  //src={require("./assets/img/component-menu.png").default}
                   className="w-full align-middle rounded absolute shadow-lg max-w-580-px -left-20-px top-210-px"
                 />
                 <img
                   alt="..."
-                  src={require("./assets/img/component-btn-pink.png").default}
+                  src={componentBtnPink}
+                  //src={require("./assets/img/component-btn-pink.png").default}
                   className="w-full align-middle rounded absolute shadow-xl max-w-120-px left-195-px top-95-px"
                 />
               </div>
@@ -493,7 +510,8 @@ function Home(){
                   transform:
                     "scale(1) perspective(1040px) rotateY(-11deg) rotateX(2deg) rotate(2deg)",
                 }}
-                src={require("./assets/img/documentation.png").default}
+                src={documentation}
+                //src={require("./assets/img/documentation.png").default}
               />
             </div>
           </div>
@@ -525,7 +543,8 @@ function Home(){
                       <img
                         alt="..."
                         className="align-middle border-none max-w-full h-auto rounded-lg"
-                        src={require("./assets/img/login.jpg").default}
+                        src={imgLogin}
+                        //src={require("./assets/img/login.jpg").default}
                       />
                     </div>
                   </Link>
@@ -540,7 +559,8 @@ function Home(){
                       <img
                         alt="..."
                         className="align-middle border-none max-w-full h-auto rounded-lg"
-                        src={require("./assets/img/profile.jpg").default}
+                        src={imgProfile}
+                        //src={require("./assets/img/profile.jpg").default}
                       />
                     </div>
                   </Link>
@@ -555,7 +575,8 @@ function Home(){
                       <img
                         alt="..."
                         className="align-middle border-none max-w-full h-auto rounded-lg"
-                        src={require("./assets/img/landing.jpg").default}
+                        src={imgLanding}
+                        //src={require("./assets/img/landing.jpg").default}
                       />
                     </div>
                   </Link>
