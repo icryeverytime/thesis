@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import validator from "validator";
 import Swal from "sweetalert2";
-import { motion, useMotionValue, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 function SignUp() {
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
