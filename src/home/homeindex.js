@@ -143,10 +143,10 @@ function Home(){
                         <i className="text-gray text-xl leading-lg"><FontAwesomeIcon icon={faHeadphones} /></i>
                       </div>
                       <h6 className="text-xl mb-1 font-semibold">
-                        Listen new styles
+                        Listen new genres
                       </h6>
                       <p className="mb-4 text-blueGray-500">
-                        Discover why that song has managed to reach another 
+                      Expand your music taste listening to the very best of all time
                       </p>
                     </div>
                   </div>
@@ -156,11 +156,10 @@ function Home(){
                         <i className="fas fa-drafting-compass"></i>
                       </div>
                       <h6 className="text-xl mb-1 font-semibold">
-                        JavaScript Components
+                        Discover more styles
                       </h6>
                       <p className="mb-4 text-blueGray-500">
-                        We also feature many dynamic components for React,
-                        NextJS, Vue and Angular.
+                      Why that song has managed to reach the top 100 so many times
                       </p>
                     </div>
                   </div>
@@ -171,10 +170,9 @@ function Home(){
                       <div className="text-blueGray-500 p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-white">
                       <i className="text-gray text-xl leading-lg"><FontAwesomeIcon icon={faPieChart} /></i>
                       </div>
-                      <h6 className="text-xl mb-1 font-semibold">Create Charts</h6>
+                      <h6 className="text-xl mb-1 font-semibold">learn t Charts</h6>
                       <p className="mb-4 text-blueGray-500">
-                        This extension also comes with 3 sample pages. They are
-                        fully coded so you can start working instantly.
+                        
                       </p>
                     </div>
                   </div>
@@ -210,7 +208,7 @@ function Home(){
               <p className="text-lg font-light leading-relaxed mt-4 mb-4 text-blueGray-600">
                 Every element that you need in a product comes built in as a
                 component. All components fit perfectly with each other and can
-                have different colours.
+                have different colours. 
               </p>
               <div className="block pb-6">
                 <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-white uppercase last:mr-0 mr-2 mt-2">
