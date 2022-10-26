@@ -1,84 +1,91 @@
 import React, { useEffect, useState } from "react";
 import validator from "validator";
 import Swal from "sweetalert2";
-import './animation.css'
-function SignUp(){
-  const [firstname,setFirstname]=useState("")
-  const [lastname,setLastname]=useState("")
-  const [username,setUsername]=useState("")
-  const [email,setEmail]=useState("")
-  const [password,setPassword]=useState("")
-  const [confirmpassword,setConfirmpassword]=useState("")
-  const [firstnamerequired,setFirstnamerequired]=useState(null)
-  const [lastnamerequired,setLastnamerequired]=useState(null)
-  const [usernamerequired,setUsernamerequired]=useState(null)
-  const [usernameexist,setUsernameexist]=useState(null)
-  const [emailrequired,setEmailrequired]=useState(null)
-  const [emailexist,setEmailexist]=useState(null)
-  const [passwordrequired,setPasswordrequired]=useState(null)
-  const [confirmpasswordrequired,setConfirmpasswordrequired]=useState(null)
-  const [equalpassword,setEqualpassword]=useState(null)
-  const [emailmatch,setEmailmatch]=useState(null)
-  const [formvalid,setFormvalid]=useState(null)
-  useEffect(()=>{
-    if(firstname==="" && firstnamerequired!==null)
+import { motion, useMotionValue, useTransform } from "framer-motion";
+function SignUp() {
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmpassword, setConfirmpassword] = useState("");
+  const [firstnamerequired, setFirstnamerequired] = useState(null);
+  const [lastnamerequired, setLastnamerequired] = useState(null);
+  const [usernamerequired, setUsernamerequired] = useState(null);
+  const [usernameexist, setUsernameexist] = useState(null);
+  const [emailrequired, setEmailrequired] = useState(null);
+  const [emailexist, setEmailexist] = useState(null);
+  const [passwordrequired, setPasswordrequired] = useState(null);
+  const [confirmpasswordrequired, setConfirmpasswordrequired] = useState(null);
+  const [equalpassword, setEqualpassword] = useState(null);
+  const [emailmatch, setEmailmatch] = useState(null);
+  useEffect(() => {
+    if (firstname === "" && firstnamerequired !== null) {
+      setFirstnamerequired(true);
+    } else if (firstnamerequired !== null) {
+      setFirstnamerequired(false);
+    }
+  }, [firstname, firstnamerequired]);
+  useEffect(() => {
+    if (lastname === "" && lastnamerequired !== null) {
+      setLastnamerequired(true);
+    } else if (lastnamerequired !== null) {
+      setLastnamerequired(false);
+    }
+  }, [lastname, lastnamerequired]);
+  useEffect(() => {
+    if (username === "" && usernamerequired !== null) {
+      setUsernamerequired(true);
+    } else if (usernamerequired !== null) {
+      setUsernamerequired(false);
+    }
+    if(usernameexist===true)
     {
-      setFirstnamerequired(true)
+      setUsernameexist(false)
     }
-    else if(firstnamerequired!==null){
-      setFirstnamerequired(false)
+  }, [username, usernamerequired]);
+  useEffect(() => {
+    if (email === "" && emailrequired !== null) {
+      setEmailrequired(true);
+    } else if (emailrequired !== null) {
+      setEmailrequired(false);
     }
-  },[firstname,firstnamerequired])
-  useEffect(()=>{
-    if(lastname==="" && lastnamerequired!==null)
+    if (!validator.isEmail(email) && emailrequired !== null) {
+      console.log("no es");
+      setEmailmatch(true);
+    } else if (emailrequired !== null) {
+      setEmailmatch(false);
+    }
+    if(emailexist===true)
     {
-      setLastnamerequired(true)
+      setEmailexist(false)
     }
-    else if(lastnamerequired!==null){
-      setLastnamerequired(false)
+  }, [email, emailrequired]);
+  useEffect(() => { 
+    if (password === "" && passwordrequired !== null) {
+      setPasswordrequired(true);
+    } else if (passwordrequired !== null) {
+      setPasswordrequired(false);
     }
-  },[lastname,lastnamerequired])
-  useEffect(()=>{
-    if(username==="" && usernamerequired!==null)
-    {
-      setUsernamerequired(true)
+    if (confirmpassword !== password && confirmpassword !== null) {
+      setEqualpassword(true);
+    } else if (confirmpassword !== null) {
+      setEqualpassword(false);
     }
-    else if(usernamerequired!==null){
-      setUsernamerequired(false)
+  }, [password, passwordrequired]);
+  useEffect(() => {
+    if (confirmpassword === "" && confirmpasswordrequired !== null) {
+      setConfirmpasswordrequired(true);
+    } else if (confirmpasswordrequired !== null) {
+      setConfirmpasswordrequired(false);
     }
-  },[username,usernamerequired])
-  useEffect(()=>{
-    if(validator.isEmail(email))
-    {
-      console.log("Prueba");
+    if (confirmpassword !== password && confirmpassword !== null) {
+      setEqualpassword(true);
+    } else if (confirmpassword !== null) {
+      setEqualpassword(false);
     }
-    if(email==="" && emailrequired!==null)
-    {
-      setEmailrequired(true)
-    }
-    else if(emailrequired!==null){
-      setEmailrequired(false)
-    }
-  },[email,emailrequired])
-  useEffect(()=>{
-    if(password==="" && passwordrequired!==null)
-    {
-      setPasswordrequired(true)
-    }
-    else if(passwordrequired!==null){
-      setPasswordrequired(false)
-    }
-  },[password,passwordrequired])
-  useEffect(()=>{
-    if(confirmpassword==="" && confirmpasswordrequired!==null)
-    {
-      setConfirmpasswordrequired(true)
-    }
-    else if(confirmpasswordrequired!==null){
-      setConfirmpasswordrequired(false)
-    }
-  },[confirmpassword,confirmpasswordrequired])
-  
+  }, [confirmpassword, confirmpasswordrequired]);
+
   async function send(aux) {
     if (aux === 1) {
       console.log("resend");
@@ -114,9 +121,8 @@ function SignUp(){
       cancelButtonText: "Resend Code",
       target: document.getElementById("otp-screen2"),
     }).then((result) => {
-      console.log(result);
       if (result.isDismissed === true) {
-        this.send(1);
+        send(1);
       } else if (result.isConfirmed === true) {
         const code =
           document.getElementById("input_1").value +
@@ -146,7 +152,12 @@ function SignUp(){
               Swal.fire({
                 icon: "error",
                 title: "Wrong Code",
-                footer: '<Button href="">Resend Code</Button>',
+                showCancelButton: true,
+                cancelButtonText: "Resend Code",
+              }).then(result=>{
+                if (result.isDismissed === true) {
+                  send(1);
+                }
               });
             } else {
               Swal.fire({
@@ -164,9 +175,11 @@ function SignUp(){
       }
     });
   }
-  function handleSubmit (event)  {
-    let self = this;
-    fetch("http://localhost:3001/store-data", {
+  function handleSubmit(event) {
+    event.preventDefault()
+    if(firstnamerequired!==true && lastnamerequired!==true && usernameexist!==true && usernamerequired!==true && emailexist!==true && emailmatch!==true && emailrequired!==true && passwordrequired!==true && confirmpasswordrequired!==true &&(confirmpassword===password))
+    {
+      fetch("http://localhost:3001/store-data", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -186,133 +199,214 @@ function SignUp(){
       response.json().then((data) => {
         console.log(data.message);
         if (data.message === "inserted") {
-          self.send();
+          send();
         } else if (data.message === "username duplicate") {
-          self.setState({ usernameexist: true });
+          setUsernameexist(true)
         } else if (data.message === "email duplicate") {
-          self.setState({ emailexist: true });
+          setEmailexist(true)
         }
       });
     });
-    event.preventDefault();
-  };
-    return (
-        <div className="pt-20 pb-10 h-screen" id="css-selector">
-            <form
-        className="flex flex-col justify-center items-center pt-5 pb-5 xs:mx-12 sm:mx-28 md:mx-48 lg:mx-64 xl:mx-80 2xl:mx-96 rounded bg-dodger-blue shadow-2xl drop-shadow-2xl"
-        onSubmit={()=>handleSubmit()}
+    }
+    else{
+      console.log("no esta bueno")
+    }
+  }
+  return (
+    <motion.div
+      className="pt-5 pb-20"
+      initial={{ backgroundColor: "#3A0CA3" }}
+      animate={{  
+        transition: { repeat: Infinity, duration: 15 },
+        backgroundColor: [
+          "#4361EE",
+          "#3A0CA3",
+          "#B5179E",
+          "#3A0CA3",
+          "#4361EE",
+        ],
+      }}
+      exit={{ backgroundColor: "#4361EE", transition: { duration: 0.5 } }}
+    >
+      <motion.div
+        initial={{ x: "100%" }}
+        animate={{ x: "0%", transition: { duration: 1 } }}
+        exit={{ x: "100%", transition: { duration: 0.5 } }}
       >
-        <h1 className="text-white text-2xl">Register an account</h1>
-        <p className="text-white">Already have an account sign in</p>
-        {firstnamerequired === true && (
-          <p className="text-red-600 font-black">First name is required</p>
-        )}
-        <input
-          type="text"
-          placeholder="First name"
-          name="firstname"
-          value={firstname}
-          onChange={(e)=>setFirstname(e.target.value)}
-          onBlur={()=>{if(firstnamerequired===null){setFirstnamerequired(false)}}}
-          className={firstnamerequired ? "border-4 border-red-600 w-56 h-8 p-0 my-2.5 text-center" : "w-56 h-8 p-0 my-2.5 text-center"}
-          required
-        />
-        {lastnamerequired === true && (
-          <p className="text-red-600 font-black">Last name is required</p>
-        )}
-        <input
-          type="text"
-          name="lastname"
-          placeholder="Last name"
-          value={lastname}
-          onChange={(e)=>setLastname(e.target.value)}
-          onBlur={()=>{if(lastnamerequired===null){setLastnamerequired(false)}}}
-          className={lastnamerequired ? "border-4 border-red-600 w-56 h-8 p-0 my-2.5 text-center" : "w-56 h-8 p-0 my-2.5 text-center"}
-          required
-        />
-        {usernamerequired === true && (
-          <p className="text-red-600 font-black">Username is required</p>
-        )}
-        {usernameexist === true && (
-          <p className="text-red-600 font-black">Username is already in use</p>
-        )}
-        <input
-          type="text"
-          name="username"
-          placeholder="Username"
-          value={username}
-          onChange={(e)=>setUsername(e.target.value)}
-          onBlur={()=>{if(usernamerequired===null){setUsernamerequired(false)}}}
-          className={
-            usernamerequired || usernameexist
-              ? "border-4 border-red-600 w-56 h-8 p-0 my-2.5 text-center" : "w-56 h-8 p-0 my-2.5 text-center"
-          }
-          required
-        />
-        {emailrequired === true && (
-          <p className="text-red-600 font-black">Email is required</p>
-        )}
-        {emailmatch === true &&
-          emailrequired === false && (
-            <p className="text-red-600 font-black">Email is invalid</p>
-          )}
-        {emailexist === true && (
-          <p className="text-red-600 font-black">Email is already in use</p>
-        )}
-        <input
-          type="email"
-          placeholder="Email"
-          name="email"
-          value={email}
-          onChange={(e)=>setEmail(e.target.value)}
-          onBlur={()=>{if(emailrequired===null){setEmailrequired(false)}}}
-          className={
-            emailrequired ||
-            emailmatch ||
-            emailexist
-              ? "border-4 border-red-600 w-56 h-8 p-0 my-2.5 text-center" : "w-56 h-8 p-0 my-2.5 text-center"
-          }
-          required
-        />
-        {passwordrequired === true && (
-          <p className="text-red-600 font-black">Password is required</p>
-        )}
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e)=>setPassword(e.target.value)}
-          onBlur={()=>{if(passwordrequired===null){setPasswordrequired(false)}}}
-          className={passwordrequired ? "border-4 border-red-600 w-56 h-8 p-0 my-2.5 text-center" : "w-56 h-8 p-0 my-2.5 text-center"}
-          required
-        />
-        {confirmpasswordrequired === true && (
-          <p className="text-red-600 font-black">
-            Confirm password is required
-          </p>
-        )}
-        {equalpassword === true &&
-          confirmpasswordrequired === false && (
-            <p className="text-red-600 font-black">Passwords don't matchup</p>
-          )}
-        <input
-          type="password"
-          name="confirmpassword"
-          placeholder="Confirm password"
-          value={confirmpassword}
-          onChange={(e)=>setConfirmpassword(e.target.value)}
-          onBlur={()=>{if(confirmpasswordrequired===null){setConfirmpasswordrequired(false)}}}
-          className={
-            confirmpasswordrequired ||
-            (equalpassword && confirmpassword !== "")
-              ? "border-4 border-red-600 w-56 h-8 p-0 my-2.5 text-center" : "w-56 h-8 p-0 my-2.5 text-center"
-          }
-          required
-        />
-        <input className="py-4 bg-purple w-80 rounded text-blue-50 font-bold hover:bg-blue-700" type="submit" value="Submit" />
-      </form>
+        <div className="text-slate-100 items-center">
+          <div className="text-center text-2xl pb-3">Register an account!</div>
         </div>
-    );
+        <form
+          className="flex flex-col justify-center items-center pt-2 pb-2 xs:mx-12 sm:mx-28 md:mx-48 lg:mx-64 xl:mx-80 2xl:mx-96 rounded bg-dodger-blue shadow-2xl drop-shadow-2xl"
+          onSubmit={(e) => handleSubmit(e)}
+        >
+          <div className="w-full  bg-dodger-blue  flex flex-col items-center rounded-md pt-8">
+            {firstnamerequired === true && (
+              <p className="text-red-500 font-black mb-2">First name is required</p>
+            )}
+            <div className="w-3/4 mb-6">
+              <input
+                type="text"
+                placeholder="First name"
+                name="firstname"
+                value={firstname}
+                onChange={(e) => setFirstname(e.target.value)}
+                onBlur={() => {
+                  if (firstnamerequired === null) {
+                    setFirstnamerequired(false);
+                  }
+                }}
+                className={
+                  firstnamerequired
+                    ? "border-4 border-red-600 w-full h-12 py-4 px-8 bg-slate-200 placeholder:font-semibold rounded hover:ring-1 hover:ring-gray-600 outline-slate-500 border-solid"
+                    : "w-full h-12 py-4 px-8 bg-slate-200 placeholder:font-semibold rounded hover:ring-1 hover:ring-gray-600 outline-slate-500 border-solid border-2 border-slate-300"
+                }
+                required
+              />
+            </div>
+            {lastnamerequired === true && (
+              <p className="text-red-500 font-black mb-2">Last name is required</p>
+            )}
+            <div className="w-3/4 mb-6">
+              <input
+                type="text"
+                name="lastname"
+                placeholder="Last name"
+                value={lastname}
+                onChange={(e) => setLastname(e.target.value)}
+                onBlur={() => {
+                  if (lastnamerequired === null) {
+                    setLastnamerequired(false);
+                  }
+                }}
+                className={
+                  lastnamerequired
+                    ? "border-4 border-red-600 w-full h-12 py-4 px-8 bg-slate-200 placeholder:font-semibold rounded hover:ring-1 hover:ring-gray-600 outline-slate-500 border-solid"
+                    : "w-full h-12 py-4 px-8 bg-slate-200 placeholder:font-semibold rounded hover:ring-1 hover:ring-gray-600 outline-slate-500 border-solid border-2 border-slate-300"
+                }
+                required
+              />
+            </div>
+            {usernamerequired === true && (
+              <p className="text-red-500 font-black mb-2">Username is required</p>
+            )}
+            {usernameexist === true && (
+              <p className="text-red-500 font-black mb-2">
+                Username is already in use
+              </p>
+            )}
+            <div className="w-3/4 mb-6">
+            <input
+              type="text"
+              name="username"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              onBlur={() => {
+                if (usernamerequired === null) {
+                  setUsernamerequired(false);
+                }
+              }}
+              className={
+                usernamerequired || usernameexist
+                ? "border-4 border-red-600 w-full py-4 px-8 h-12 bg-slate-200 placeholder:font-semibold rounded hover:ring-1 hover:ring-gray-600 outline-slate-500 border-solid"
+                : "w-full h-12 py-4 px-8 bg-slate-200 placeholder:font-semibold rounded hover:ring-1 hover:ring-gray-600 outline-slate-500 border-solid border-2 border-slate-300"
+              }
+              required
+            />
+            </div>
+            {emailrequired === true && (
+              <p className="text-red-500 font-black mb-2">Email is required</p>
+            )}
+            {emailmatch === true && emailrequired === false && (
+              <p className="text-red-500 font-black mb-2">Email is invalid</p>
+            )}
+            {emailexist === true && (
+              <p className="text-red-500 font-black mb-2">Email is already in use</p>
+            )}
+            <div className="w-3/4 mb-6">
+            <input
+              type="email"
+              placeholder="Email"
+              name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onBlur={() => {
+                if (emailrequired === null) {
+                  setEmailrequired(false);
+                }
+              }}
+              className={
+                emailrequired || emailmatch || emailexist
+                ? "border-4 border-red-600 w-full h-12 py-4 px-8 bg-slate-200 placeholder:font-semibold rounded hover:ring-1 hover:ring-gray-600 outline-slate-500 border-solid"
+                : "w-full h-12 py-4 px-8 bg-slate-200 placeholder:font-semibold rounded hover:ring-1 hover:ring-gray-600 outline-slate-500 border-solid border-2 border-slate-300"
+              }
+              required
+            />
+            </div>
+            {passwordrequired === true && (
+              <p className="text-red-500 font-black mb-2">Password is required</p>
+            )}
+            <div className="w-3/4 mb-6">
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              onBlur={() => {
+                if (passwordrequired === null) {
+                  setPasswordrequired(false);
+                }
+              }}
+              className={
+                passwordrequired
+                ? "border-4 border-red-600 w-full h-12 py-4 px-8 bg-slate-200 placeholder:font-semibold rounded hover:ring-1 hover:ring-gray-600 outline-slate-500 border-solid"
+                : "w-full h-12 py-4 px-8 bg-slate-200 placeholder:font-semibold rounded hover:ring-1 hover:ring-gray-600 outline-slate-500 border-solid border-2 border-slate-300"
+              }
+              required
+            />
+            </div>
+            {confirmpasswordrequired === true && (
+              <p className="text-red-500 font-black mb-2">
+                Confirm password is required
+              </p>
+            )}
+            {equalpassword === true && confirmpasswordrequired === false && (
+              <p className="text-red-500 font-black mb-2">Passwords don't matchup</p>
+            )}
+            <div className="w-3/4 mb-6">
+            <input
+              type="password"
+              name="confirmpassword"
+              placeholder="Confirm password"
+              value={confirmpassword}
+              onChange={(e) => setConfirmpassword(e.target.value)}
+              onBlur={() => {
+                if (confirmpasswordrequired === null) {
+                  setConfirmpasswordrequired(false);
+                }
+              }}
+              className={
+                (equalpassword === true && confirmpasswordrequired === false) ||
+                confirmpasswordrequired === true
+                ? "border-4 border-red-600 w-full h-12 py-4 px-8 bg-slate-200 placeholder:font-semibold rounded hover:ring-1 hover:ring-gray-600 outline-slate-500 border-solid"
+                : "w-full h-12 py-4 px-8 bg-slate-200 placeholder:font-semibold rounded hover:ring-1 hover:ring-gray-600 outline-slate-500 border-solid border-2 border-slate-300"
+              }
+              required
+            />
+            </div>
+            <div className="w-3/4 mb-12">
+            <input
+              className="py-4 h-12 bg-purple w-full rounded text-blue-50 font-bold hover:bg-blue-700 hover:cursor-pointer"
+              type="submit"
+              value="Submit"
+            />
+            </div>
+          </div>
+        </form>
+      </motion.div>
+    </motion.div>
+  );
 }
 export default SignUp;
