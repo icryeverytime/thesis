@@ -36,8 +36,37 @@ let transporter = nodemailer.createTransport({
         expires: 1484314697598
     }
   });
-app.post('/generatecode',async function(req,res){
-    
+app.post('/login',async function(req,res){
+    const user=req.body.login.username
+    const contra=req.body.login.contra
+    try{
+        User.findOne({$or:[{username:user},{email:user}]},{emailverified:1,password:1},function(err,docs){
+            if(err)
+            {
+                console.log(err)
+            }
+            else{
+                if(docs===null)
+                {
+                    console.log("entered")
+                    res.send({message: "username doesn exist"});
+                }
+                else{
+                    console.log(docs)
+                    if(contra===cryptr.decrypt(docs["password"]))
+                    {
+                        res.send({message:"Login",username:user})
+                    }
+                    else{
+                        res.send({message:"Incorrect password"})
+                    }
+                }
+            }
+        })
+    }catch(error)
+    {
+        console.log(error)
+    } 
 })
 app.post('/store-data',async function(req,res){
     let firstname=req.body.user.firstname;

@@ -1,7 +1,7 @@
 {
   "homepage": "http://icryeverytime.github.io/thesis",
   "name": "react-deploy",
-  "version": "0.1.0",a
+  "version": "0.1.0",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.2.0",
@@ -9,12 +9,14 @@
     "@fortawesome/free-solid-svg-icons": "^6.2.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@popperjs/core": "^2.11.6",
+    "@headlessui/react": "^1.7.3",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.2.0",
     "@testing-library/user-event": "^13.5.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "cryptr": "^6.0.3",
+    "framer-motion": "^7.5.4",
     "mongoose": "^6.6.5",
     "nodemailer": "^6.7.5",
     "nodemon": "^2.0.20",
@@ -22,6 +24,7 @@
     "react-dom": "^18.1.0",
     "react-router-dom": "^6.3.0",
     "react-scripts": "^5.0.1",
+    "react-transition-group": "^4.4.5",
     "sweetalert2": "^11.4.17",
     "sweetalert2-react-content": "^5.0.0",
     "validator": "^13.7.0",
