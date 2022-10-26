@@ -7,16 +7,16 @@ function Footer(){
     </span>
     <ul className="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
         <li>
-            <button href="#" className="mr-4 hover:underline md:mr-6 ">About</button>
+            <button className="mr-4 hover:underline md:mr-6 ">About</button>
         </li>
         <li>
-            <button href="#" className="mr-4 hover:underline md:mr-6">Privacy Policy</button>
+            <button className="mr-4 hover:underline md:mr-6">Privacy Policy</button>
         </li>
         <li>
             <button  className="mr-4 hover:underline md:mr-6">Licensing</button>
         </li>
         <li>
-            <button href="#" className="hover:underline">Contact</button>
+            <button className="hover:underline">Contact</button>
         </li>
     </ul>
 </footer>

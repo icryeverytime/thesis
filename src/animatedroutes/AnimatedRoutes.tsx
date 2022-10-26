@@ -1,7 +1,7 @@
 import React from "react";
-import Home from "../home/homeindex";
-import Login from '../login/loginindex';
-import SignUp from '../signup/SignUpindex';
+import Home from "../home/homeindex.tsx";
+import Login from '../login/loginindex.tsx';
+import SignUp from '../signup/SignUpindex.tsx';
 import { Routes } from "react-router-dom";
 import { Route } from "react-router-dom";
 import { useLocation } from "react-router-dom";
