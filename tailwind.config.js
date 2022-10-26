@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+const colors = require("tailwindcss/colors");
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
@@ -10,7 +11,9 @@ module.exports = {
         'persian-blue':'#3F37C9',
         'dodger-blue':'#4895EF',
         'purple':'#7209B7',
-        'ultramarine':'#4361EE'
+        'ultramarine':'#4361EE',
+        ...colors
+        
       }
     },
     screens:{
