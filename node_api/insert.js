@@ -14,7 +14,7 @@ let month = ("0" + (date_time.getMonth() + 1)).slice(-2);
 
 // get current year
 let year = date_time.getFullYear();
-let chartdate='2022-06-19';
+let chartdate='2022-07-16';
 // prints date in YYYY-MM-DD format
 let currentdate=year + "-" + month + "-" + date;
 let yearnumber=parseInt(year);
@@ -23,9 +23,9 @@ let daynumber=parseInt(date);
 console.log(currentdate);
 // date format YYYY-MM-DD
 function promesa(fecha){
-  
+  //billboard-200
   return new Promise((resolve,reject)=>{
-    getChart('billboard-200', fecha, (err, chart) => {
+    getChart('hot-100', fecha, (err, chart) => {
       if (err) reject(err);
       resolve(chart);
     });
@@ -38,24 +38,13 @@ async function main()
  do{
   try{
     let resultado=await promesa(chartdate);
-    mongodb.connect(uri,(err,con)=>{
+    MongoClient.connect(uri,async (err,con)=>{
       if(err)
       {
         console.log(err)
       }
       else{
-        var insert=await collection.insertMany(data,async function(err,res){
-          if(err)
-          {
-             console.log(err)
-          }
-          else{
-            console.log("Inserted")
-            console.log(res)
-          }
-          
-      })
-        con.db('music').collection('billboard200').insertOne({chart:resultado},(err,results)=>{
+        con.db('music').collection('billboard100').insertOne({chart:resultado},(err,results)=>{
           if(err)
           {
             console.log(err)

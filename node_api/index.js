@@ -3,10 +3,12 @@ const app=express();
 const cors=require('cors');
 const port=3001;
 const User=require('../node_api/models/Users');
+const billboard200=require('../node_api/models/billboard200')
 const Cryptr=require('cryptr');
 const cryptr=new Cryptr('ASD12341234');
 const mongoose = require('mongoose');
 const nodemailer=require('nodemailer');
+const billboard100 = require('../node_api/models/billboard100');
 
 /*Conexion a la base de datos de mongo*/
 mongoose.connect('mongodb+srv://icryeverytime:kC5JEsU4HQifXL2@billboard.fdyddwq.mongodb.net/music?retryWrites=true&w=majority',{useNewUrlParser:true,useUnifiedTopology:true})
@@ -36,6 +38,38 @@ let transporter = nodemailer.createTransport({
         expires: 1484314697598
     }
   });
+  app.get('/billboard100',async function(req,res){
+    try{
+        billboard100.findOne({}).sort({_id:-1}).exec(function(err,docs){
+            if(err)
+            {
+                console.log(err)
+            }
+            else{
+                res.send({docs})
+            }
+        })
+    }catch(error)
+    {
+        console.log(error)
+    }
+  })
+  app.get('/billboard200',async function(req,res){
+    try{
+        billboard200.findOne({}).sort({_id:-1}).exec(function(err,docs){
+            if(err)
+            {
+                console.log(err)
+            }
+            else{
+                res.send({docs})
+            }
+        })
+    }catch(error)
+    {
+        console.log(error)
+    }
+  })
 app.post('/login',async function(req,res){
     const user=req.body.login.username
     const contra=req.body.login.contra
