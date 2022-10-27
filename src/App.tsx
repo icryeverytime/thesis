@@ -1,8 +1,8 @@
 import './App.css';
-import Navbar from './navbar/navindex.tsx';
-import Footer from './footer/footer.tsx';
+import Navbar from './navbar/navindex';
+import Footer from './footer/footer';
 import {HashRouter} from 'react-router-dom';
-import AnimatedRoutes from './animatedroutes/AnimatedRoutes.tsx';
+import AnimatedRoutes from './animatedroutes/AnimatedRoutes';
 function App() {
   return (
     <HashRouter>

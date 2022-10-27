@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import validator from "validator";
-import Swal from "sweetalert2";
+import { SweetAlertOptions } from "sweetalert2";
+import * as Swal from "sweetalert2";
 import { motion } from "framer-motion";
 function SignUp() {
   const [firstname, setFirstname] = useState("");
@@ -9,16 +10,16 @@ function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmpassword, setConfirmpassword] = useState("");
-  const [firstnamerequired, setFirstnamerequired] = useState(null);
-  const [lastnamerequired, setLastnamerequired] = useState(null);
-  const [usernamerequired, setUsernamerequired] = useState(null);
-  const [usernameexist, setUsernameexist] = useState(null);
-  const [emailrequired, setEmailrequired] = useState(null);
-  const [emailexist, setEmailexist] = useState(null);
-  const [passwordrequired, setPasswordrequired] = useState(null);
-  const [confirmpasswordrequired, setConfirmpasswordrequired] = useState(null);
-  const [equalpassword, setEqualpassword] = useState(null);
-  const [emailmatch, setEmailmatch] = useState(null);
+  const [firstnamerequired, setFirstnamerequired] = useState<any|null>(null);
+  const [lastnamerequired, setLastnamerequired] = useState<any|null>(null);
+  const [usernamerequired, setUsernamerequired] = useState<any|null>(null);
+  const [usernameexist, setUsernameexist] = useState<any|null>(null);
+  const [emailrequired, setEmailrequired] = useState<any|null>(null);
+  const [emailexist, setEmailexist] = useState<any|null>(null);
+  const [passwordrequired, setPasswordrequired] = useState<any|null>(null);
+  const [confirmpasswordrequired, setConfirmpasswordrequired] = useState<any|null>  (null);
+  const [equalpassword, setEqualpassword] = useState<any|null>(null);
+  const [emailmatch, setEmailmatch] = useState<any|null>(null);
   useEffect(() => {
     if (firstname === "" && firstnamerequired !== null) {
       setFirstnamerequired(true);
@@ -43,6 +44,7 @@ function SignUp() {
     {
       setUsernameexist(false)
     }
+    //eslint-disable-next-line
   }, [username, usernamerequired]);
   useEffect(() => {
     if (email === "" && emailrequired !== null) {
@@ -60,6 +62,7 @@ function SignUp() {
     {
       setEmailexist(false)
     }
+    //eslint-disable-next-line
   }, [email, emailrequired]);
   useEffect(() => { 
     if (password === "" && passwordrequired !== null) {
@@ -72,6 +75,7 @@ function SignUp() {
     } else if (confirmpassword !== null) {
       setEqualpassword(false);
     }
+    //eslint-disable-next-line
   }, [password, passwordrequired]);
   useEffect(() => {
     if (confirmpassword === "" && confirmpasswordrequired !== null) {
@@ -84,6 +88,7 @@ function SignUp() {
     } else if (confirmpassword !== null) {
       setEqualpassword(false);
     }
+    //eslint-disable-next-line
   }, [confirmpassword, confirmpasswordrequired]);
 
   async function send(aux) {
@@ -103,7 +108,7 @@ function SignUp() {
         }),
       });
     }
-    await Swal.fire({
+    const options2 = {
       title: "Insert code sent to email",
       html:
         '<div className="otp-screen" id="otp-screen">' +
@@ -120,17 +125,23 @@ function SignUp() {
       showCloseButton: true,
       cancelButtonText: "Resend Code",
       target: document.getElementById("otp-screen2"),
+    } as SweetAlertOptions<any,any>;
+    await (Swal as any).fire({
+      options2
     }).then((result) => {
       if (result.isDismissed === true) {
         send(1);
       } else if (result.isConfirmed === true) {
         const code =
-          document.getElementById("input_1").value +
-          document.getElementById("input_2").value +
-          document.getElementById("input_3").value +
-          document.getElementById("input_4").value +
-          document.getElementById("input_5").value +
-          document.getElementById("input_6").value;
+          (document.getElementById("input_1") as HTMLInputElement)?.value +
+          (document.getElementById("input_2") as HTMLInputElement)?.value +
+          (document.getElementById("input_3") as HTMLInputElement)?.value +
+          (document.getElementById("input_4") as HTMLInputElement)?.value +
+          (document.getElementById("input_5") as HTMLInputElement)?.value +
+          (document.getElementById("input_6") as HTMLInputElement)?.value;
+          if(code!==null){
+
+          }
         console.log("code: " + code);
         fetch("http://localhost:3001/verifyemail", {
           method: "POST",
@@ -149,7 +160,7 @@ function SignUp() {
           response.json().then((data) => {
             console.log(data.message);
             if (data.message === "Wrong Code") {
-              Swal.fire({
+              (Swal as any).fire({
                 icon: "error",
                 title: "Wrong Code",
                 showCancelButton: true,
@@ -160,7 +171,7 @@ function SignUp() {
                 }
               });
             } else {
-              Swal.fire({
+              (Swal as any).fire({
                 icon: "success",
                 title: "Email verified",
                 text: "You can now login!",
@@ -199,7 +210,7 @@ function SignUp() {
       response.json().then((data) => {
         console.log(data.message);
         if (data.message === "inserted") {
-          send();
+          send(0);
         } else if (data.message === "username duplicate") {
           setUsernameexist(true)
         } else if (data.message === "email duplicate") {

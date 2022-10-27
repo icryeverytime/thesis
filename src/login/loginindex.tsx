@@ -1,3 +1,4 @@
+
 import React from "react";
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -5,8 +6,8 @@ import { useEffect } from "react";
 function Login() {
   const [user, setUser] = useState("");
   const [contra, setContra] = useState("");
-  const [userrequired,setUserrequired]=useState(null)
-  const [contrarequired,setContrarequired]=useState(null)
+  const [userrequired,setUserrequired]=useState<any|null>(null)
+  const [contrarequired,setContrarequired]=useState<any|null>(null)
   const [userexist,setUserexist]=useState(false)
   const [contrabad,setContrabad]=useState(false)
   function sendLogin(event)
@@ -148,7 +149,7 @@ function Login() {
             <div className="w-3/4 mb-12">
               <button
                 type="submit"
-                onChange={(e) => setContra(e.target.value)}
+                onChange={(e:any) => setContra(e.target.value)}
                 className="py-4 bg-purple w-full rounded text-blue-50 font-bold hover:bg-blue-700"
               >
                 {" "}

@@ -3,10 +3,10 @@ import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 function Navbar()
 {
-  const [display, setdisplay] = useState(null)
+  const [display, setdisplay] = useState<any|null>(null)
   useEffect(() => { 
-    var three=document.getElementById('threebars');
-      var flex=document.getElementById('flex')
+    var three:any=document.getElementById('threebars');
+    var flex:any=document.getElementById('flex')
     if(display===true)
     {
       flex.className="flex flex-col xs:flex-row space-between"
@@ -44,6 +44,7 @@ function Navbar()
                 ? "text-sm sm:text-md md:text-xl text-white py-2 px-1 sm:py-3 sm:px-3 bg-persian-blue font-bold hover:font-black"
                 : "")
             }
+            end
             to="/"
           >
             Home
