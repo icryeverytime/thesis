@@ -38,9 +38,100 @@ let transporter = nodemailer.createTransport({
         expires: 1484314697598
     }
   });
+  app.get('/chartingsongs',async function(req,res){
+    try{
+        billboard100.aggregate([{$unwind:"$chart.songs"}]).sort({_id:-1,"chart.songs.position.weeksOnChart":-1}).limit(5).exec(function(err,docs){
+            if(err)
+            {
+                console.log(err)
+            }
+            else{
+                res.send(docs)
+            }
+        }) //.sort({_id:-1})
+    }catch(error)
+    {
+        console.log(error)
+    }
+  })
+  app.get('/chartingalbums',async function(req,res){
+    try{
+        billboard200.aggregate([{$unwind:"$chart.songs"}]).sort({_id:-1,"chart.songs.position.weeksOnChart":-1}).limit(5).exec(function(err,docs){
+            if(err)
+            {
+                console.log(err)
+            }
+            else{
+                res.send(docs)
+            }
+        }) //.sort({_id:-1})
+    }catch(error)
+    {
+        console.log(error)
+    }
+  })
+  app.get('/artistsongsumweek',async function(req,res){
+    try{
+        billboard100.findOne({},{"chart.week":1}).sort({_id:-1}).exec(function(err,docs){
+            if(err)
+            {
+                console.log(err)
+            }
+            else{
+                console.log(docs["chart"]["week"])
+
+                billboard100.aggregate([{$match:{_id:docs["_id"]}},{$unwind:"$chart.songs"},{$group:{_id:"$chart.songs.artist",count:{$sum:1}}}]).sort({count:-1}).exec(function(err,docs2){
+                    if(err)
+                    {
+                        console.log(err)
+                    }
+                    else{
+                        console.log(docs2)
+                        res.send(docs2)
+                    }
+                }) //.sort({_id:-1})
+            }
+        })
+    }catch(error)
+    {
+        console.log(error)
+    }
+  })
+  app.get('/artistsongsum',async function(req,res){
+    try{
+        billboard100.aggregate([{$unwind:"$chart.songs"},{$group:{_id:"$chart.songs.artist",count:{$sum:1}}}]).limit(50).sort({count:-1}).exec(function(err,docs){
+            if(err)
+            {
+                console.log(err)
+            }
+            else{
+                res.send(docs)
+            }
+        }) //.sort({_id:-1})
+    }catch(error)
+    {
+        console.log(error)
+    }
+  })
   app.get('/billboard100',async function(req,res){
     try{
         billboard100.findOne({}).sort({_id:-1}).exec(function(err,docs){
+            if(err)
+            {
+                console.log(err)
+            }
+            else{
+                res.send({docs})
+            }
+        })
+    }catch(error)
+    {
+        console.log(error)
+    }
+  })
+  app.get('/billboard100week',async function(req,res){
+    try{
+        billboard100.findOne({},{"chart.week":1}).sort({_id:-1}).exec(function(err,docs){
             if(err)
             {
                 console.log(err)
