@@ -1,9 +1,22 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "../redux/app/hooks";
+import { AppDispatch } from "../redux/app/store";
 function Navbar()
 {
+  const [username,setUsername]=useState("")
   const [display, setdisplay] = useState<any|null>(null)
+  const dispatch=useDispatch<AppDispatch>()
+  const datoslogin=useAppSelector((state)=>state.login)
+  useEffect(()=>{
+    if(datoslogin["intStatus"]===200 && datoslogin["username"]!=="")
+    {
+      setUsername(datoslogin["username"])
+    }
+    console.log(username)
+  },[datoslogin])
   useEffect(() => { 
     var three:any=document.getElementById('threebars');
     var flex:any=document.getElementById('flex')
@@ -66,7 +79,8 @@ function Navbar()
               />
             </div>
           </form>
-          <NavLink
+          {username === "" && (
+              <NavLink
             id="login"
             onClick={()=>setdisplay(false)}
             className={({ isActive }) =>
@@ -79,7 +93,10 @@ function Navbar()
           >
             Login
           </NavLink>
-          <NavLink
+          
+            )}
+            {username === "" && (
+            <NavLink
           onClick={()=>setdisplay(false)}
             id="signup"
             className={({ isActive }) =>
@@ -92,6 +109,22 @@ function Navbar()
           >
             Sign up
           </NavLink>
+      )}
+      {username !== "" && (
+            <NavLink
+          onClick={()=>setdisplay(false)}
+            id="username"
+            className={({ isActive }) =>
+              " hover:text-white/80 text-sm sm:text-md md:text-xl text-white py-2 px-1 sm:py-3 sm:px-3 hover:bg-persian-blue font-bold hover:font-black" +
+              (isActive
+                ? " text-sm sm:text-md md:text-xl text-white py-2 px-1 sm:py-3 sm:px-3 bg-persian-blue font-bold hover:font-black"
+                : "")
+            }
+            to="thesis/user"
+          >
+            {username}
+          </NavLink>
+      )}
         </div>
       </nav>
   );

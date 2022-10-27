@@ -1,47 +1,49 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import { datos } from '../../Api/models';
-import { getAll } from '../../Api/shared';
+import { insertRegistro } from '../../Api/shared';
 const initialState:ResponseDetalle={
     intStatus:0,
-    Result:[],
+    Result:"",
     loadingState:'false'
 }
 interface ResponseDetalle {
     intStatus:number;
-    Result:datos[];
+    Result:string;
     loadingState:string
 }
 
-export const getTodo = createAsyncThunk(
+export const insertRegisters = createAsyncThunk(
     'requests/getall',
-    async(dispatch,getstate)=>{
+    async(user:any)=>{
         try{
-            const result=await getAll()
-            return result["data"]
+            const result=await insertRegistro(user)
+            return result["data"]["message"]
         }catch(error){
             console.log(error)
 
-        }
+        }   
     }
 )
 const reducerSlice = createSlice({
     name: 'requests',
     initialState,
     reducers:{
-
+        reset: state => initialState,
     },
     extraReducers:builder=>{
-        builder.addCase(getTodo.pending,(state,action)=>{
+        builder.addCase(insertRegisters.pending,(state,action)=>{
             state.loadingState='true'
         })
-        builder.addCase(getTodo.fulfilled,(state,action)=>{
-            state.intStatus=action.payload["intResponse"]
-            state.Result=action.payload["Result"]
+        builder.addCase(insertRegisters.fulfilled,(state,action)=>{
+            state.intStatus=200
+            state.Result=action.payload
             state.loadingState='false'
         })
-        builder.addCase(getTodo.rejected,(state,action)=>{
+        builder.addCase(insertRegisters.rejected,(state,action)=>{
             state.intStatus=500
         })
     }
 });
+export const {
+    reset
+} = reducerSlice.actions
 export default reducerSlice.reducer;

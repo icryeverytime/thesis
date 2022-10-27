@@ -1,4 +1,4 @@
-import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import { getRegistro } from '../../Api/shared';
 import {datosregistros} from '../../Api/models'
 interface detalles{
