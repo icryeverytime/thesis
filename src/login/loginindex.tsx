@@ -3,6 +3,11 @@ import React from "react";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "../redux/app/hooks";
+import { AppDispatch } from "../redux/app/store";
+import { reset } from "../redux/reducers/reducerLogin";
+import { logear } from "../redux/reducers/reducerLogin";
 function Login() {
   const [user, setUser] = useState("");
   const [contra, setContra] = useState("");
@@ -10,42 +15,19 @@ function Login() {
   const [contrarequired,setContrarequired]=useState<any|null>(null)
   const [userexist,setUserexist]=useState(false)
   const [contrabad,setContrabad]=useState(false)
+  const dispatch=useDispatch<AppDispatch>()
+  const datoslogin=useAppSelector((state)=>state.login)
   function sendLogin(event)
   {
     event.preventDefault()
+    dispatch(reset())
     if(userrequired!==true && contrarequired!==true && userexist!==true && contrabad!==true)
     {
-      fetch("http://localhost:3001/login", {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          login: {
-            username: user,
-            contra:contra
-          },
-        }),
-      }).then(async function (response) {
-        response.json().then((data) => {
-          console.log(data["message"])
-          if(data["message"]==="username doesn exist")
-          {
-            setUserexist(true)  
-          }
-          else if(data["message"]==="Login"){
-            console.log("Logined");
-            console.log(data["username"])
-          }
-          else if(data["message"]==="Incorrect password")
-          {
-            setContrabad(true)
-            console.log("Contra bad")
-          }
-        })
-      })
+      let login= {
+        username: user,
+        contra:contra
+      }
+      dispatch(logear(login))
     }
   }
   useEffect(() => {
@@ -56,12 +38,29 @@ function Login() {
       setUserexist(false);
     }
   }, [user, userrequired]);
+  useEffect(()=>{
+    console.log(datoslogin)
+    if(datoslogin["Result"]==="Login" && datoslogin["intStatus"]===200)
+    {
+      console.log("loggedin")
+    }
+    else if(datoslogin["Result"]==="Incorrect password" && datoslogin["intStatus"]===200)
+    {
+      console.log()
+      setContrabad(true)
+    }
+    else if(datoslogin["Result"]==="username doesn exist" && datoslogin["intStatus"]===200)
+    {
+      setUserexist(true)
+    }
+  },[datoslogin])
   useEffect(() => {
     if (contra === "" && contrarequired !== null) {
       setContrarequired(true);
     } else if (contrarequired !== null) {
       setContrarequired(false);
       setContrabad(false)
+      setUserexist(false);
     }
   }, [contra, contrarequired]);
   return (
