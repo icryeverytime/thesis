@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import validator from "validator";
-import Swal from "sweetalert2";
+import * as Swal from "sweetalert2";
 import { motion } from "framer-motion";
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "../redux/app/hooks";
+import { AppDispatch } from "../redux/app/store";
+import { reset } from "../redux/reducers/reducerRegister";
+import { insertRegisters } from "../redux/reducers/reducerRegister";
 function SignUp() {
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
@@ -9,16 +14,29 @@ function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmpassword, setConfirmpassword] = useState("");
-  const [firstnamerequired, setFirstnamerequired] = useState(null);
-  const [lastnamerequired, setLastnamerequired] = useState(null);
-  const [usernamerequired, setUsernamerequired] = useState(null);
-  const [usernameexist, setUsernameexist] = useState(null);
-  const [emailrequired, setEmailrequired] = useState(null);
-  const [emailexist, setEmailexist] = useState(null);
-  const [passwordrequired, setPasswordrequired] = useState(null);
-  const [confirmpasswordrequired, setConfirmpasswordrequired] = useState(null);
-  const [equalpassword, setEqualpassword] = useState(null);
-  const [emailmatch, setEmailmatch] = useState(null);
+  const [firstnamerequired, setFirstnamerequired] = useState<any|null>(null);
+  const [lastnamerequired, setLastnamerequired] = useState<any|null>(null);
+  const [usernamerequired, setUsernamerequired] = useState<any|null>(null);
+  const [usernameexist, setUsernameexist] = useState<any|null>(null);
+  const [emailrequired, setEmailrequired] = useState<any|null>(null);
+  const [emailexist, setEmailexist] = useState<any|null>(null);
+  const [passwordrequired, setPasswordrequired] = useState<any|null>(null);
+  const [confirmpasswordrequired, setConfirmpasswordrequired] = useState<any|null>  (null);
+  const [equalpassword, setEqualpassword] = useState<any|null>(null);
+  const [emailmatch, setEmailmatch] = useState<any|null>(null);
+  const dispatch=useDispatch<AppDispatch>()
+  const datosregistro=useAppSelector((state)=>state.register)
+  useEffect(()=>{
+    if(datosregistro["intStatus"]===200 && datosregistro["Result"]==="inserted")
+    {
+      verifyc()
+    } else if (datosregistro["Result"] === "username duplicate" && datosregistro["intStatus"]===200) {
+      setUsernameexist(true)
+    } else if (datosregistro["Result"] === "email duplicate" && datosregistro["intStatus"]===200) {
+      setEmailexist(true)
+    }
+    dispatch(reset())
+  },[datosregistro])
   useEffect(() => {
     if (firstname === "" && firstnamerequired !== null) {
       setFirstnamerequired(true);
@@ -43,6 +61,7 @@ function SignUp() {
     {
       setUsernameexist(false)
     }
+    //eslint-disable-next-line
   }, [username, usernamerequired]);
   useEffect(() => {
     if (email === "" && emailrequired !== null) {
@@ -51,7 +70,6 @@ function SignUp() {
       setEmailrequired(false);
     }
     if (!validator.isEmail(email) && emailrequired !== null) {
-      console.log("no es");
       setEmailmatch(true);
     } else if (emailrequired !== null) {
       setEmailmatch(false);
@@ -60,6 +78,7 @@ function SignUp() {
     {
       setEmailexist(false)
     }
+    //eslint-disable-next-line
   }, [email, emailrequired]);
   useEffect(() => { 
     if (password === "" && passwordrequired !== null) {
@@ -72,6 +91,7 @@ function SignUp() {
     } else if (confirmpassword !== null) {
       setEqualpassword(false);
     }
+    //eslint-disable-next-line
   }, [password, passwordrequired]);
   useEffect(() => {
     if (confirmpassword === "" && confirmpasswordrequired !== null) {
@@ -84,55 +104,43 @@ function SignUp() {
     } else if (confirmpassword !== null) {
       setEqualpassword(false);
     }
+    //eslint-disable-next-line
   }, [confirmpassword, confirmpasswordrequired]);
-
-  async function send(aux) {
-    if (aux === 1) {
-      console.log("resend");
-      fetch("http://localhost:3001/resendcode", {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          verify: {
-            username: username,
-          },
-        }),
-      });
-    }
-    await Swal.fire({
+  async function verifyc(){
+    (Swal as any).fire({
       title: "Insert code sent to email",
-      html:
-        '<div className="otp-screen" id="otp-screen">' +
-        '<input name="input1" id="input_1" type="text" maxlength="1" class="text-center border-2" size="1"  required>' +
-        '<input name="input2" id="input_2" type="text" maxlength="1" class="text-center border-2" size="1" required>' +
-        '<input id="input_3" type="text" maxlength="1" class="text-center border-2" size="1" required>' +
-        '<input id="input_4" type="text" maxlength="1" class="text-center border-2" size="1" required>' +
-        '<input id="input_5" type="text" maxlength="1" class="text-center border-2" size="1" required>' +
-        '<input id="input_6" type="text" maxlength="1" class="text-center border-2" size="1" required>' +
-        "</div>",
-      focusConfirm: false,
-      allowOutsideClick: false,
-      showCancelButton: true,
-      showCloseButton: true,
-      cancelButtonText: "Resend Code",
-      target: document.getElementById("otp-screen2"),
+  html:
+    '<div className="otp-screen" id="otp-screen">' +
+    '<input name="input1" id="input_1" type="text" maxlength="1" class="text-center border-2" size="1"  required>' +
+    '<input name="input2" id="input_2" type="text" maxlength="1" class="text-center border-2" size="1" required>' +
+    '<input id="input_3" type="text" maxlength="1" class="text-center border-2" size="1" required>' +
+    '<input id="input_4" type="text" maxlength="1" class="text-center border-2" size="1" required>' +
+    '<input id="input_5" type="text" maxlength="1" class="text-center border-2" size="1" required>' +
+    '<input id="input_6" type="text" maxlength="1" class="text-center border-2" size="1" required>' +
+    "</div>",
+  focusConfirm: false,
+  allowOutsideClick: false,
+  showCancelButton: true,
+  showCloseButton: true,
+  cancelButtonText: "Resend Code",
+  target: document.getElementById("screen"),
     }).then((result) => {
       if (result.isDismissed === true) {
-        send(1);
+        send();
       } else if (result.isConfirmed === true) {
         const code =
-          document.getElementById("input_1").value +
-          document.getElementById("input_2").value +
-          document.getElementById("input_3").value +
-          document.getElementById("input_4").value +
-          document.getElementById("input_5").value +
-          document.getElementById("input_6").value;
-        console.log("code: " + code);
-        fetch("http://localhost:3001/verifyemail", {
+          (document.getElementById("input_1") as HTMLInputElement)?.value +
+          (document.getElementById("input_2") as HTMLInputElement)?.value +
+          (document.getElementById("input_3") as HTMLInputElement)?.value +
+          (document.getElementById("input_4") as HTMLInputElement)?.value +
+          (document.getElementById("input_5") as HTMLInputElement)?.value +
+          (document.getElementById("input_6") as HTMLInputElement)?.value;
+          const verificar ={
+            username: username,
+            code: code,
+          }
+
+          fetch("http://localhost:3001/verifyemail", {
           method: "POST",
           mode: "cors",
           headers: {
@@ -147,20 +155,19 @@ function SignUp() {
           }),
         }).then(async function (response) {
           response.json().then((data) => {
-            console.log(data.message);
             if (data.message === "Wrong Code") {
-              Swal.fire({
+              (Swal as any).fire({
                 icon: "error",
                 title: "Wrong Code",
                 showCancelButton: true,
                 cancelButtonText: "Resend Code",
               }).then(result=>{
                 if (result.isDismissed === true) {
-                  send(1);
+                  send();
                 }
               });
             } else {
-              Swal.fire({
+              (Swal as any).fire({
                 icon: "success",
                 title: "Email verified",
                 text: "You can now login!",
@@ -175,41 +182,38 @@ function SignUp() {
       }
     });
   }
+  async function send() {
+      fetch("http://localhost:3001/resendcode", {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          verify: {
+            username: username,
+          },
+        }),
+      })
+      verifyc()
+  }
   function handleSubmit(event) {
     event.preventDefault()
+    const user= {
+      firstname: firstname,
+      lastname: lastname,
+      username: username,
+      email: email,
+      password: password,
+    }
     if(firstnamerequired!==true && lastnamerequired!==true && usernameexist!==true && usernamerequired!==true && emailexist!==true && emailmatch!==true && emailrequired!==true && passwordrequired!==true && confirmpasswordrequired!==true &&(confirmpassword===password))
     {
-      fetch("http://localhost:3001/store-data", {
-      method: "POST",
-      mode: "cors",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        user: {
-          firstname: firstname,
-          lastname: lastname,
-          username: username,
-          email: email,
-          password: password,
-        },
-      }),
-    }).then(async function (response) {
-      response.json().then((data) => {
-        console.log(data.message);
-        if (data.message === "inserted") {
-          send();
-        } else if (data.message === "username duplicate") {
-          setUsernameexist(true)
-        } else if (data.message === "email duplicate") {
-          setEmailexist(true)
-        }
-      });
-    });
-    }
-    else{
-      console.log("no esta bueno")
+      if(datosregistro["intStatus"]!==0)
+      {
+        dispatch(reset())
+      }
+      dispatch(insertRegisters(user))
     }
   }
   return (

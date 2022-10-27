@@ -49,7 +49,7 @@ app.post('/login',async function(req,res){
                 if(docs===null)
                 {
                     console.log("entered")
-                    res.send({message: "username doesn exist"});
+                    res.send({message: "username doesn exist",username:""});
                 }
                 else{
                     console.log(docs)
@@ -58,7 +58,7 @@ app.post('/login',async function(req,res){
                         res.send({message:"Login",username:user})
                     }
                     else{
-                        res.send({message:"Incorrect password"})
+                        res.send({message:"Incorrect password",username:""})
                     }
                 }
             }
@@ -78,10 +78,11 @@ app.post('/store-data',async function(req,res){
     let code=Math.floor(100000 + Math.random() * 900000);
     let body=JSON.parse(JSON.stringify({"firstname":firstname,"lastname":lastname,"email":email,"username":username,"password":password,"emailverified":emailverified,"code":code}))
     console.log("entered");
+    console.log(body)
     try{
         const UserDB=new User(body);
         await UserDB.save();
-        res.status(201).send({ message: "inserted" });
+        res.status(200).send({ message: "inserted" });
         try{
             transporter.sendMail({
                 from: 'internetcompany68@gmail.com',
@@ -108,11 +109,11 @@ app.post('/store-data',async function(req,res){
         console.log(error.message);
         if(mes.includes("usernameunique"))
         {
-            res.status(409).send({message: "username duplicate"});
+            res.status(200).send({message: "username duplicate"});
         }
         else if(mes.includes("myUniqueIndex"))
         {
-            res.status(409).send({message: "email duplicate"})
+            res.status(200).send({message: "email duplicate"})
         }
     }
 })
@@ -164,7 +165,7 @@ app.post('/verifyemail', async function(req,res){
         }
         else{
             console.log("Not the same")
-            res.status(400).send({message: "Wrong Code"})
+            res.status(200).send({message: "Wrong Code"})
         }
     }catch(error)
     {
