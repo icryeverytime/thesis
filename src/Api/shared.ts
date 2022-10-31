@@ -14,6 +14,27 @@ export const verifyCode=(verify)=>{
         console.log(error)
     })
 }
+export const chartingSongs=()=>{
+    return Api.get("/chartingsongs",{
+
+    }).catch(error=>{
+        console.log(error)
+    })
+}
+export const chartingAlbums=()=>{
+    return Api.get("/chartingalbums",{
+
+    }).catch(error=>{
+        console.log(error)
+    })
+}
+export const longSongs=()=>{
+    return Api.get("/longestsongs",{
+
+    }).catch(error=>{
+        console.log(error)
+    })
+}
 export const login=(login)=>{
     return Api.post('/login',{
         login:login

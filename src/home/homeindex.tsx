@@ -198,7 +198,7 @@ function Home(){
         <Stathome />
         
         
-
+        
         <div className="container mx-auto overflow-hidden pb-20">
           <div className="flex flex-wrap items-center">
             <div className="w-full md:w-4/12 px-12 md:px-4 ml-auto mr-auto mt-48">
