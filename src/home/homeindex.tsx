@@ -1,15 +1,17 @@
 import React from 'react';
-import { Link } from "react-router-dom";
-import componentBtn from '../Assets/img/component-btn.png';
-import componentProfile from '../Assets/img/component-profile-card.png';
-import componentInfo from '../Assets/img/component-info-card.png';
-import componentInfo2 from '../Assets/img/component-info-2.png';
-import componentMenu from '../Assets/img/component-menu.png';
-import componentBtnPink from '../Assets/img/component-btn-pink.png';
 import documentation from '../Assets/img/documentation.png';
 
 import headphones from '../Assets/img/headphones.jpg';
 import pattern from '../Assets/img/home.jpg';
+
+import img_crown from '../Assets/img/crown.jpg';
+import img_emerald from '../Assets/img/gem.jpg';
+import img_disc from '../Assets/img/disc.jpg';
+import img_note from '../Assets/img/note.png';
+import img_chart from '../Assets/img/chart_line.png';
+import img_one from '../Assets/img/gold1.jpg';
+
+import img_charts from '../Assets/img/charts.jpg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeadphones } from '@fortawesome/free-solid-svg-icons'
 import statHome from './homecomponent/stathome';
@@ -37,6 +39,7 @@ function Home(){
 //<IndexNavbar fixed />
 
 <>
+<IndexNavbar fixed />
       <section className="header relative pt-16 items-center flex h-screen max-h-860-px">
         <div className="container mx-auto items-center flex flex-wrap">
           <div className="w-full md:w-8/12 lg:w-6/12 xl:w-6/12 px-4">
@@ -127,7 +130,7 @@ function Home(){
                     See whats everyone talking about
                   </h4>
                   <p className="text-md font-light mt-2 text-white">
-                  Discover hundreds of blogs from people like you that have found patterns and secrets behind the statistics we publish each week
+                  Discover hundreds of blogs from people like you that have found patterns and secrets behind the statistics we publish each week. <a href="" className='underline-offset-8 '>Go read them... </a>
                   </p>
                 </blockquote>
               </div>
@@ -172,7 +175,7 @@ function Home(){
                       </div>
                       <h6 className="text-xl mb-1 font-semibold">learn from statistics</h6>
                       <p className="mb-4 text-blueGray-500">
-                        Create charts and view the ones other people has created
+                      Carefully crafted code for each chart, so you can consult them on the way
                       </p>
                     </div>
                   </div>
@@ -238,7 +241,7 @@ function Home(){
                 href="https://www.creative-tim.com/learning-lab/tailwind/react/alerts/notus?ref=nr-index"
                 className="font-bold text-blueGray-700 hover:text-blueGray-500 ease-linear transition-all duration-150"
               >
-                View All{" "}
+                View All {" >>"}
                 <i className="fa fa-angle-double-right ml-1 leading-relaxed"></i>
               </a>
             </div>
@@ -247,40 +250,11 @@ function Home(){
               <div className="relative flex flex-col min-w-0 w-full mb-6 mt-48 md:mt-0">
                 <img
                   alt="..."
-                  src={componentBtn}
+                  src={img_charts}
                   //src={require("./assets/img/component-btn.png").default}
-                  className="w-full align-middle rounded absolute shadow-lg max-w-100-px z-3 left-145-px -top-29-px"
+                  className="w-full align-middle rounded absolute shadow-2xl max-w-100-px z-3 left-145-px -top-29-px"
                 />
-                <img
-                  alt="..."
-                  src={componentProfile}
-                  //src={require("./assets/img/component-profile-card.png").default}
-                  className="w-full align-middle rounded-lg absolute shadow-lg -top-160-px left-260-px max-w-210-px"
-                />
-                <img
-                  alt="..."
-                  src={componentInfo}
-                  //src={require("./assets/img/component-info-card.png").default}
-                  className="w-full align-middle rounded-lg absolute shadow-lg max-w-180-px -top-225-px left-40-px z-2"
-                />
-                <img
-                  alt="..."
-                  src={componentInfo2}
-                  //src={require("./assets/img/component-info-2.png").default}
-                  className="w-full align-middle rounded-lg absolute shadow-2xl max-w-200-px -left-50-px top-25-px"
-                />
-                <img
-                  alt="..."
-                  src={componentMenu}
-                  //src={require("./assets/img/component-menu.png").default}
-                  className="w-full align-middle rounded absolute shadow-lg max-w-580-px -left-20-px top-210-px"
-                />
-                <img
-                  alt="..."
-                  src={componentBtnPink}
-                  //src={require("./assets/img/component-btn-pink.png").default}
-                  className="w-full align-middle rounded absolute shadow-xl max-w-120-px left-195-px top-95-px"
-                />
+                
               </div>
             </div>
           </div>
@@ -295,11 +269,11 @@ function Home(){
                     <div className="bg-red-600 shadow-lg rounded-lg text-center p-8">
                       <img
                         alt="..."
-                        className="shadow-md rounded-full max-w-full w-16 mx-auto p-2 bg-white"
-                        src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/logos/svelte.jpg"
+                        className="shadow-md rounded-full max-w-full w-16 mx-auto p-5 bg-white"
+                        src={img_note}
                       />
                       <p className="text-lg text-white mt-4 font-semibold">
-                        Svelte
+                      Songs with most weeks
                       </p>
                     </div>
                   </a>
@@ -309,11 +283,11 @@ function Home(){
                     <div className="bg-lightBlue-500 shadow-lg rounded-lg text-center p-8 mt-8">
                       <img
                         alt="..."
-                        className="shadow-md rounded-full max-w-full w-16 mx-auto p-2 bg-white"
-                        src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/logos/react.jpg"
+                        className="shadow-md rounded-full max-w-full w-16 mx-auto p-3 bg-white"
+                        src={img_chart}
                       />
                       <p className="text-lg text-white mt-4 font-semibold">
-                        ReactJS
+                      Longest charting songs 
                       </p>
                     </div>
                   </a>
@@ -323,11 +297,11 @@ function Home(){
                     <div className="bg-blueGray-700 shadow-lg rounded-lg text-center p-8 mt-8">
                       <img
                         alt="..."
-                        className="shadow-md rounded-full max-w-full w-16 mx-auto p-2 bg-white"
-                        src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/logos/nextjs.jpg"
+                        className="shadow-md rounded-full max-w-full w-16 mx-auto bg-white"
+                        src={img_disc}
                       />
                       <p className="text-lg text-white mt-4 font-semibold">
-                        NextJS
+                      Longest charting albums
                       </p>
                     </div>
                   </a>
@@ -340,10 +314,11 @@ function Home(){
                       <img
                         alt="..."
                         className="shadow-md rounded-full max-w-full w-16 mx-auto p-2 bg-white"
-                        src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/logos/js.png"
+                        src={img_crown}
+
                       />
                       <p className="text-lg text-white mt-4 font-semibold">
-                        JavaScript
+                        Most played of all time
                       </p>
                     </div>
                   </a>
@@ -353,11 +328,11 @@ function Home(){
                     <div className="bg-red-700 shadow-lg rounded-lg text-center p-8 mt-8">
                       <img
                         alt="..."
-                        className="shadow-md rounded-full max-w-full w-16 mx-auto p-2 bg-white"
-                        src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/logos/angular.jpg"
+                        className="shadow-md rounded-full max-w-full w-16 mx-auto p-3 bg-white"
+                        src={img_one}
                       />
                       <p className="text-lg text-white mt-4 font-semibold">
-                        Angular
+                        one hitters
                       </p>
                     </div>
                   </a>
@@ -367,11 +342,11 @@ function Home(){
                     <div className="bg-emerald-500 shadow-lg rounded-lg text-center p-8 mt-8">
                       <img
                         alt="..."
-                        className="shadow-md rounded-full max-w-full w-16 mx-auto p-2 bg-white"
-                        src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/logos/vue.jpg"
+                        className="shadow-md rounded-full max-w-full w-16 mx-auto bg-white p-2"
+                        src={img_emerald}
                       />
                       <p className="text-lg text-white mt-4 font-semibold">
-                        Vue.js
+                        hidden gems
                       </p>
                     </div>
                   </a>
@@ -379,56 +354,6 @@ function Home(){
               </div>
             </div>
 
-            <div className="w-full md:w-4/12 px-12 md:px-4 ml-auto mr-auto mt-48">
-              <div className="text-blueGray-500 p-3 text-center inline-flex items-center justify-center w-16 h-16 mb-6 shadow-lg rounded-full bg-white">
-                <i className="fas fa-drafting-compass text-xl"></i>
-              </div>
-              <h3 className="text-3xl mb-2 font-semibold leading-normal">
-                Javascript Components
-              </h3>
-              <p className="text-lg font-light leading-relaxed mt-4 mb-4 text-blueGray-600">
-                In order to create a great User Experience some components
-                require JavaScript. In this way you can manipulate the elements
-                on the page and give more options to your users.
-              </p>
-              <p className="text-lg font-light leading-relaxed mt-4 mb-4 text-blueGray-600">
-                We created a set of Components that are dynamic and come to help
-                you.
-              </p>
-              <div className="block pb-6">
-                <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-white uppercase last:mr-0 mr-2 mt-2">
-                  Alerts
-                </span>
-                <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-white uppercase last:mr-0 mr-2 mt-2">
-                  Dropdowns
-                </span>
-                <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-white uppercase last:mr-0 mr-2 mt-2">
-                  Menus
-                </span>
-                <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-white uppercase last:mr-0 mr-2 mt-2">
-                  Modals
-                </span>
-                <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-white uppercase last:mr-0 mr-2 mt-2">
-                  Navbars
-                </span>
-                <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-white uppercase last:mr-0 mr-2 mt-2">
-                  Popovers
-                </span>
-                <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-white uppercase last:mr-0 mr-2 mt-2">
-                  Tabs
-                </span>
-                <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-white uppercase last:mr-0 mr-2 mt-2">
-                  Tooltips
-                </span>
-              </div>
-              <a
-                href="https://www.creative-tim.com/learning-lab/tailwind/react/alerts/notus?ref=nr-index"
-                className="font-bold text-blueGray-700 hover:text-blueGray-500 ease-linear transition-all duration-150"
-              >
-                View all{" "}
-                <i className="fa fa-angle-double-right ml-1 leading-relaxed"></i>
-              </a>
-            </div>
           </div>
         </div>
 
@@ -436,17 +361,15 @@ function Home(){
           <div className="items-center flex flex-wrap">
             <div className="w-full md:w-5/12 ml-auto px-12 md:px-4">
               <div className="md:pr-12">
-                <div className="text-blueGray-500 p-3 text-center inline-flex items-center justify-center w-16 h-16 mb-6 shadow-lg rounded-full bg-white">
-                  <i className="fas fa-file-alt text-xl"></i>
-                </div>
+               
                 <h3 className="text-3xl font-semibold">
-                  Complex Documentation
+                  Charts for everyone
                 </h3>
                 <p className="mt-4 text-lg leading-relaxed text-blueGray-500">
-                  This extension comes a lot of fully coded examples that help
-                  you get started faster. You can adjust the colors and also the
-                  programming language. You can change the text and images and
-                  you're good to go.
+                Charts will help you summarize very large data in a very crisp and easy manner.
+                They make the data more presentable and easier to understand. 
+                By looking at the chart itself one can draw certain inferences or  analysis in order to compare the data in a better way.
+
                 </p>
                 <ul className="list-none mt-6">
                   <li className="py-2">
@@ -458,44 +381,20 @@ function Home(){
                       </div>
                       <div>
                         <h4 className="text-blueGray-500">
-                          Built by Developers for Developers
+                          Built by Analysts for Analysts
                         </h4>
                       </div>
                     </div>
                   </li>
-                  <li className="py-2">
-                    <div className="flex items-center">
-                      <div>
-                        <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-blueGray-50 mr-3">
-                          <i className="fab fa-html5"></i>
-                        </span>
-                      </div>
-                      <div>
-                        <h4 className="text-blueGray-500">
-                          Carefully crafted code for Components
-                        </h4>
-                      </div>
-                    </div>
-                  </li>
-                  <li className="py-2">
-                    <div className="flex items-center">
-                      <div>
-                        <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-blueGray-50 mr-3">
-                          <i className="far fa-paper-plane"></i>
-                        </span>
-                      </div>
-                      <div>
-                        <h4 className="text-blueGray-500">
-                          Dynamic Javascript Components
-                        </h4>
-                      </div>
-                    </div>
-                  </li>
+                  
+                 
                 </ul>
               </div>
+              
             </div>
 
             <div className="w-full md:w-6/12 mr-auto px-4 pt-24 md:pt-0">
+            
               <img
                 alt="..."
                 className="max-w-full rounded-lg shadow-xl"
@@ -514,48 +413,12 @@ function Home(){
 
       
 
-      <section className="py-20 bg-blueGray-600 overflow-hidden">
-        <div className="container mx-auto pb-64">
-          <div className="flex flex-wrap justify-center">
-            <div className="w-full md:w-5/12 px-12 md:px-4 ml-auto mr-auto md:mt-64">
-              <div className="text-blueGray-500 p-3 text-center inline-flex items-center justify-center w-16 h-16 mb-6 shadow-lg rounded-full bg-white">
-                <i className="fas fa-code-branch text-xl"></i>
-              </div>
-              <h3 className="text-3xl mb-2 font-semibold leading-normal text-white">
-                Open Source
-              </h3>
-              <p className="text-lg font-light leading-relaxed mt-4 mb-4 text-blueGray-400">
-                Since{" "}
-                <a
-                  href="https://tailwindcss.com/?ref=creativetim"
-                  className="text-blueGray-300"
-                >
-                  Tailwind CSS
-                </a>{" "}
-                is an open source project we wanted to continue this movement
-                too. You can give this version a try to feel the design and also
-                test the quality of the code!
-              </p>
-              <p className="text-lg font-light leading-relaxed mt-0 mb-4 text-blueGray-400">
-                Get it free on Github and please help us spread the news with a
-                Star!
-              </p>
-              <a
-                href="https://github.com/creativetimofficial/notus-react?ref=nr-index"
-                className="github-star mt-4 inline-block text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-blueGray-700 active:bg-blueGray-600 uppercase text-sm shadow hover:shadow-lg"
-              >
-                Github Star
-              </a>
-            </div>
-
-            <div className="w-full md:w-4/12 px-4 mr-auto ml-auto mt-32 relative">
-              <i className="fab fa-github text-blueGray-700 absolute -top-150-px -right-100 left-auto opacity-80 text-55"></i>
-            </div>
-          </div>
-        </div>
-      </section>
+      
 
       <section className="pb-16 bg-blueGray-200 relative pt-32">
+
+      <h3 className="text-blueGray-500 text-center">Carefully crafted code for each chart</h3>
+
         <div
           className="-mt-20 top-0 bottom-auto left-0 right-0 w-full absolute h-20"
           style={{ transform: "translateZ(0)" }}
@@ -576,41 +439,7 @@ function Home(){
           </svg>
         </div>
 
-        <div className="container mx-auto">
-          <div className="flex flex-wrap justify-center bg-white shadow-xl rounded-lg -mt-64 py-16 px-12 relative z-10">
-            <div className="w-full text-center lg:w-8/12">
-              <p className="text-4xl text-center">
-                <span role="img" aria-label="love">
-                  😍
-                </span>
-              </p>
-              <h3 className="font-semibold text-3xl">
-                Do you love this Starter Kit?
-              </h3>
-              <p className="text-blueGray-500 text-lg leading-relaxed mt-4 mb-4">
-                Cause if you do, it can be yours now. Hit the buttons below to
-                navigate to get the Free version for your next project. Build a
-                new web app or give an old project a new look!
-              </p>
-              <div className="sm:block flex flex-col mt-10">
-                <a
-                  href="https://www.creative-tim.com/learning-lab/tailwind/react/overview/notus?ref=nr-index"
-                  className="get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-2 bg-lightBlue-500 active:bg-lightBlue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150"
-                >
-                  Get started
-                </a>
-                <a
-                  href="https://github.com/creativetimofficial/notus-react?ref=nr-index"
-                  className="github-star sm:ml-1 text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-blueGray-700 active:bg-blueGray-600 uppercase text-sm shadow hover:shadow-lg"
-                >
-                  <i className="fab fa-github text-lg mr-1"></i>
-                  <span>Help With a Star</span>
-                </a>
-              </div>
-              <div className="text-center mt-16"></div>
-            </div>
-          </div>
-        </div>
+       
       </section>
       <Footer />
     </>
