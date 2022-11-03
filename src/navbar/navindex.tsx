@@ -120,7 +120,7 @@ function Navbar()
                 ? " text-sm sm:text-md md:text-xl text-white py-2 px-1 sm:py-3 sm:px-3 bg-persian-blue font-bold hover:font-black"
                 : "")
             }
-            to="thesis/user"
+            to="thesis/userProfile"
           >
             {username}
           </NavLink>
