@@ -10,6 +10,7 @@ import { faGithub } from '@fortawesome/free-brands-svg-icons'
 import { faSignIn } from '@fortawesome/free-solid-svg-icons'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { faFileLines } from '@fortawesome/free-solid-svg-icons'
+import { faRightFromBracket} from '@fortawesome/free-solid-svg-icons'
 
 
 import { useState, useEffect } from "react";
@@ -116,7 +117,6 @@ export default function Navbar(props) {
                 {username}
               </Link>
 
-
               {username == "" && (
 
                 <li className="flex items-center">
@@ -142,6 +142,20 @@ export default function Navbar(props) {
                     Signup &nbsp;
                     <i className="text-white leading-lg"><FontAwesomeIcon icon={faUser} /></i>
                   </Link>
+                </li>
+              )}
+
+              {username !== "" && (
+                <li className="flex items-center">
+                  <button
+                    className="bg-blueGray-700 text-white active:bg-lightBlue-600 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150"
+                    type="button"
+                    //onClick={() => setNavbarOpen(!navbarOpen)}
+                    //onClick={logout}
+                  >
+                    Logout &nbsp;
+                    <i className="text-white leading-lg"><FontAwesomeIcon icon={faRightFromBracket} /></i>
+                  </button>
                 </li>
               )}
 
