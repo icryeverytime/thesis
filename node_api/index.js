@@ -2,13 +2,35 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const port = 3001;
+const jwt = require('jsonwebtoken');
 const User = require("../node_api/models/Users");
 const billboard200 = require("../node_api/models/billboard200");
 const Cryptr = require("cryptr");
 const cryptr = new Cryptr("ASD12341234");
+var cookieParser = require('cookie-parser')
 const mongoose = require("mongoose");
 const nodemailer = require("nodemailer");
 const billboard100 = require("../node_api/models/billboard100");
+const dotenv = require('dotenv');
+app.use(cookieParser(process.env.TOKEN_SECRET))
+function generateAccessToken(username) {
+  return jwt.sign({username}, process.env.TOKEN_SECRET, { expiresIn: '120d' });
+}
+function authenticateToken(req, res, next) {
+  const token = req.cookies["token"]
+  if (token == null) return res.sendStatus(401)
+
+  jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
+    if (err) {
+    console.log(err)
+    return res.sendStatus(403)
+    }
+    req.user = user
+    next()
+  })
+}
+// get config vars
+dotenv.config();
 
 /*Conexion a la base de datos de mongo*/
 mongoose
@@ -18,11 +40,11 @@ mongoose
   )
   .then(() => console.log("Base de datos conectada correctamente"))
   .catch((e) => console.log(e));
-app.use(cors());
+app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
   res.header(
     "Access-Control-Allow-Headers",
@@ -51,6 +73,25 @@ let transporter = nodemailer.createTransport({
     expires: 1484314697598,
   },
 });
+app.post('/logout',authenticateToken,(req,res)=>{
+  console.log("verificado")
+  console.log(req.cookies)
+  res.clearCookie("token").send("borrado")
+})
+app.get('/createtoken', (req, res) => {
+  // ...
+
+  const token = generateAccessToken({ username: "chris" });
+  res.json(token);
+
+  // ...
+});
+app.post('/api/userOrders', authenticateToken, (req, res) => {
+  // executes after authenticateToken
+  // ...
+  console.log("token verificado")
+  res.send("hola")
+})
 app.get("/chartingsongs", async function (req, res) {
   try {
     billboard100
@@ -61,7 +102,6 @@ app.get("/chartingsongs", async function (req, res) {
         if (err) {
           console.log(err);
         } else {
-          console.log(docs);
           res.send(docs);
         }
       }); //.sort({_id:-1})
@@ -104,7 +144,6 @@ app.get("/longestsongs", async function (req, res) {
         if (err) {
           console.log(err);
         } else {
-          console.log(docs2);
           res.send(docs2);
         }
       }); //.sort({_id:-1})
@@ -152,6 +191,9 @@ app.get("/billboard100", async function (req, res) {
     console.log(error);
   }
 });
+app.post("/checklogin",authenticateToken,function(req,res){
+  res.send({data:req.user["username"]})
+})
 app.get("/billboard100week", async function (req, res) {
   try {
     billboard100
@@ -190,7 +232,7 @@ app.post("/login", async function (req, res) {
   try {
     User.findOne(
       { $or: [{ username: user }, { email: user }] },
-      { emailverified: 1, password: 1 },
+      { emailverified: 1, password: 1,username: 1 },
       function (err, docs) {
         if (err) {
           console.log(err);
@@ -200,8 +242,17 @@ app.post("/login", async function (req, res) {
             res.send({ message: "username doesn exist", username: "" });
           } else {
             console.log(docs);
-            if (contra === cryptr.decrypt(docs["password"])) {
-              res.send({ message: "Login", username: user });
+            //emailverified: 'false'
+            if(docs["emailverified"]==='false')
+            {
+              res.send({message:"Verify",username:docs["username"]})
+            }
+            else if (contra === cryptr.decrypt(docs["password"])) {
+              let token=generateAccessToken(docs["username"])
+              let time=2629800000+ Date.now()
+              console.log(token)
+              res.cookie("token",token,{httpOnly:true,secure:true,expires:new Date(Date.now()+2629800000000)})
+              res.send({ message: "Login", username: docs["username"]});
             } else {
               res.send({ message: "Incorrect password", username: "" });
             }
@@ -325,7 +376,7 @@ app.post("/verifyemail", async function (req, res) {
   let code = req.body.verify.code;
   try {
     const usuario = await User.findOne({ username: user });
-    console.log(usuario["_id"]);
+    console.log(usuario);
     if (usuario.code === code) {
       const update = await User.findByIdAndUpdate(usuario["_id"], {
         emailverified: "true",

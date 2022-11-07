@@ -35,10 +35,23 @@ export const longSongs=()=>{
         console.log(error)
     })
 }
+export const order=()=>{
+    return Api.post('/api/userOrders',{prueba:""},{withCredentials:true}).catch(error=>{
+        console.log(error)
+    })
+}
+export const checklogin=()=>{
+    return Api.post('/checklogin',{},{withCredentials:true}).catch(error=>{
+        console.log(error)
+    })
+}
 export const login=(login)=>{
-    return Api.post('/login',{
-        login:login
-    }).catch(error=>{
+    return Api.post('/login',{login:login},{withCredentials:true}).catch(error=>{
+        console.log(error)
+    })
+}
+export const logout=()=>{
+    return Api.post('/logout',{},{withCredentials:true}).catch(error=>{
         console.log(error)
     })
 }

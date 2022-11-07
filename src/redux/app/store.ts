@@ -7,6 +7,7 @@ import reducerRegister from '../reducers/reducerRegister';
 import reducerRegistro from '../reducers/reducerRegistro';
 import reducerHomealbums from '../reducers/reducerHomealbums';
 import reducerLong from '../reducers/reducerLong';
+import reducerCheck from '../reducers/reducerCheck';
 export const store = configureStore({
     reducer: {
         users: reducerApp,
@@ -16,7 +17,8 @@ export const store = configureStore({
         login: reducerLogin,
         stathome: reducerHomestats,
         statAlbums: reducerHomealbums,
-        longSong: reducerLong
+        longSong: reducerLong,
+        checklogin: reducerCheck, 
     },
 })
 export type AppDispatch = typeof store.dispatch

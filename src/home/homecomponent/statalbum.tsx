@@ -1,10 +1,12 @@
+/*eslint-disable*/
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../redux/app/hooks";
 import { AppDispatch } from "../../redux/app/store";
 import {chartingalbums} from "../../redux/reducers/reducerHomealbums";
-function Statalbum() {
+import { order } from "../../Api/shared";
+function Statalbum() { 
     const dispatch = useDispatch<AppDispatch>();
     const datosalbums=useAppSelector((state) => state.statAlbums);
     const [artistAl1, setArtistAl1] = useState("");

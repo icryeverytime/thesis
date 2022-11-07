@@ -1,130 +1,208 @@
+/*eslint-disable*/
 import React from "react";
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFacebook } from '@fortawesome/free-brands-svg-icons'
+import { faTwitter } from '@fortawesome/free-brands-svg-icons'
+import { faGithub } from '@fortawesome/free-brands-svg-icons'
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faSignIn } from '@fortawesome/free-solid-svg-icons'
+import { faUser } from '@fortawesome/free-solid-svg-icons'
+import { faFileLines } from '@fortawesome/free-solid-svg-icons'
+import { faRightFromBracket} from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { logout } from "../Api/shared";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../redux/app/hooks";
+import { useNavigate } from 'react-router-dom';
 import { AppDispatch } from "../redux/app/store";
-function Navbar()
-{
-  const [username,setUsername]=useState("")
-  const [display, setdisplay] = useState<any|null>(null)
+import { checklogin } from "../Api/shared";
+import { checklogine } from "../redux/reducers/reducerCheck";
+function Navbar() {
   const dispatch=useDispatch<AppDispatch>()
-  const datoslogin=useAppSelector((state)=>state.login)
+  const datoscheck=useAppSelector((state)=>state.checklogin)
+  const [navbarOpen, setNavbarOpen] = React.useState(false);
+  const [username, setUsername] = useState("")
+  const [checking,setChecking]=useState(true)
+  const [tre,setTre]=useState(true)
+  const datoslogin = useAppSelector((state) => state.login)
   useEffect(()=>{
-    if(datoslogin["intStatus"]===200 && datoslogin["username"]!=="")
+    if(tre===true)
     {
+      setTre(false)
+    }else{
+      console.log(tre)
+    }
+  },[tre])
+  async function fe()
+  {
+    let datos=await checklogin()
+    setChecking(false)
+    if(datos["data"]["data"]!=="")
+    {
+      setUsername(datos["data"]["data"])
+    }
+  }
+  useEffect(()=>{
+    if(username==="" && tre===true)
+    {
+      setTre(false)
+      console.log("tres")
+    }
+    else if(tre===false)
+    {
+      console.log("cuatro")
+      fe()
+    }
+  },[tre])
+  useEffect(() => {
+    if (datoslogin["intStatus"] === 200 && datoslogin["username"] !== "" && datoslogin["Result"] === "Login") {
       setUsername(datoslogin["username"])
+      let token=datoslogin["token"]
+      console.log(token)
     }
-    console.log(username)
-  },[datoslogin])
-  useEffect(() => { 
-    var three:any=document.getElementById('threebars');
-    var flex:any=document.getElementById('flex')
-    if(display===true)
-    {
-      flex.className="flex flex-col xs:flex-row space-between"
-      three.className="hidden";
-    }
-    else if(display===false){
-      flex.className='hidden xs:flex xs:flex-row space-between'
-      three.className='xs:hidden text-sm sm:text-md md:text-xl text-white hover:text-white/80 py-2 px-1 sm:py-3 sm:px-3 hover:bg-persian-blue font-bold hover:font-black'
-    }
-  },[display])
-  return(
-    <nav className="bg-typan-blue   ">
-          
-          <button
-            id="threebars"
-            className="xs:hidden text-sm sm:text-md md:text-xl text-white hover:text-white/80 py-2 px-1 sm:py-3 sm:px-3 hover:bg-persian-blue font-bold hover:font-black"
+  }, [datoslogin])
+  async function clear()
+  {
+    setUsername("")
+    let result=await logout()
+    console.log(result)
+  }
+  return (
+      <nav className="top-0 z-50 w-full flex flex-wrap items-center justify-between px-2 py-3 navbar-expand-lg bg-white shadow">
+        <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
+          <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
+            <Link
+              to="/"
+              className="text-blueGray-700 text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase"
+            >
+              Music Background
+            </Link>
 
-            onClick={()=>setdisplay(true)} 
-          >
-            Three
-          </button>
-          <div id="flex" className="hidden xs:flex xs:flex-row space-between">
-          <button id="x" className="block xs:hidden text-white" onClick={()=>setdisplay(false)}>
-            X
-          </button>
-          <div>
-
+            <button
+              className="cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none"
+              type="button"
+              onClick={() => setNavbarOpen(!navbarOpen)}
+            >
+              <i className="fas fa-bars"></i>
+            </button>
           </div>
-          <NavLink
-            id="home"
-            onClick={()=>setdisplay(false)}
-            className={({ isActive }) =>
-              " text-sm sm:text-md md:text-xl text-white hover:text-white/80 py-2 px-1 sm:py-3 sm:px-3 hover:bg-persian-blue font-bold hover:font-black" +
-              (isActive
-                ? "text-sm sm:text-md md:text-xl text-white py-2 px-1 sm:py-3 sm:px-3 bg-persian-blue font-bold hover:font-black"
-                : "")
+
+
+          <div
+            className={
+              "lg:flex flex-grow items-center bg-white lg:bg-opacity-0 lg:shadow-none" +
+              (navbarOpen ? " block" : " hidden")
             }
-            end
-            to="/"
+            id="example-navbar-warning"
           >
-            Home
-          </NavLink>
-          <form id="navbusca" className="flex-1 h-full self-center">
-            <div className="flex justify-center">
-              <input
-                id="input2"
-                className="rounded-l-lg w-32 text-xs sm:text-md md:text-lg sm:w-40 md:w-72 border-2 outline-none placeholder:italic placeholder:px-2  pl-2"
-                type="text"
-                placeholder="Search for anything..."
-              ></input>
-              <input
-                id="inputsubmit"
-                className=" rounded-r-lg border-2 bg-dodger-blue px-1 text-sm sm:text-md  md:text-lg text-white border-dodger-blue hover:cursor-pointer"
-                type="submit"
-                value="Search"
-                onClick={()=>setdisplay(false)}
-              />
-            </div>
-          </form>
-          {username === "" && (
-              <NavLink
-            id="login"
-            onClick={()=>setdisplay(false)}
-            className={({ isActive }) =>
-              " hover:text-white/80 text-sm sm:text-md md:text-xl text-white py-2 px-1 sm:py-3 sm:px-3 hover:bg-persian-blue font-bold hover:font-black" +
-              (isActive
-                ? "text-sm sm:text-md md:text-xl text-white py-2 px-1 sm:py-3 sm:px-3 bg-persian-blue font-bold hover:font-black"
-                : "")
-            }
-            to="thesis/Login"
-          >
-            Login
-          </NavLink>
-          
-            )}
-            {username === "" && (
-            <NavLink
-          onClick={()=>setdisplay(false)}
-            id="signup"
-            className={({ isActive }) =>
-              " hover:text-white/80 text-sm sm:text-md md:text-xl text-white py-2 px-1 sm:py-3 sm:px-3 hover:bg-persian-blue font-bold hover:font-black" +
-              (isActive
-                ? " text-sm sm:text-md md:text-xl text-white py-2 px-1 sm:py-3 sm:px-3 bg-persian-blue font-bold hover:font-black"
-                : "")
-            }
-            to="thesis/SignUp"
-          >
-            Sign up
-          </NavLink>
-      )}
-      {username !== "" && (
-            <NavLink
-          onClick={()=>setdisplay(false)}
-            id="username"
-            className={({ isActive }) =>
-              " hover:text-white/80 text-sm sm:text-md md:text-xl text-white py-2 px-1 sm:py-3 sm:px-3 hover:bg-persian-blue font-bold hover:font-black" +
-              (isActive
-                ? " text-sm sm:text-md md:text-xl text-white py-2 px-1 sm:py-3 sm:px-3 bg-persian-blue font-bold hover:font-black"
-                : "")
-            }
-            to="thesis/userProfile"
-          >
-            {username}
-          </NavLink>
-      )}
+            <ul className="flex flex-col lg:flex-row list-none mr-auto">
+              <li className="flex items-center">
+                <a
+                  className="hover:text-blueGray-500 text-blueGray-700 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"
+                  href="https://www.creative-tim.com/learning-lab/tailwind/react/overview/notus?ref=nr-index-navbar"
+                >
+                  <i className="text-blueGray-400 far fa-file-alt text-lg leading-lg mr-2" />{" "}
+                  <i className="text-blueGray-400 far fa-file-alt text-lg leading-lg mr-2"><FontAwesomeIcon icon={faFileLines} /></i>
+                  Docs
+                </a>
+              </li>
+            </ul>
+            <ul className="flex flex-col lg:flex-row list-none lg:ml-auto">
+              <li className="flex items-center">
+
+              </li>
+              <li className="flex items-center">
+                <a
+                  className="hover:text-blueGray-500 text-blueGray-700 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"
+                  href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdemos.creative-tim.com%2Fnotus-react%2F%23%2F"
+                  target="_blank"
+                >
+
+                  <i className="text-gray text-lg leading-lg"><FontAwesomeIcon icon={faFacebook} /></i>
+                  <span className="lg:hidden inline-block ml-2">Share</span>
+                </a>
+              </li>
+
+              <li className="flex items-center">
+                <a
+                  className="hover:text-blueGray-500 text-blueGray-700 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"
+                  href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fdemos.creative-tim.com%2Fnotus-react%2F%23%2F&text=Start%20your%20development%20with%20a%20Free%20Tailwind%20CSS%20and%20React%20UI%20Kit%20and%20Admin.%20Let%20Notus%20React%20amaze%20you%20with%20its%20cool%20features%20and%20build%20tools%20and%20get%20your%20project%20to%20a%20whole%20new%20level.%20"
+                  target="_blank"
+                >
+
+                  <i className="text-gray text-lg leading-lg"><FontAwesomeIcon icon={faTwitter} /></i>
+                  <span className="lg:hidden inline-block ml-2">Tweet</span>
+                </a>
+              </li>
+
+              <li className="flex items-center">
+                <a
+                  className="hover:text-blueGray-500 text-blueGray-700 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"
+                  href="https://github.com/creativetimofficial/notus-react?ref=nr-index-navbar"
+                  target="_blank"
+                >
+                  <i className="text-gray text-lg leading-lg"><FontAwesomeIcon icon={faGithub} /></i>
+                  <span className="lg:hidden inline-block ml-2">Star</span>
+                </a>
+              </li>
+
+
+              <Link
+                to="thesis/userProfile"
+                className="text-blueGray-700 text-md hover:text-blueGray-500 font-bold leading-relaxed inline-block mr-1 ml-4 py-2 whitespace-nowrap uppercase"
+              >
+                {username}
+              </Link>
+
+              {(username == "" && checking===false) && (
+
+                <li className="flex items-center">
+                  <Link
+                    className="bg-dodger-blue text-white active:bg-lightBlue-600 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150"
+                    to="thesis/Login"
+                  >
+                    Login &nbsp;
+                    <i className="text-white leading-lg "><FontAwesomeIcon icon={faSignIn} /></i>
+                  </Link>
+
+                </li>
+
+              )}
+              {checking===true &&(
+                <div className="flex items-center">
+                <FontAwesomeIcon icon={faSpinner} className="animate-spin white-500"/>
+                </div>
+              )}
+              
+              {(username == "" && checking===false) && (
+                <li className="flex items-center">
+
+                  <Link
+                    className="bg-dodger-blue text-white active:bg-lightBlue-600 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150"
+                    to="thesis/signUp"
+                  >
+                    Signup &nbsp;
+                    <i className="text-white leading-lg"><FontAwesomeIcon icon={faUser} /></i>
+                  </Link>
+                </li>
+              )}
+
+              {username !== "" && (
+                <li className="flex items-center">
+                  <button
+                    className="bg-blueGray-700 text-white active:bg-lightBlue-600 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150"
+                    type="button"
+                    onClick={()=>clear()}
+                  >
+                    Logout &nbsp;
+                    <i className="text-white leading-lg"><FontAwesomeIcon icon={faRightFromBracket} /></i>
+                  </button>
+                </li>
+              )}
+
+            </ul>
+          </div>
         </div>
       </nav>
   );
