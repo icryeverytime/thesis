@@ -1,22 +1,10 @@
 import React from 'react';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
-
 import { faFacebookSquare } from '@fortawesome/free-brands-svg-icons'
 import { faTwitter } from '@fortawesome/free-brands-svg-icons'
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../redux/app/store';
-import { useEffect } from 'react';
-import { checklogin } from '../Api/shared';
-import { checklogine } from '../redux/reducers/reducerCheck';
 function Footer(){
   return(
-        
-
-
-
 <>
       <footer className="relative bg-blueGray-200 pt-8 pb-6">
         <div

@@ -11,9 +11,7 @@ import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { reset } from "../redux/reducers/reducerLogin";
 import * as Swal from "sweetalert2";
 import { useNavigate } from 'react-router-dom';
-import { checklogine } from "../redux/reducers/reducerCheck";
 import { logear } from "../redux/reducers/reducerLogin";
-import { checklogin } from "../Api/shared";
 function Login() {
   const [user, setUser] = useState("");
   const [contra, setContra] = useState("");
@@ -56,10 +54,6 @@ function Login() {
           (document.getElementById("input_4") as HTMLInputElement)?.value +
           (document.getElementById("input_5") as HTMLInputElement)?.value +
           (document.getElementById("input_6") as HTMLInputElement)?.value;
-          const verificar ={
-            username: username,
-            code: code,
-          }
           fetch("http://localhost:3001/verifyemail", {
           method: "POST",
           mode: "cors",
@@ -164,6 +158,7 @@ function Login() {
       setUsername(datoslogin["username"])
       verifyc()
     }
+    // eslint-disable-next-line
   },[datoslogin,username])
   useEffect(() => {
     if (contra === "" && contrarequired !== null) {

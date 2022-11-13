@@ -14,7 +14,7 @@ let month = ("0" + (date_time.getMonth() + 1)).slice(-2);
 
 // get current year
 let year = date_time.getFullYear();
-let chartdate='2022-07-16';
+let chartdate='2022-10-29';
 // prints date in YYYY-MM-DD format
 let currentdate=year + "-" + month + "-" + date;
 let yearnumber=parseInt(year);

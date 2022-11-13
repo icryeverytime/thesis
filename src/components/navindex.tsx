@@ -30,15 +30,13 @@ function Navbar() {
     if(tre===true)
     {
       setTre(false)
-    }else{
-      console.log(tre)
     }
   },[tre])
   async function fe()
   {
     let datos=await checklogin()
     setChecking(false)
-    if(datos["data"]["data"]!=="")
+    if(datos!==undefined)
     {
       setUsername(datos["data"]["data"])
     }
@@ -47,11 +45,9 @@ function Navbar() {
     if(username==="" && tre===true)
     {
       setTre(false)
-      console.log("tres")
     }
     else if(tre===false)
     {
-      console.log("cuatro")
       fe()
     }
   },[tre])
@@ -149,7 +145,7 @@ function Navbar() {
 
 
               <Link
-                to="thesis/userProfile"
+                to={"thesis/User/"+username}
                 className="text-blueGray-700 text-md hover:text-blueGray-500 font-bold leading-relaxed inline-block mr-1 ml-4 py-2 whitespace-nowrap uppercase"
               >
                 {username}

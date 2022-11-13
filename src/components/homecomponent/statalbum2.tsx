@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React,{useState,useEffect} from "react";
 import { useDispatch } from "react-redux";
-import { useAppSelector } from "../../redux/app/hooks";
 import { AppDispatch } from "../../redux/app/store";
 import { charting } from "../../redux/reducers/reducerHomestats";
-import {chartingalbums} from "../../redux/reducers/reducerHomealbums";
-import Statalbum from "./statalbum";
-import Statlong from "./statlongsong";
-function Stathome() {
-  const dispatch = useDispatch<AppDispatch>();
+import { useAppSelector } from "../../redux/app/hooks";
+import { Link } from "react-router-dom";
+function Statalbum2()
+{
+    const dispatch = useDispatch<AppDispatch>();
   const datoshome = useAppSelector((state) => state.stathome);
   const [artist1, setArtist1] = useState("");
   const [title1, setTitle1] = useState("");
@@ -99,27 +97,8 @@ function Stathome() {
       );
     }
   }, [datoshome]);
-  return (
-    <div>
-      <div className="justify-center text-center flex flex-wrap mt-24">
-        <div className="w-full md:w-6/12 px-12 md:px-4">
-          <h2 className="font-semibold text-4xl">Learn Statistics from your favorite music</h2>
-          <p className="text-lg leading-relaxed mt-4 mb-4 text-blueGray-500">
-            We combine data from Last.fm and Billboard charts to bring you the
-            best data about music known to man.
-          </p>
-        </div>
-      </div>
-
-      <section className="block relative z-1 bg-blueGray-600 mt-36">
-        <div className="container mx-auto">
-          <div className="justify-center flex flex-wrap">
-            
-            <div className="w-full lg:w-12/12 px-4  -mt-24">
-              <div className="flex flex-wrap">
-               <Statalbum />
-
-                <div className="w-full lg:w-4/12 px-4">
+  return(
+    <div className="w-full lg:w-4/12 px-4">
                   <h5 className="text-xl font-semibold pb-4 text-center">
                     Longest charting songs on Billboard 100
                   </h5>
@@ -188,14 +167,6 @@ function Stathome() {
                     </div>
                   </Link>
                 </div>
-
-                <Statlong />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
   );
 }
-export default Stathome;
+export default Statalbum2;

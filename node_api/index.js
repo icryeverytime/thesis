@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const port = 3001;
+var url=require('url')
 const jwt = require('jsonwebtoken');
 const User = require("../node_api/models/Users");
 const billboard200 = require("../node_api/models/billboard200");
@@ -12,6 +13,11 @@ const mongoose = require("mongoose");
 const nodemailer = require("nodemailer");
 const billboard100 = require("../node_api/models/billboard100");
 const dotenv = require('dotenv');
+var LastfmAPI = require('lastfmapi');
+var lfm = new LastfmAPI({
+	'api_key' : '604024e30367d14d43eda34672a72cf2',
+	'secret' : '3cb61d7d9b472fa5b4213ba76a11c338'
+});
 app.use(cookieParser(process.env.TOKEN_SECRET))
 function generateAccessToken(username) {
   return jwt.sign({username}, process.env.TOKEN_SECRET, { expiresIn: '120d' });
@@ -23,7 +29,7 @@ function authenticateToken(req, res, next) {
   jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
     if (err) {
     console.log(err)
-    return res.sendStatus(403)
+    return res.sendStatus(200)
     }
     req.user = user
     next()
@@ -91,6 +97,65 @@ app.post('/api/userOrders', authenticateToken, (req, res) => {
   // ...
   console.log("token verificado")
   res.send("hola")
+})
+app.get("/:user/callback",(req,res)=>{
+  var user=req.params.user
+  var token=url.parse(req.url,true).query.token
+  console.log(user)
+  console.log(token)
+  lfm.authenticate(token,async function(err,session){
+    console.log(session.username)
+    console.log(session.key)
+    let use = await User.findOneAndUpdate({ username: user }, { lastfm: session.username });
+    console.log(use)
+    res.writeHead(302, {
+      location: "http://localhost:3000/thesis#/thesis/User/"+user,
+    });
+    res.end();
+
+  })
+
+})
+app.post("/user",(req,res)=>{
+  let usr
+  let lastfm
+  let flag
+  console.log(req.cookies["token"])
+  if(req.cookies["token"]!==undefined)
+  {
+    jwt.verify(req.cookies["token"], process.env.TOKEN_SECRET, (err, user) => {
+      if (err) {
+      console.log(err)
+      flag=false
+      }
+      else{
+        usr = user
+        flag=true
+      }
+    })
+  }
+  User.findOne({username:req.body["user"]},{email:0,firstname:0,lastname:0,_id:0,username:0,code:0,password:0,emailverified:0},function(err,docs){
+    if(err)
+    {
+      console.log(err)
+    }
+    else{
+      lastfm=docs["lastfm"]
+      if(flag===true)
+      {
+        if(req.body["user"]===usr["username"])
+        {
+          res.send({"data":{"very":"true","lastfm":lastfm}})
+        }
+        else{
+          res.send({"data":{"very":"false","lastfm":lastfm}})
+        }
+      }
+      else{
+        res.send({"data":{"very":"false","lastfm":lastfm}})
+      }
+    }
+  })
 })
 app.get("/chartingsongs", async function (req, res) {
   try {
@@ -281,10 +346,9 @@ app.post("/store-data", async function (req, res) {
       password: password,
       emailverified: emailverified,
       code: code,
+      lastfm: ""
     })
   );
-  console.log("entered");
-  console.log(body);
   try {
     const UserDB = new User(body);
     await UserDB.save();

@@ -1,26 +1,21 @@
 import React from "react";
 import documentation from "../Assets/img/documentation.png";
-
 import headphones from "../Assets/img/headphones.jpg";
 import pattern from "../Assets/img/home.jpg";
-
 import img_crown from "../Assets/img/crown.jpg";
 import img_emerald from "../Assets/img/gem.jpg";
 import img_disc from "../Assets/img/disc.jpg";
 import img_note from "../Assets/img/note.png";
 import img_chart from "../Assets/img/chart_line.png";
 import img_one from "../Assets/img/gold1.jpg";
-
 import img_charts from "../Assets/img/charts.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeadphones } from "@fortawesome/free-solid-svg-icons";
-import statHome from "./homecomponent/stathome";
 import { faChartPie } from "@fortawesome/free-solid-svg-icons";
 import { faChartLine } from "@fortawesome/free-solid-svg-icons";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { faMusic } from "@fortawesome/free-solid-svg-icons";
 import Stathome from "./homecomponent/stathome";
-
 function Home() {
   return (
     <div>

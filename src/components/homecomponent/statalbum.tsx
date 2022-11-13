@@ -33,7 +33,6 @@ function Statalbum() {
         dispatch(chartingalbums());
     }
     useEffect(() => {
-        console.log(datosalbums)
         if (datosalbums["intStatuschartingsongs"] === 200) {
           setArtistAl1(
             datosalbums["Resultchartingsongsartist1"]

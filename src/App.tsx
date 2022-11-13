@@ -1,14 +1,12 @@
 import './App.css';
-import Footer from './footer/footer';
+import React, { useState } from "react";
+import Footer from './components/footer';
 import {HashRouter} from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './redux/app/store';
 import AnimatedRoutes from './animatedroutes/AnimatedRoutes';
-import Navbar from './navbar/navindex';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from './redux/app/store';
-import { useEffect } from 'react';
-import { checklogine } from './redux/reducers/reducerCheck';
+import Navbar from './components/navindex';
+
 function App() {
 
   return (
