@@ -41,7 +41,7 @@ export const longSong = createAsyncThunk(
     async()=>{
         try{
             const result=await longSongs()
-            return result
+            return result["data"]
         }catch(error){
             console.log(error)
         }   
@@ -59,26 +59,26 @@ const reducerSlice = createSlice({
         })
         builder.addCase(longSong.fulfilled,(state,action)=>{
             state.intStatuschartingsongs=200
-            state.Resultchartingsongstitle1=action.payload["data"][0]["_id"]["title"]
-            state.Resultchartingsongstitle2=action.payload["data"][1]["_id"]["title"]
-            state.Resultchartingsongstitle3=action.payload["data"][2]["_id"]["title"]
-            state.Resultchartingsongstitle4=action.payload["data"][3]["_id"]["title"]
-            state.Resultchartingsongstitle5=action.payload["data"][4]["_id"]["title"]
-            state.Resultchartingsongsartist1=action.payload["data"][0]["_id"]["artist"]
-            state.Resultchartingsongsartist2=action.payload["data"][1]["_id"]["artist"]
-            state.Resultchartingsongsartist3=action.payload["data"][2]["_id"]["artist"]
-            state.Resultchartingsongsartist4=action.payload["data"][3]["_id"]["artist"]
-            state.Resultchartingsongsartist5=action.payload["data"][4]["_id"]["artist"]
-            state.Resultchartingsongssrc1=action.payload["data"][0]["_id"]["cover"]
-            state.Resultchartingsongssrc2=action.payload["data"][1]["_id"]["cover"]
-            state.Resultchartingsongssrc3=action.payload["data"][2]["_id"]["cover"]
-            state.Resultchartingsongssrc4=action.payload["data"][3]["_id"]["cover"]
-            state.Resultchartingsongssrc5=action.payload["data"][4]["_id"]["cover"]
-            state.Resultcount1=action.payload["data"][0]["count"]
-            state.Resultcount2=action.payload["data"][1]["count"]
-            state.Resultcount3=action.payload["data"][2]["count"]
-            state.Resultcount4=action.payload["data"][3]["count"]
-            state.Resultcount5=action.payload["data"][4]["count"]
+            state.Resultchartingsongstitle1=action.payload[0]["_id"]["title"]
+            state.Resultchartingsongstitle2=action.payload[1]["_id"]["title"]
+            state.Resultchartingsongstitle3=action.payload[2]["_id"]["title"]
+            state.Resultchartingsongstitle4=action.payload[3]["_id"]["title"]
+            state.Resultchartingsongstitle5=action.payload[4]["_id"]["title"]
+            state.Resultchartingsongsartist1=action.payload[0]["_id"]["artist"]
+            state.Resultchartingsongsartist2=action.payload[1]["_id"]["artist"]
+            state.Resultchartingsongsartist3=action.payload[2]["_id"]["artist"]
+            state.Resultchartingsongsartist4=action.payload[3]["_id"]["artist"]
+            state.Resultchartingsongsartist5=action.payload[4]["_id"]["artist"]
+            state.Resultchartingsongssrc1=action.payload[0]["_id"]["cover"]
+            state.Resultchartingsongssrc2=action.payload[1]["_id"]["cover"]
+            state.Resultchartingsongssrc3=action.payload[2]["_id"]["cover"]
+            state.Resultchartingsongssrc4=action.payload[3]["_id"]["cover"]
+            state.Resultchartingsongssrc5=action.payload[4]["_id"]["cover"]
+            state.Resultcount1=action.payload[0]["count"]
+            state.Resultcount2=action.payload[1]["count"]
+            state.Resultcount3=action.payload[2]["count"]
+            state.Resultcount4=action.payload[3]["count"]
+            state.Resultcount5=action.payload[4]["count"]
             state.loadingStatechartingsongs='false'
         })
         builder.addCase(longSong.rejected,(state,action)=>{

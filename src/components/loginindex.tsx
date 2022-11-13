@@ -6,7 +6,11 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../redux/app/hooks";
 import { AppDispatch } from "../redux/app/store";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { reset } from "../redux/reducers/reducerLogin";
+import * as Swal from "sweetalert2";
+import { useNavigate } from 'react-router-dom';
 import { logear } from "../redux/reducers/reducerLogin";
 function Login() {
   const [user, setUser] = useState("");
@@ -15,9 +19,97 @@ function Login() {
   const [contrarequired,setContrarequired]=useState<any|null>(null)
   const [userexist,setUserexist]=useState(false)
   const [contrabad,setContrabad]=useState(false)
+  const [loading,setLoading]=useState(false)
+  const [username,setUsername]=useState("")
   const dispatch=useDispatch<AppDispatch>()
+  const navigate = useNavigate();
   const datoslogin=useAppSelector((state)=>state.login)
-  function sendLogin(event)
+
+  async function verifyc(){
+    (Swal as any).fire({
+      title: "Insert code sent to email before logging in",
+  html:
+    '<div className="otp-screen" id="otp-screen">' +
+    '<input name="input1" id="input_1" type="text" maxlength="1" class="text-center border-2" size="1"  required>' +
+    '<input name="input2" id="input_2" type="text" maxlength="1" class="text-center border-2" size="1" required>' +
+    '<input id="input_3" type="text" maxlength="1" class="text-center border-2" size="1" required>' +
+    '<input id="input_4" type="text" maxlength="1" class="text-center border-2" size="1" required>' +
+    '<input id="input_5" type="text" maxlength="1" class="text-center border-2" size="1" required>' +
+    '<input id="input_6" type="text" maxlength="1" class="text-center border-2" size="1" required>' +
+    "</div>",
+  focusConfirm: false,
+  allowOutsideClick: false,
+  showCancelButton: true,
+  showCloseButton: true,
+  cancelButtonText: "Resend Code",
+  target: document.getElementById("screen"),
+    }).then((result) => {
+      if (result.isDismissed === true) {
+        send();
+      } else if (result.isConfirmed === true) {
+        const code =
+          (document.getElementById("input_1") as HTMLInputElement)?.value +
+          (document.getElementById("input_2") as HTMLInputElement)?.value +
+          (document.getElementById("input_3") as HTMLInputElement)?.value +
+          (document.getElementById("input_4") as HTMLInputElement)?.value +
+          (document.getElementById("input_5") as HTMLInputElement)?.value +
+          (document.getElementById("input_6") as HTMLInputElement)?.value;
+          fetch("http://localhost:3001/verifyemail", {
+          method: "POST",
+          mode: "cors",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            verify: {
+              username: username,
+              code: code,
+            },
+          }),
+        }).then(async function (response) {
+          response.json().then((data) => {
+            if (data.message === "Wrong Code") {
+              (Swal as any).fire({
+                icon: "error",
+                title: "Wrong Code",
+                showCancelButton: true,
+                cancelButtonText: "Resend Code",
+              }).then(result=>{
+                if (result.isDismissed === true) {
+                  send();
+                }
+              });
+            } else {
+              (Swal as any).fire({
+                icon: "success",
+                title: "Email verified",
+                text: "You can now login!",
+              }).then((result) => {
+              });
+            }
+          });
+        });
+      }
+    });
+  }
+  async function send() {
+    fetch("http://localhost:3001/resendcode", {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        verify: {
+          username: username,
+        },
+      }),
+    })
+    verifyc()
+}
+  async function sendLogin(event)
   {
     event.preventDefault()
     dispatch(reset())
@@ -40,20 +132,34 @@ function Login() {
   }, [user, userrequired]);
   useEffect(()=>{
     console.log(datoslogin)
-    if(datoslogin["Result"]==="Login" && datoslogin["intStatus"]===200)
+    if(datoslogin["loadingState"]==='true')
     {
-      console.log("loggedin")
+      setLoading(true)
     }
-    else if(datoslogin["Result"]==="Incorrect password" && datoslogin["intStatus"]===200)
+    else{
+      setLoading(false)
+    }
+    if(datoslogin["Result"]==="Incorrect password" && datoslogin["intStatus"]===200)
     {
-      console.log()
       setContrabad(true)
+      dispatch(reset())
     }
     else if(datoslogin["Result"]==="username doesn exist" && datoslogin["intStatus"]===200)
     {
       setUserexist(true)
+      dispatch(reset())
     }
-  },[datoslogin])
+    else if (datoslogin["intStatus"] === 200 && datoslogin["Result"] === "Login") {
+      navigate("/")
+      dispatch(reset())
+    }
+    else if(datoslogin["intStatus"]===200 && datoslogin["Result"]==="Verify" && datoslogin["username"]!=="")
+    {
+      setUsername(datoslogin["username"])
+      verifyc()
+    }
+    // eslint-disable-next-line
+  },[datoslogin,username])
   useEffect(() => {
     if (contra === "" && contrarequired !== null) {
       setContrarequired(true);
@@ -65,7 +171,7 @@ function Login() {
   }, [contra, contrarequired]);
   return (
     <motion.div
-      className="pt-10 pb-20"
+      className="pt-10 pb-28"
       initial={{ backgroundColor: "#3A0CA3" }}
       animate={{
         transition: { repeat: Infinity, duration: 15 },
@@ -149,15 +255,20 @@ function Login() {
               <button
                 type="submit"
                 onChange={(e:any) => setContra(e.target.value)}
-                className="py-4 bg-purple w-full rounded text-blue-50 font-bold hover:bg-blue-700"
+                disabled={loading}
+                className={loading ? "py-4 bg-purple-700 w-full rounded text-blue-50 font-bold opacity-50":"py-4 bg-purple-700 w-full rounded text-blue-50 font-bold hover:bg-purple-800 hover:cursor-pointer"}
               >
-                {" "}
-                LOGIN
+              {loading === true && (
+                <FontAwesomeIcon icon={faSpinner} className="animate-spin white-500"/>
+              )}
+              {loading === false && (
+                <p>LOGIN</p>
+              )}
               </button>
             </div>
           </div>
         </form>
-        <div className="flex justify-center container mx-auto mt-6 text-slate-100 text-sm">
+        <div className="flex justify-center container mx-auto mt-6 text-slate-100 text-sm pb-2">
           <div className="flex flex-col sm:flex-row  justify-between md:w-1/2 items-center">
             <div className="flex">Forgot your password</div>
             <div className="flex ">Don't have an account? Get Started</div>

@@ -2,12 +2,16 @@ import React, { useEffect, useState } from "react";
 import validator from "validator";
 import * as Swal from "sweetalert2";
 import { motion } from "framer-motion";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../redux/app/hooks";
+import { useNavigate } from 'react-router-dom';
 import { AppDispatch } from "../redux/app/store";
 import { reset } from "../redux/reducers/reducerRegister";
 import { insertRegisters } from "../redux/reducers/reducerRegister";
 function SignUp() {
+  const navigate = useNavigate();
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [username, setUsername] = useState("");
@@ -24,9 +28,18 @@ function SignUp() {
   const [confirmpasswordrequired, setConfirmpasswordrequired] = useState<any|null>  (null);
   const [equalpassword, setEqualpassword] = useState<any|null>(null);
   const [emailmatch, setEmailmatch] = useState<any|null>(null);
+  const[loading,setLoading]=useState(false)
   const dispatch=useDispatch<AppDispatch>()
   const datosregistro=useAppSelector((state)=>state.register)
   useEffect(()=>{
+    console.log(datosregistro)
+    if(datosregistro["loadingState"]==='true')
+    {
+      setLoading(true)
+    }
+    else{
+      setLoading(false)
+    }
     if(datosregistro["intStatus"]===200 && datosregistro["Result"]==="inserted")
     {
       verifyc()
@@ -165,6 +178,9 @@ function SignUp() {
                 if (result.isDismissed === true) {
                   send();
                 }
+                else{
+                  navigate("/#/thesis/Login");
+                }
               });
             } else {
               (Swal as any).fire({
@@ -173,7 +189,7 @@ function SignUp() {
                 text: "You can now login!",
               }).then((result) => {
                 if (result.isConfirmed) {
-                  window.location.href = "/#/thesis/Login";
+                  navigate("/#/thesis/Login");
                 }
               });
             }
@@ -401,11 +417,19 @@ function SignUp() {
             />
             </div>
             <div className="w-3/4 mb-12">
-            <input
-              className="py-4 h-12 bg-purple w-full rounded text-blue-50 font-bold hover:bg-blue-700 hover:cursor-pointer"
+            <button
+              className={loading ? "py-4 bg-purple-700 w-full rounded text-blue-50 font-bold opacity-50":"py-4 bg-purple-700 w-full rounded text-blue-50 font-bold hover:bg-purple-800 hover:cursor-pointer"}
               type="submit"
+              disabled={loading}
               value="Submit"
-            />
+            >
+              {loading === true && (
+              <FontAwesomeIcon icon={faSpinner} className="animate-spin white-500"/>
+            )}
+              {loading === false && (
+                <p>REGISTER</p>
+              )}
+            </button> 
             </div>
           </div>
         </form>

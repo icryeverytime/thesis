@@ -1,36 +1,70 @@
 /*eslint-disable*/
 import React from "react";
-//import { Link } from "./react-router-dom";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
 import { faFacebook } from '@fortawesome/free-brands-svg-icons'
 import { faTwitter } from '@fortawesome/free-brands-svg-icons'
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { faSignIn } from '@fortawesome/free-solid-svg-icons'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { faFileLines } from '@fortawesome/free-solid-svg-icons'
 import { faRightFromBracket} from '@fortawesome/free-solid-svg-icons'
-
-
 import { useState, useEffect } from "react";
-import { useAppSelector } from "../../redux/app/hooks";
-
-
-export default function Navbar(props) {
+import { logout } from "../Api/shared";
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "../redux/app/hooks";
+import { useNavigate } from 'react-router-dom';
+import { AppDispatch } from "../redux/app/store";
+import { checklogin } from "../Api/shared";
+import { checklogine } from "../redux/reducers/reducerCheck";
+function Navbar() {
+  const dispatch=useDispatch<AppDispatch>()
+  const datoscheck=useAppSelector((state)=>state.checklogin)
   const [navbarOpen, setNavbarOpen] = React.useState(false);
-
   const [username, setUsername] = useState("")
+  const [checking,setChecking]=useState(true)
+  const [tre,setTre]=useState(true)
   const datoslogin = useAppSelector((state) => state.login)
-  useEffect(() => {
-    if (datoslogin["intStatus"] === 200 && datoslogin["username"] !== "") {
-      setUsername(datoslogin["username"])
+  useEffect(()=>{
+    if(tre===true)
+    {
+      setTre(false)
     }
-    console.log(username)
+  },[tre])
+  async function fe()
+  {
+    let datos=await checklogin()
+    setChecking(false)
+    if(datos!==undefined)
+    {
+      setUsername(datos["data"]["data"])
+    }
+  }
+  useEffect(()=>{
+    if(username==="" && tre===true)
+    {
+      setTre(false)
+    }
+    else if(tre===false)
+    {
+      fe()
+    }
+  },[tre])
+  useEffect(() => {
+    if (datoslogin["intStatus"] === 200 && datoslogin["username"] !== "" && datoslogin["Result"] === "Login") {
+      setUsername(datoslogin["username"])
+      let token=datoslogin["token"]
+      console.log(token)
+    }
   }, [datoslogin])
-
+  async function clear()
+  {
+    setUsername("")
+    let result=await logout()
+    console.log(result)
+  }
   return (
-    <>
       <nav className="top-0 z-50 w-full flex flex-wrap items-center justify-between px-2 py-3 navbar-expand-lg bg-white shadow">
         <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
           <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
@@ -111,13 +145,13 @@ export default function Navbar(props) {
 
 
               <Link
-                to="thesis/userProfile"
+                to={"thesis/User/"+username}
                 className="text-blueGray-700 text-md hover:text-blueGray-500 font-bold leading-relaxed inline-block mr-1 ml-4 py-2 whitespace-nowrap uppercase"
               >
                 {username}
               </Link>
 
-              {username == "" && (
+              {(username == "" && checking===false) && (
 
                 <li className="flex items-center">
                   <Link
@@ -131,8 +165,13 @@ export default function Navbar(props) {
                 </li>
 
               )}
-
-              {username == "" && (
+              {checking===true &&(
+                <div className="flex items-center">
+                <FontAwesomeIcon icon={faSpinner} className="animate-spin white-500"/>
+                </div>
+              )}
+              
+              {(username == "" && checking===false) && (
                 <li className="flex items-center">
 
                   <Link
@@ -150,8 +189,7 @@ export default function Navbar(props) {
                   <button
                     className="bg-blueGray-700 text-white active:bg-lightBlue-600 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150"
                     type="button"
-                    //onClick={() => setNavbarOpen(!navbarOpen)}
-                    //onClick={logout}
+                    onClick={()=>clear()}
                   >
                     Logout &nbsp;
                     <i className="text-white leading-lg"><FontAwesomeIcon icon={faRightFromBracket} /></i>
@@ -163,6 +201,6 @@ export default function Navbar(props) {
           </div>
         </div>
       </nav>
-    </>
   );
 }
+export default Navbar;

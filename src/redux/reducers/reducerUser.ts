@@ -1,27 +1,25 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import { insertRegistro } from '../../Api/shared';
-import { login } from '../../Api/shared';
+import { userget } from '../../Api/shared';
 const initialState:ResponseDetalle={
     intStatus:0,
     Result:"",
-    username:'',
-    token:'',
+    userequal:"",
+    lastfm:"",
     loadingState:'false'
 }
 interface ResponseDetalle {
     intStatus:number;
     Result:string;
-    username:string;
-    token:string;
-    loadingState:string
+    userequal:string;
+    lastfm:string;
+    loadingState:string;
 }
 
-export const logear = createAsyncThunk(
-    'requests/getall',
+export const getuser = createAsyncThunk(
+    'requests/getuser',
     async(user:any)=>{
         try{
-            const result=await login(user)
-            console.log(result)
+            const result=await userget(user)
             return result["data"]
         }catch(error){
             console.log(error)
@@ -35,23 +33,17 @@ const reducerSlice = createSlice({
         reset: state => initialState,
     },
     extraReducers:builder=>{
-        builder.addCase(logear.pending,(state,action)=>{
+        builder.addCase(getuser.pending,(state,action)=>{
             state.loadingState='true'
         })
-        builder.addCase(logear.fulfilled,(state,action)=>{
+        builder.addCase(getuser.fulfilled,(state,action)=>{
             state.intStatus=200
-            state.Result=action.payload["message"]
-            if(action.payload["username"]!=="")
-            {
-                state.username=action.payload["username"]
-            }
-            if(action.payload["token"]!=="")
-            {
-                state.token=action.payload["token"]
-            }
+            state.Result=action.payload["data"]
+            state.userequal=action.payload["data"]["very"]
+            state.lastfm=action.payload["data"]["lastfm"]
             state.loadingState='false'
         })
-        builder.addCase(logear.rejected,(state,action)=>{
+        builder.addCase(getuser.rejected,(state,action)=>{
             state.intStatus=500
         })
     }

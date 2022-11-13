@@ -1,18 +1,10 @@
 import React from 'react';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
-
 import { faFacebookSquare } from '@fortawesome/free-brands-svg-icons'
 import { faTwitter } from '@fortawesome/free-brands-svg-icons'
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
-
 function Footer(){
-     return(
-        
-
-
-
+  return(
 <>
       <footer className="relative bg-blueGray-200 pt-8 pb-6">
         <div

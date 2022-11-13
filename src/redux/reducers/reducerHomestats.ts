@@ -54,7 +54,7 @@ export const charting = createAsyncThunk(
     async()=>{
         try{
             const result=await chartingSongs()
-            return result
+            return result["data"]
         }catch(error){
             console.log(error)
         }   
@@ -72,26 +72,26 @@ const reducerSlice = createSlice({
         })
         builder.addCase(charting.fulfilled,(state,action)=>{
             state.intStatuschartingsongs=200
-            state.Resultchartingsongstitle1=action.payload["data"][0]["chart"]["songs"]["title"]
-            state.Resultchartingsongstitle2=action.payload["data"][1]["chart"]["songs"]["title"]
-            state.Resultchartingsongstitle3=action.payload["data"][2]["chart"]["songs"]["title"]
-            state.Resultchartingsongstitle4=action.payload["data"][3]["chart"]["songs"]["title"]
-            state.Resultchartingsongstitle5=action.payload["data"][4]["chart"]["songs"]["title"]
-            state.Resultchartingsongsartist1=action.payload["data"][0]["chart"]["songs"]["artist"]
-            state.Resultchartingsongsartist2=action.payload["data"][1]["chart"]["songs"]["artist"]
-            state.Resultchartingsongsartist3=action.payload["data"][2]["chart"]["songs"]["artist"]
-            state.Resultchartingsongsartist4=action.payload["data"][3]["chart"]["songs"]["artist"]
-            state.Resultchartingsongsartist5=action.payload["data"][4]["chart"]["songs"]["artist"]
-            state.Resultchartingsongssrc1=action.payload["data"][0]["chart"]["songs"]["cover"]
-            state.Resultchartingsongssrc2=action.payload["data"][1]["chart"]["songs"]["cover"]
-            state.Resultchartingsongssrc3=action.payload["data"][2]["chart"]["songs"]["cover"]
-            state.Resultchartingsongssrc4=action.payload["data"][3]["chart"]["songs"]["cover"]
-            state.Resultchartingsongssrc5=action.payload["data"][4]["chart"]["songs"]["cover"]
-            state.Resultchartingposition1=action.payload["data"][0]["chart"]["songs"]["position"]["weeksOnChart"]
-            state.Resultchartingposition2=action.payload["data"][1]["chart"]["songs"]["position"]["weeksOnChart"]
-            state.Resultchartingposition3=action.payload["data"][2]["chart"]["songs"]["position"]["weeksOnChart"]
-            state.Resultchartingposition4=action.payload["data"][3]["chart"]["songs"]["position"]["weeksOnChart"]
-            state.Resultchartingposition5=action.payload["data"][4]["chart"]["songs"]["position"]["weeksOnChart"]
+            state.Resultchartingsongstitle1=action.payload[0]["chart"]["songs"]["title"]
+            state.Resultchartingsongstitle2=action.payload[1]["chart"]["songs"]["title"]
+            state.Resultchartingsongstitle3=action.payload[2]["chart"]["songs"]["title"]
+            state.Resultchartingsongstitle4=action.payload[3]["chart"]["songs"]["title"]
+            state.Resultchartingsongstitle5=action.payload[4]["chart"]["songs"]["title"]
+            state.Resultchartingsongsartist1=action.payload[0]["chart"]["songs"]["artist"]
+            state.Resultchartingsongsartist2=action.payload[1]["chart"]["songs"]["artist"]
+            state.Resultchartingsongsartist3=action.payload[2]["chart"]["songs"]["artist"]
+            state.Resultchartingsongsartist4=action.payload[3]["chart"]["songs"]["artist"]
+            state.Resultchartingsongsartist5=action.payload[4]["chart"]["songs"]["artist"]
+            state.Resultchartingsongssrc1=action.payload[0]["chart"]["songs"]["cover"]
+            state.Resultchartingsongssrc2=action.payload[1]["chart"]["songs"]["cover"]
+            state.Resultchartingsongssrc3=action.payload[2]["chart"]["songs"]["cover"]
+            state.Resultchartingsongssrc4=action.payload[3]["chart"]["songs"]["cover"]
+            state.Resultchartingsongssrc5=action.payload[4]["chart"]["songs"]["cover"]
+            state.Resultchartingposition1=action.payload[0]["chart"]["songs"]["position"]["weeksOnChart"]
+            state.Resultchartingposition2=action.payload[1]["chart"]["songs"]["position"]["weeksOnChart"]
+            state.Resultchartingposition3=action.payload[2]["chart"]["songs"]["position"]["weeksOnChart"]
+            state.Resultchartingposition4=action.payload[3]["chart"]["songs"]["position"]["weeksOnChart"]
+            state.Resultchartingposition5=action.payload[4]["chart"]["songs"]["position"]["weeksOnChart"]
             state.loadingStatechartingsongs='false'
         })
         builder.addCase(charting.rejected,(state,action)=>{

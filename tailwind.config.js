@@ -13,7 +13,6 @@ module.exports = {
         'purple':'#7209B7',
         'ultramarine':'#4361EE',
         ...colors
-        
       }
     },
     screens:{

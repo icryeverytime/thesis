@@ -1,28 +1,24 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import { insertRegistro } from '../../Api/shared';
-import { login } from '../../Api/shared';
+import { checklogin } from '../../Api/shared';
 const initialState:ResponseDetalle={
     intStatus:0,
     Result:"",
-    username:'',
-    token:'',
     loadingState:'false'
 }
 interface ResponseDetalle {
     intStatus:number;
     Result:string;
-    username:string;
-    token:string;
     loadingState:string
 }
 
-export const logear = createAsyncThunk(
+export const checklogine = createAsyncThunk(
     'requests/getall',
     async(user:any)=>{
         try{
-            const result=await login(user)
+            const result=await checklogin()
             console.log(result)
-            return result["data"]
+            return result
         }catch(error){
             console.log(error)
         }   
@@ -35,23 +31,15 @@ const reducerSlice = createSlice({
         reset: state => initialState,
     },
     extraReducers:builder=>{
-        builder.addCase(logear.pending,(state,action)=>{
+        builder.addCase(checklogine.pending,(state,action)=>{
             state.loadingState='true'
         })
-        builder.addCase(logear.fulfilled,(state,action)=>{
+        builder.addCase(checklogine.fulfilled,(state,action)=>{
             state.intStatus=200
-            state.Result=action.payload["message"]
-            if(action.payload["username"]!=="")
-            {
-                state.username=action.payload["username"]
-            }
-            if(action.payload["token"]!=="")
-            {
-                state.token=action.payload["token"]
-            }
+            state.Result=action.payload["data"]
             state.loadingState='false'
         })
-        builder.addCase(logear.rejected,(state,action)=>{
+        builder.addCase(checklogine.rejected,(state,action)=>{
             state.intStatus=500
         })
     }
