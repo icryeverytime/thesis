@@ -56,6 +56,18 @@ export const userWeekSong=(user)=>{
         console.log(error)
     })
 }
+export const countbillboard100=()=>{
+    let url="http://localhost:3001/countbillboard100"
+    return axios.get(url).catch(error=>{
+        console.log(error)
+    })
+}
+export const countbillboard200=()=>{
+    let url="http://localhost:3001/countbillboard200"
+    return axios.get(url).catch(error=>{
+        console.log(error)
+    })
+}
 export const userMonthSong=(user)=>{
     let url="http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user="+user+"&api_key=604024e30367d14d43eda34672a72cf2&format=json&limit=5&period=1month"
     return axios.get(url).catch(error=>{
@@ -64,6 +76,39 @@ export const userMonthSong=(user)=>{
 }
 export const userAllSong=(user)=>{
     let url="http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user="+user+"&api_key=604024e30367d14d43eda34672a72cf2&format=json&limit=5&period=overall"
+    return axios.get(url).catch(error=>{
+        console.log(error)
+    })
+}
+export const usertopartist=(user)=>{
+    let url="http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user="+user+"&api_key=604024e30367d14d43eda34672a72cf2&format=json&limit=50&period=overall"
+    return axios.get(url).catch(error=>{
+        console.log(error)
+    })
+}
+export const usertopsong=(user)=>{
+    let url="http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user="+user+"&api_key=604024e30367d14d43eda34672a72cf2&format=json&limit=50&period=overall"
+    return axios.get(url).catch(error=>{
+        console.log(error)
+    })
+}
+export const usersalbums=()=>{
+    return Api.get('/mostlistenedalbums').catch(error=>{
+        console.log(error)
+    })
+}
+export const usersartists=()=>{
+    return Api.get('/mostlistenedartists').catch(error=>{
+        console.log(error)
+    })
+}
+export const userssongs=()=>{
+    return Api.get('/mostlistenedsongs').catch(error=>{
+        console.log(error)
+    })
+}
+export const usertopalbum=(user)=>{
+    let url="http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user="+user+"&api_key=604024e30367d14d43eda34672a72cf2&format=json&limit=50&period=overall"
     return axios.get(url).catch(error=>{
         console.log(error)
     })
@@ -82,6 +127,63 @@ export const chartingSongs=()=>{
         console.log(error)
     })
 }
+export const chartingAlbumsfull=()=>{
+    return Api.get('/chartingalbumsfull',{
+
+    }).catch(error=>{
+        console.log(error)
+    })
+}
+export const chartingSongssfull=()=>{
+    return Api.get('/chartingsongsall',{
+
+    }).catch(error=>{
+        console.log(error)
+    })
+}
+export const chartingSongsalltime=()=>{
+    return Api.get('/longestsongsall',{
+
+    }).catch(error=>{
+        console.log(error)
+    })
+}
+export const chartingalbumssalltime=()=>{
+    return Api.get('/longestalbumsall',{
+
+    }).catch(error=>{
+        console.log(error)
+    })
+}
+export const biggestdrop100=()=>{
+    return Api.get('/biggestdrop100',{
+
+    }).catch(error=>{
+        console.log(error)
+    })
+}
+export const biggestdrop200=()=>{
+    return Api.get('/biggestdrop200',{
+
+    }).catch(error=>{
+        console.log(error)
+    })
+}
+export const biggestjump100=()=>{
+    return Api.get('/biggestjump100',{
+
+    }).catch(error=>{
+        console.log(error)
+    })
+}
+export const biggestjump200=()=>{
+    return Api.get('/biggestjump200',{
+
+    }).catch(error=>{
+        console.log(error)
+    })
+}
+
 export const chartingAlbums=()=>{
     return Api.get("/chartingalbums",{
 
@@ -106,8 +208,18 @@ export const checklogin=()=>{
         console.log(error)
     })
 }
+export const articleget=()=>{
+    return Api.get('/get-article').catch(error=>{
+        console.log(error)
+    })
+}
 export const userget=(user)=>{
     return Api.post("/user",{user:user},{withCredentials:true}).catch(error=>{
+        console.log(error)
+    })
+}
+export const userget2=(user)=>{
+    return Api.post("/userlastfm",{user:user},{withCredentials:true}).catch(error=>{
         console.log(error)
     })
 }
