@@ -5,6 +5,7 @@ const port = 3001;
 var url=require('url')
 const jwt = require('jsonwebtoken');
 const User = require("../node_api/models/Users");
+const Articles=require("../node_api/models/articles")
 const billboard200 = require("../node_api/models/billboard200");
 const Cryptr = require("cryptr");
 const cryptr = new Cryptr("ASD12341234");
@@ -13,6 +14,7 @@ const mongoose = require("mongoose");
 const nodemailer = require("nodemailer");
 const billboard100 = require("../node_api/models/billboard100");
 const dotenv = require('dotenv');
+const axios=require('axios')
 var LastfmAPI = require('lastfmapi');
 var lfm = new LastfmAPI({
 	'api_key' : '604024e30367d14d43eda34672a72cf2',
@@ -35,6 +37,7 @@ function authenticateToken(req, res, next) {
     next()
   })
 }
+
 // get config vars
 dotenv.config();
 
@@ -79,6 +82,100 @@ let transporter = nodemailer.createTransport({
     expires: 1484314697598,
   },
 });
+app.get("/",async(req,res)=>{
+  const tres=await billboard100.aggregate([{ $unwind: "$chart.songs" },
+  {
+    $group: {
+      _id: { title: "$chart.songs.title",artist:"$chart.songs.artist"},
+      count: { $sum: 1 },
+      $count:"songs"
+    },
+  },
+]).sort({count:-1}).limit(50)
+})
+app.get("/getartistsongs",async(req,res)=>{
+  const tres=await billboard100.aggregate([
+    { 
+      $unwind: "$chart.songs" 
+    },
+    {
+      $match:{"chart.songs.artist":"Taylor Swift"}
+    },
+    {
+      $group: {
+        _id: { title: "$chart.songs.title",artist:"$chart.songs.artist"},
+        count: { $sum: 1 },
+  
+      },
+    },
+  ]).sort({count:-1})
+    console.log(tres)
+    res.send({count:number,week:last["chart"]["week"]})
+})
+app.get("/countbillboard100",async(req,res)=>{
+  const number=await billboard100.count()
+  const last=await billboard100.findOne({},{"chart.week":1}).sort({_id:-1})
+  const tres=await billboard100.aggregate([
+  { 
+    $unwind: "$chart.songs" 
+  },
+  {
+    $group: {
+      _id: { title: "$chart.songs.title",artist:"$chart.songs.artist"}, 
+    },
+  },
+  {
+    $count:"unique"
+  }
+]).sort({count:-1})
+const cuatro=await billboard100.aggregate([
+  { 
+    $unwind: "$chart.songs" 
+  },
+  {
+    $group: {
+      _id: { artist:"$chart.songs.artist"}, 
+    },
+  },
+  {
+    $count:"unique"
+  }
+]).sort({count:-1})
+console.log(cuatro)
+  res.send({count:number,week:last["chart"]["week"],unique:tres[0]["unique"],uniqueartist:cuatro[0]["unique"],year:Math.trunc(number/52)})
+})
+app.get("/countbillboard200",async(req,res)=>{
+  const number=await billboard200.count()
+  const last=await billboard200.findOne({},{"chart.week":1}).sort({_id:-1})
+  const tres=await billboard200.aggregate([
+    { 
+      $unwind: "$chart.songs" 
+    },
+    {
+      $group: {
+        _id: { title: "$chart.songs.title",artist:"$chart.songs.artist"}  
+      },
+    },
+    {
+      $count:"unique"
+    }
+  ]).sort({count:-1})
+  const cuatro=await billboard200.aggregate([
+    { 
+      $unwind: "$chart.songs" 
+    },
+    {
+      $group: {
+        _id: { artist:"$chart.songs.artist"}, 
+      },
+    },
+    {
+      $count:"unique"
+    }
+  ]).sort({count:-1})
+  console.log(cuatro)
+    res.send({count:number,week:last["chart"]["week"],unique:tres[0]["unique"],uniqueartist:cuatro[0]["unique"],year:Math.trunc(number/52)})
+})
 app.post('/logout',authenticateToken,(req,res)=>{
   console.log("verificado")
   console.log(req.cookies)
@@ -92,11 +189,108 @@ app.get('/createtoken', (req, res) => {
 
   // ...
 });
-app.post('/api/userOrders', authenticateToken, (req, res) => {
-  // executes after authenticateToken
-  // ...
-  console.log("token verificado")
-  res.send("hola")
+app.get("/mostlistenedalbums",async(req,res)=>{
+  var user=await User.find({lastfm:{$ne:""}},{lastfm:1})
+  let album=[]
+
+  for(let i=0;i<user.length;i++)
+  {
+    console.log(user[i]["lastfm"])
+    let url="http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user="+user[i]["lastfm"]+"&api_key=604024e30367d14d43eda34672a72cf2&format=json&limit=50&period=overall"
+    let data=await axios.get(url)
+    console.log(data["data"])
+    for(let x=0;x<data["data"]["topalbums"]["album"].length;x++)
+    {
+      let band=true
+      for(let j=0;j<album.length;j++)
+      {
+        if(album[j]["name"]===data["data"]["topalbums"]["album"][x]["name"])
+        {
+          album[j]["playcount"]=parseInt(album[j]["playcount"])+parseInt(data["data"]["topalbums"]["album"][x]["playcount"])
+          band=false
+        }
+      }
+      if(band===true)
+      {
+        album.push({"artist":data["data"]["topalbums"]["album"][x]["artist"]["name"],"name":data["data"]["topalbums"]["album"][x]["name"],"playcount":parseInt(data["data"]["topalbums"]["album"][x]["playcount"])})
+      }
+    }
+  }
+  album.sort(function(a,b){
+    return parseInt(b.playcount)-parseInt(a.playcount)
+  })
+  res.send(album)
+})
+app.get("/mostlistenedsongs",async(req,res)=>{
+  var user=await User.find({lastfm:{$ne:""}},{lastfm:1})
+  let album=[]
+
+  for(let i=0;i<user.length;i++)
+  {
+    console.log(user[i]["lastfm"])
+    let url="http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user="+user[i]["lastfm"]+"&api_key=604024e30367d14d43eda34672a72cf2&format=json&limit=50&period=overall"
+    let data=await axios.get(url)
+    for(let x=0;x<data["data"]["toptracks"]["track"].length;x++)
+    {
+      let band=true
+      for(let j=0;j<album.length;j++)
+      {
+        if(album[j]["name"]===data["data"]["toptracks"]["track"][x]["name"])
+        {
+          console.log(album[j]["name"]+":")
+          console.log(album[j]["playcount"])
+          console.log(data["data"]["toptracks"]["track"][x]["playcount"])
+          album[j]["playcount"]=parseInt(album[j]["playcount"])+parseInt(data["data"]["toptracks"]["track"][x]["playcount"])
+          band=false
+          console.log(album[j]["playcount"])
+        }
+      }
+      if(band===true)
+      {
+        album.push({"artist":data["data"]["toptracks"]["track"][x]["artist"]["name"],"name":data["data"]["toptracks"]["track"][x]["name"],"playcount":parseInt(data["data"]["toptracks"]["track"][x]["playcount"])})
+      }
+    }
+  }
+  album.sort(function(a,b){
+    return parseInt(b.playcount)-parseInt(a.playcount)
+  })
+  res.send(album)
+})
+app.get("/mostlistenedartists",async(req,res)=>{
+  var user=await User.find({lastfm:{$ne:""}},{lastfm:1})
+  let album=[]
+
+  for(let i=0;i<user.length;i++)
+  {
+    console.log(user[i]["lastfm"])
+    let url="http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user="+user[i]["lastfm"]+"&api_key=604024e30367d14d43eda34672a72cf2&format=json&limit=50&period=overall"
+    let data=await axios.get(url)
+    console.log(data["data"]["topartists"]["artist"])
+    for(let x=0;x<data["data"]["topartists"]["artist"].length;x++)
+    {
+      let band=true
+      for(let j=0;j<album.length;j++)
+      {
+        if(album[j]["name"]===data["data"]["topartists"]["artist"][x]["name"])
+        {
+          console.log(data["data"]["topartists"]["artist"][x]["name"]+":")
+          console.log(album[j]["playcount"])
+          console.log(data["data"]["topartists"]["artist"][x]["playcount"])
+          album[j]["playcount"]=parseInt(album[j]["playcount"])+parseInt(data["data"]["topartists"]["artist"][x]["playcount"])
+          band=false
+          console.log(album[j]["playcount"])
+        }
+      }
+      if(band===true)
+      {
+        album.push({"name":data["data"]["topartists"]["artist"][x]["name"],"playcount":parseInt(data["data"]["topartists"]["artist"][x]["playcount"])})
+      }
+    }
+  }
+  album.sort(function(a,b){
+    return parseInt(b.playcount)-parseInt(a.playcount)
+  })
+  res.send(album)
 })
 app.get("/:user/callback",(req,res)=>{
   var user=req.params.user
@@ -116,8 +310,55 @@ app.get("/:user/callback",(req,res)=>{
   })
 
 })
+app.post("/userlastfm",(req,res)=>{
+  try{
+    let usr
+  let lastfm
+  let flag
+  console.log(req.cookies["token"])
+  if(req.cookies["token"]!==undefined)
+  {
+    jwt.verify(req.cookies["token"], process.env.TOKEN_SECRET, (err, user) => {
+      if (err) {
+      console.log(err)
+      flag=false
+      }
+      else{
+        usr = user
+        flag=true
+      }
+    })
+  }
+  console.log(usr["username"])
+  User.findOne({username:usr["username"]},{email:0,firstname:0,lastname:0,_id:0,username:0,code:0,password:0,emailverified:0},function(err,docs){
+    if(err)
+    {
+      console.log(err)
+    }
+    else{
+      lastfm=docs["lastfm"]
+      if(flag===true)
+      {
+        if(req.body["user"]===usr["username"])
+        {
+          res.send({"data":{"very":"true","lastfm":lastfm}})
+        }
+        else{
+          res.send({"data":{"very":"false","lastfm":lastfm}})
+        }
+      }
+      else{
+        res.send({"data":{"very":"false","lastfm":lastfm}})
+      }
+    }
+  })
+  }catch(error){
+    console.log(error)
+  }
+})
 app.post("/user",(req,res)=>{
-  let usr
+  try{
+    let usr
   let lastfm
   let flag
   console.log(req.cookies["token"])
@@ -156,6 +397,9 @@ app.post("/user",(req,res)=>{
       }
     }
   })
+  }catch(error){
+    console.log(error)
+  }
 })
 app.get("/chartingsongs", async function (req, res) {
   try {
@@ -174,12 +418,46 @@ app.get("/chartingsongs", async function (req, res) {
     console.log(error);
   }
 });
+app.get("/chartingsongsall", async function (req, res) {
+  try {
+    billboard100
+      .aggregate([{ $unwind: "$chart.songs" }])
+      .sort({ _id: -1, "chart.songs.position.weeksOnChart": -1 })
+      .limit(40)
+      .exec(function (err, docs) {
+        if (err) {
+          console.log(err);
+        } else {
+          res.send(docs);
+        }
+      }); //.sort({_id:-1})
+  } catch (error) {
+    console.log(error);
+  }
+});
 app.get("/chartingalbums", async function (req, res) {
   try {
     billboard200
       .aggregate([{ $unwind: "$chart.songs" }])
       .sort({ _id: -1, "chart.songs.position.weeksOnChart": -1 })
       .limit(5)
+      .exec(function (err, docs) {
+        if (err) {
+          console.log(err);
+        } else {
+          res.send(docs);
+        }
+      }); //.sort({_id:-1})
+  } catch (error) {
+    console.log(error);
+  }
+});
+app.get("/chartingalbumsfull", async function (req, res) {
+  try {
+    billboard200
+      .aggregate([{ $unwind: "$chart.songs" }])
+      .sort({ _id: -1, "chart.songs.position.weeksOnChart": -1 })
+      .limit(40)
       .exec(function (err, docs) {
         if (err) {
           console.log(err);
@@ -216,6 +494,172 @@ app.get("/longestsongs", async function (req, res) {
     console.log(error);
   }
 });
+app.get("/longestsongsall",async function(req,res){
+  try {
+    billboard100
+      .aggregate([
+        { $unwind: "$chart.songs" },
+        {
+          $group: {
+            _id: { title: "$chart.songs.title", cover: "$chart.songs.cover", artist:"$chart.songs.artist" },
+            count: { $sum: 1 },
+          },
+        },
+      ])
+      .sort({ count: -1 })
+      .limit(40)
+      .exec(function (err, docs2) {
+        if (err) {
+          console.log(err);
+        } else {
+          res.send(docs2);
+        }
+      }); //.sort({_id:-1})
+  } catch (error) {
+    console.log(error);
+  }
+})
+app.get("/longestalbumsall",async function(req,res){
+  try {
+    billboard200
+      .aggregate([
+        { $unwind: "$chart.songs" },
+        {
+          $group: {
+            _id: { title: "$chart.songs.title", cover: "$chart.songs.cover", artist:"$chart.songs.artist" },
+            count: { $sum: 1 },
+          },
+        },
+      ])
+      .sort({ count: -1 })
+      .limit(40)
+      .exec(function (err, docs2) {
+        if (err) {
+          console.log(err);
+        } else {
+          res.send(docs2);
+        }
+      }); //.sort({_id:-1})
+  } catch (error) {
+    console.log(error);
+  }
+})
+app.get("/biggestdrop100",async function(req,res){
+  try {
+    billboard100
+      .aggregate([
+        { $unwind: "$chart.songs" },
+        {
+          $group: {
+            _id: { title: "$chart.songs.title", artist:"$chart.songs.artist",current:"$chart.songs.rank",last:"$chart.songs.position.positionLastWeek"},
+          },
+        },
+        {
+          $addFields:{
+              totalAmountDue: { $subtract: ["$_id.current", "$_id.last"] }
+          }
+        }
+      ])
+      .sort({ totalAmountDue: -1 })
+      .limit(40)
+      .exec(function (err, docs2) {
+        if (err) {
+          console.log(err);
+        } else {
+          res.send(docs2);
+        }
+      }); //.sort({_id:-1})
+  } catch (error) {
+    console.log(error);
+  }
+})
+app.get("/biggestdrop200",async function(req,res){
+  try {
+    billboard200
+      .aggregate([
+        { $unwind: "$chart.songs" },
+        {
+          $group: {
+            _id: { title: "$chart.songs.title", artist:"$chart.songs.artist",current:"$chart.songs.rank",last:"$chart.songs.position.positionLastWeek"},
+          },
+        },
+        {
+          $addFields:{
+              totalAmountDue: { $subtract: ["$_id.current", "$_id.last"] }
+          }
+        }
+      ])
+      .sort({ totalAmountDue: -1 })
+      .limit(40)
+      .exec(function (err, docs2) {
+        if (err) {
+          console.log(err);
+        } else {
+          res.send(docs2);
+        }
+      }); //.sort({_id:-1})
+  } catch (error) {
+    console.log(error);
+  }
+})
+app.get("/biggestjump100",async function(req,res){
+  try {
+    billboard100
+      .aggregate([
+        { $unwind: "$chart.songs" },
+        {
+          $group: {
+            _id: { title: "$chart.songs.title", artist:"$chart.songs.artist",current:"$chart.songs.rank",last:"$chart.songs.position.positionLastWeek"},
+          },
+        },
+        {
+          $addFields:{
+              totalAmountDue: { $subtract: ["$_id.last", "$_id.current"] }
+          }
+        }
+      ])
+      .sort({ totalAmountDue: -1 })
+      .limit(40)
+      .exec(function (err, docs2) {
+        if (err) {
+          console.log(err);
+        } else {
+          res.send(docs2);
+        }
+      }); //.sort({_id:-1})
+  } catch (error) {
+    console.log(error);
+  }
+})
+app.get("/biggestjump200",async function(req,res){
+  try {
+    billboard200
+      .aggregate([
+        { $unwind: "$chart.songs" },
+        {
+          $group: {
+            _id: { title: "$chart.songs.title", artist:"$chart.songs.artist",current:"$chart.songs.rank",last:"$chart.songs.position.positionLastWeek"},
+          },
+        },
+        {
+          $addFields:{
+              totalAmountDue: { $subtract: ["$_id.last", "$_id.current"] }
+          }
+        }
+      ])
+      .sort({ totalAmountDue: -1 })
+      .limit(40)
+      .exec(function (err, docs2) {
+        if (err) {
+          console.log(err);
+        } else {
+          res.send(docs2);
+        }
+      }); //.sort({_id:-1})
+  } catch (error) {
+    console.log(error);
+  }
+})
 app.get("/artistsongsum", async function (req, res) {
   try {
     billboard100
@@ -329,6 +773,19 @@ app.post("/login", async function (req, res) {
     console.log(error);
   }
 });
+app.post("/post-article",async function(req,res){
+  console.log(req.body)
+  let body=req.body
+  const articleDB=new Articles(body)
+  await articleDB.save()
+  res.send("Posted")
+})
+app.get("/get-article",async function(req,res){
+  let articles=await Articles.find({})
+  console.log(articles)
+  res.send(articles)
+
+})
 app.post("/store-data", async function (req, res) {
   let firstname = req.body.user.firstname;
   let lastname = req.body.user.lastname;
