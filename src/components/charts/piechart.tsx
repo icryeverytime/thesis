@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Pie } from "react-chartjs-2";
 import { useParams } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -9,19 +11,22 @@ import {
   PointElement,
   Tooltip,
 } from "chart.js";
-import { checklogin, userget2, usersalbums, usersartists, userssongs, usertopalbum, usertopartist, usertopsong } from "../../Api/shared";
+import { checklogin, randomarticle, userget2, usersalbums, usersartists, userssongs, usertopalbum, usertopartist, usertopsong } from "../../Api/shared";
+import Article from "../statcomponent/articles";
 ChartJS.register(ArcElement);
 function Piedata() {
   const params = useParams();
   const chart = params["chart"];
   const [result, setResult] = useState("");
   const [lastfm, setLastfm] = useState("");
+  const [article,setArticle]=useState<any>([])
+  const [band,setBand]=useState(false)
   const [data, setData] = useState({
-    labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+    labels: [],
     datasets: [
       {
         label: "# of Plays",
-        data: [12, 19, 3, 5, 2, 3],
+        data: [],
         backgroundColor: [
           "rgba(245,245,220,0.5)",
           "rgba(127,255,0,0.5)",
@@ -207,16 +212,46 @@ function Piedata() {
           },
         ],
       });
+      const result4=await randomarticle(chart)
+      console.log(result4)
+      for(let x=0;x<result4["data"].length;x++)
+      {
+        article.push(result4["data"][x])
+      }
+      console.log(article)
+      setBand(true);
+
     };
     sync();
   }, []);
   return (
-    <div>
+    <div className="bg-blueGray-200 py-10">
+      <div className="bg-white w-80% mx-32 mb-12 shadow-xl rounded-lg py-2">
+      <div className="flex justify-center">
+      <h1 className="mt-5 text-2xl font-bold">{chart}</h1>
+      </div>
+      {band===false &&
+          <div className="flex justify-center mt-4">
+
+          <FontAwesomeIcon icon={faSpinner} className="w-52 h-52 animate-spin white-500"/>
+          </div>
+          }
       <div className="my-6 mx-6 flex justify-center">
         <div className="w-2/4 h-3/4 flex justify-center">
-          <Pie color="red" data={data} redraw={true} />
+        {band===true &&
+           <Pie color="red" data={data} redraw={true} />
+        }
         </div>
       </div>
+      </div>
+      <div className="bg-white w-80% mx-32 mb-12 pb-10 shadow-xl rounded-lg py-2 flex justify-center">
+        <div className="flex flex-col">
+        <h1 className="text-2xl font-bold">Other interesting stats</h1>
+        {band===true &&
+        <Article article={article}/>
+        }
+    </div>
+    </div>  
     </div>
   );
 }

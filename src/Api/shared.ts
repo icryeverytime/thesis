@@ -102,6 +102,33 @@ export const usersartists=()=>{
         console.log(error)
     })
 }
+export const randomarticle=(title)=>{
+    return Api.post("/get-articles",{
+        title: title
+    }).catch(error=>{
+        console.log(error)
+    })
+}
+export const songtitle=()=>{
+    return Api.get("/titlesongsum").catch(error=>{
+        console.log(error)
+    })
+}
+export const albumtitle=()=>{
+    return Api.get("/titlealbumsum").catch(error=>{
+        console.log(error)
+    })
+}
+export const entry100=()=>{
+    return Api.get("/artistsong100").catch(error=>{
+        console.log(error)
+    })
+}
+export const entry200=()=>{
+    return Api.get("/artistsong200").catch(error=>{
+        console.log(error)
+    })
+}
 export const userssongs=()=>{
     return Api.get('/mostlistenedsongs').catch(error=>{
         console.log(error)
@@ -109,6 +136,24 @@ export const userssongs=()=>{
 }
 export const usertopalbum=(user)=>{
     let url="http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user="+user+"&api_key=604024e30367d14d43eda34672a72cf2&format=json&limit=50&period=overall"
+    return axios.get(url).catch(error=>{
+        console.log(error)
+    })
+}
+export const searchartistinfo=(artist)=>{
+    let url="http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist="+artist+"&api_key=604024e30367d14d43eda34672a72cf2&format=json"
+    return axios.get(url).catch(error=>{
+        console.log(error)
+    })
+}
+export const topalbumLast=(artist)=>{
+    let url="http://ws.audioscrobbler.com/2.0/?method=artist.gettopalbums&artist="+artist+"&api_key=604024e30367d14d43eda34672a72cf2&format=json&limit=10"
+    return axios.get(url).catch(error=>{
+        console.log(error)
+    })
+}
+export const toptracksLast=(artist)=>{
+    let url="http://ws.audioscrobbler.com/2.0/?method=artist.gettoptracks&artist="+artist+"&api_key=604024e30367d14d43eda34672a72cf2&format=json&limit=10"
     return axios.get(url).catch(error=>{
         console.log(error)
     })
@@ -210,6 +255,16 @@ export const checklogin=()=>{
 }
 export const articleget=()=>{
     return Api.get('/get-article').catch(error=>{
+        console.log(error)
+    })
+}
+export const artistsearch100=(artist)=>{
+    return Api.post("/getartistsongs",{artist:artist}).catch(error=>{
+        console.log(error)
+    })
+}
+export const artistsearch200=(artist)=>{
+    return Api.post("/getartistalbums",{artist:artist}).catch(error=>{
         console.log(error)
     })
 }

@@ -16,6 +16,7 @@ const billboard100 = require("../node_api/models/billboard100");
 const dotenv = require('dotenv');
 const axios=require('axios')
 var LastfmAPI = require('lastfmapi');
+const { useFetcher } = require("react-router-dom");
 var lfm = new LastfmAPI({
 	'api_key' : '604024e30367d14d43eda34672a72cf2',
 	'secret' : '3cb61d7d9b472fa5b4213ba76a11c338'
@@ -93,13 +94,14 @@ app.get("/",async(req,res)=>{
   },
 ]).sort({count:-1}).limit(50)
 })
-app.get("/getartistsongs",async(req,res)=>{
+app.post("/getartistsongs",async(req,res)=>{
+  console.log(req.body)
   const tres=await billboard100.aggregate([
     { 
       $unwind: "$chart.songs" 
     },
     {
-      $match:{"chart.songs.artist":"Taylor Swift"}
+      $match:{"chart.songs.artist":{$regex:req.body.artist}}
     },
     {
       $group: {
@@ -108,9 +110,29 @@ app.get("/getartistsongs",async(req,res)=>{
   
       },
     },
-  ]).sort({count:-1})
-    console.log(tres)
-    res.send({count:number,week:last["chart"]["week"]})
+  ]).sort({count:-1}).limit(40)
+  console.log(tres)
+  res.send(tres)
+})
+app.post("/getartistalbums",async(req,res)=>{
+  console.log(req.body)
+  const tres=await billboard200.aggregate([
+    { 
+      $unwind: "$chart.songs" 
+    },
+    {
+      $match:{"chart.songs.artist":{$regex:req.body.artist}}
+    },
+    {
+      $group: {
+        _id: { title: "$chart.songs.title",artist:"$chart.songs.artist"},
+        count: { $sum: 1 },
+  
+      },
+    },
+  ]).sort({count:-1}).limit(40)
+  console.log(tres)
+  res.send(tres)
 })
 app.get("/countbillboard100",async(req,res)=>{
   const number=await billboard100.count()
@@ -660,6 +682,208 @@ app.get("/biggestjump200",async function(req,res){
     console.log(error);
   }
 })
+app.get("/titlesongsum", async function (req, res) {
+  try {
+    let arr=[]
+    billboard100
+      .aggregate([
+        { $unwind: "$chart.songs" },
+        {
+          $group: {
+            _id: { title: "$chart.songs.title",artist:"$chart.songs.artist" },
+          },
+        },
+      ])
+      .sort({ count: -1 })
+      .exec(function (err, docs) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(docs.length)
+          for(let i=0;i<docs.length;i++)
+          {
+            let band=true
+            for(let j=0;j<arr.length;j++)
+            {
+              if(arr[j]["title"]===docs[i]["_id"]["title"])
+              {
+                arr[j]["playcount"]=parseInt(arr[j]["playcount"])+1
+                arr[j]["artist"].push(docs[i]["_id"]["artist"])
+                band=false
+              }
+            }
+            if(band===true)
+            {
+              arr.push({"title":docs[i]["_id"]["title"],"playcount":1,"artist":[docs[i]["_id"]["artist"]]})
+            }
+
+          }
+          arr.sort(function(a,b){
+            return parseInt(b.playcount)-parseInt(a.playcount)
+          })
+          let arr2=[]
+          for(let x=0;x<40;x++)
+          {
+            arr2.push(arr[x])
+          }
+          res.send(arr2);
+        }
+      }); //.sort({_id:-1})
+  } catch (error) {
+    console.log(error);
+  }
+});
+app.get("/artistsong100", async function (req, res) {
+  try {
+    let arr=[]
+    billboard100
+      .aggregate([
+        { $unwind: "$chart.songs" },
+        {
+          $group: {
+            _id: { title: "$chart.songs.title",artist:"$chart.songs.artist" },
+          },
+        },
+      ])
+      .sort({ count: -1 })
+      .exec(function (err, docs) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(docs.length)
+          for(let i=0;i<docs.length;i++)
+          {
+            let band=true
+            for(let j=0;j<arr.length;j++)
+            {
+              if(arr[j]["artist"]===docs[i]["_id"]["artist"])
+              {
+                arr[j]["playcount"]=parseInt(arr[j]["playcount"])+1
+                band=false
+              }
+            }
+            if(band===true)
+            {
+              arr.push({"artist":docs[i]["_id"]["artist"],"playcount":1})
+            }
+
+          }
+          arr.sort(function(a,b){
+            return parseInt(b.playcount)-parseInt(a.playcount)
+          })
+          let arr2=[]
+          for(let x=0;x<40;x++)
+          {
+            arr2.push(arr[x])
+          }
+          res.send(arr2);
+        }
+      }); //.sort({_id:-1})
+  } catch (error) {
+    console.log(error);
+  }
+});
+app.get("/artistsong200", async function (req, res) {
+  try {
+    let arr=[]
+    billboard200
+      .aggregate([
+        { $unwind: "$chart.songs" },
+        {
+          $group: {
+            _id: { title: "$chart.songs.title",artist:"$chart.songs.artist" },
+          },
+        },
+      ])
+      .sort({ count: -1 })
+      .exec(function (err, docs) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(docs.length)
+          for(let i=0;i<docs.length;i++)
+          {
+            let band=true
+            for(let j=0;j<arr.length;j++)
+            {
+              if(arr[j]["artist"]===docs[i]["_id"]["artist"])
+              {
+                arr[j]["playcount"]=parseInt(arr[j]["playcount"])+1
+                band=false
+              }
+            }
+            if(band===true &&docs[i]["_id"]["artist"]!=="Soundtrack"&&docs[i]["_id"]["artist"]!=="Various Artists")
+            {
+              arr.push({"artist":docs[i]["_id"]["artist"],"playcount":1})
+            }
+
+          }
+          arr.sort(function(a,b){
+            return parseInt(b.playcount)-parseInt(a.playcount)
+          })
+          let arr2=[]
+          for(let x=0;x<40;x++)
+          {
+            arr2.push(arr[x])
+          }
+          res.send(arr2);
+        }
+      }); //.sort({_id:-1})
+  } catch (error) {
+    console.log(error);
+  }
+});
+app.get("/titlealbumsum", async function (req, res) {
+  try {
+    let arr=[]
+    billboard200
+      .aggregate([
+        { $unwind: "$chart.songs" },
+        {
+          $group: {
+            _id: { title: "$chart.songs.title",artist:"$chart.songs.artist" },
+          },
+        },
+      ])
+      .sort({ count: -1 })
+      .exec(function (err, docs) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(docs.length)
+          for(let i=0;i<docs.length;i++)
+          {
+            let band=true
+            for(let j=0;j<arr.length;j++)
+            {
+              if(arr[j]["title"]===docs[i]["_id"]["title"])
+              {
+                arr[j]["playcount"]=parseInt(arr[j]["playcount"])+1
+                arr[j]["artist"].push(docs[i]["_id"]["artist"])
+                band=false
+              }
+            }
+            if(band===true)
+            {
+              arr.push({"title":docs[i]["_id"]["title"],"playcount":1,"artist":[docs[i]["_id"]["artist"]]})
+            }
+
+          }
+          arr.sort(function(a,b){
+            return parseInt(b.playcount)-parseInt(a.playcount)
+          })
+          let arr2=[]
+          for(let x=0;x<40;x++)
+          {
+            arr2.push(arr[x])
+          }
+          res.send(arr2);
+        }
+      }); //.sort({_id:-1})
+  } catch (error) {
+    console.log(error);
+  }
+});
 app.get("/artistsongsum", async function (req, res) {
   try {
     billboard100
@@ -785,6 +1009,23 @@ app.get("/get-article",async function(req,res){
   console.log(articles)
   res.send(articles)
 
+})
+app.post("/get-articles",async function(req,res){
+  console.log(req.body)
+  let articles=await Articles.find({title:{$ne:req.body.title}})
+  let answer=[]
+  let rand1=-1
+  for(let i=0;i<2;i++)
+  {
+    do{
+      rand=Math.floor(Math.random() * ((articles.length-1) - 0) + 0)
+    }while(rand1===rand)
+    rand1=rand
+    console.log(rand)
+    answer.push(articles[rand])
+  }
+  console.log(answer)
+  res.send(answer)
 })
 app.post("/store-data", async function (req, res) {
   let firstname = req.body.user.firstname;

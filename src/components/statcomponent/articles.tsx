@@ -7,7 +7,7 @@ function Article({article}){
     let art=article.map((a)=>{
         let data:any[]=a["tags"]
         return(
-            <div className="mx-4 hover:cursor-pointer hover:shadow-2xl my-4 rounded flex flex-row" onClick={()=>{if(a["title"]==="Our users most listened to songs of all time"||a["title"]==="Our users most listened to artists of all time"||a["title"]==="Pie chart of your top artists"||a["title"]==="Pie chart of your top songs"||a["title"]==="Pie chart of your top albums"||a["title"]==="Our users most listened to albums of all time"){history("/thesis/piechart/"+a["title"])}else{history("/thesis/barchart/"+a["title"])}}}>
+            <div className="mx-4 hover:cursor-pointer hover:shadow-2xl my-4 rounded flex flex-row" onClick={()=>{if(a["title"]==="Our users most listened to songs of all time"||a["title"]==="Our users most listened to artists of all time"||a["title"]==="Pie chart of your top artists"||a["title"]==="Pie chart of your top songs"||a["title"]==="Pie chart of your top albums"||a["title"]==="Our users most listened to albums of all time"){history("/thesis/piechart/"+a["title"])}else if(a["title"]==="Search stats from your favorite artist"){history("/searchartist")}else{history("/thesis/barchart/"+a["title"])}}}>
                 <img className="w-52 h-52 rounded-tl-lg rounded-bl-lg" src={a["image"]}/> 
                 <div className="w-52 h-52 bg-blueGray-200 rounded-tr-lg rounded-br-lg">
                 <p className="mx-2 text-lg font-bold">{a["title"]}</p>
