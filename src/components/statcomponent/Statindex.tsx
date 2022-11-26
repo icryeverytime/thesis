@@ -44,11 +44,11 @@ function Stat()
             {
                 article1.push(result3["data"][i])
             }
-            else if(result3["data"][i]["tags"].includes("Billboard 200"))
+            if(result3["data"][i]["tags"].includes("Billboard 200"))
             {
                 article2.push(result3["data"][i])
             }
-            else if(result3["data"][i]["tags"].includes("lastfm"))
+            if(result3["data"][i]["tags"].includes("lastfm"))
             {
                 article3.push(result3["data"][i])
             }

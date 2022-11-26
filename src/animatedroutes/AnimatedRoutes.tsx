@@ -12,6 +12,7 @@ import { useLocation } from "react-router-dom";
 import {AnimatePresence} from 'framer-motion';
 import Barchartindex from "../components/charts/chartindex";
 import Piedata from "../components/charts/piechart"
+import Searchartist from "../components/charts/searchartist";
 function AnimatedRoutes()
 {
 
@@ -28,6 +29,7 @@ function AnimatedRoutes()
                 <Route path="thesis/Stat" element={<Stat/>}/>
                 <Route path="thesis/barchart/:chart" element={<Barchartindex/>}/>
                 <Route path="thesis/piechart/:chart" element={<Piedata/>}/>
+                <Route path="searchartist" element={<Searchartist />}/>
             </Routes>
         </AnimatePresence>
     );
