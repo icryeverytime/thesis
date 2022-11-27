@@ -3,6 +3,9 @@ import { Pie } from "react-chartjs-2";
 import { useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import Commentform from "../comments/commentform";
+import { getcomment } from "../../Api/shared";
+import { Comment } from "../comments/commentsection";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -19,6 +22,7 @@ function Piedata() {
   const chart = params["chart"];
   const [result, setResult] = useState("");
   const [lastfm, setLastfm] = useState("");
+  const [comments,setComments]=useState([])
   const [article,setArticle]=useState<any>([])
   const [band,setBand]=useState(false)
   const [data, setData] = useState({
@@ -220,7 +224,8 @@ function Piedata() {
       }
       console.log(article)
       setBand(true);
-
+      const result5= await getcomment(chart)
+      setComments(result5["data"]["comments"])
     };
     sync();
   }, []);
@@ -251,7 +256,23 @@ function Piedata() {
         <Article article={article}/>
         }
     </div>
-    </div>  
+    </div> 
+    <div className="bg-white w-80% mx-32 mb-12 pb-10 shadow-xl rounded-lg py-2 flex flex-col justify-center">
+        <div className="flex flex-col mx-auto">
+        <h1 className="text-2xl font-bold">Comment Section</h1>
+        {comments.length==0&&
+      <div>
+        <h1 className="text-xl">Be the first to comment</h1>
+        </div>
+      }
+      </div>
+      {comments.map(function(object,i){
+        return(
+          <Comment comment={object} key={i} />
+        )
+      })}
+      <Commentform title={chart}/>
+    </div> 
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { artistsearch100, artistsearch200, randomarticle, searchartistinfo, topalbumLast, toptracksLast } from "../../Api/shared";
+import { artistsearch100, artistsearch200, getcomment, randomarticle, searchartistinfo, topalbumLast, toptracksLast } from "../../Api/shared";
 import { Bar } from "react-chartjs-2";
 import Article from "../statcomponent/articles";
 import {
@@ -10,8 +10,11 @@ import {
   PointElement,
   Tooltip,
 } from "chart.js";
+import { Comment } from "../comments/commentsection";
+import Commentform from "../comments/commentform";
 ChartJS.register(BarElement, CategoryScale, LinearScale, PointElement, Tooltip);
 function Searchartist() {
+  const [comments,setComments]=useState([])
   const [data, setData] = useState({
     labels: [],
     datasets: [
@@ -61,10 +64,16 @@ function Searchartist() {
     }
   },[resultado])
   useEffect(()=>{
+    console.log(comments)
+  },[comments])
+  useEffect(()=>{
     const sync = async () => {
       const resul=await randomarticle("Search stats from your favorite artist")
       setResultado(resul)
-
+      const comments2=await getcomment("Search stats from your favorite artist")
+      console.log(comments2["data"]["comments"])
+      setComments(comments2["data"]["comments"])
+      console.log(comments)
     }
     sync()
   },[])
@@ -316,6 +325,17 @@ function Searchartist() {
         <Article article={article}/>
         }
     </div>
+    </div>
+    <div className="bg-white w-80% mx-32 mb-12 pb-10 mt-4 shadow-xl rounded-lg py-2 flex flex-col justify-center">
+        <div className="flex flex-col mx-auto">
+        <h1 className="text-2xl font-bold">Comment Section</h1>
+      </div>
+      {comments.map(function(object,i){
+        return(
+          <Comment comment={object} key={i} />
+        )
+      })}
+      <Commentform title={"Search stats from your favorite artist"}/>
     </div>
       </div>
     </div>
