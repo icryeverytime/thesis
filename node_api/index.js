@@ -3,6 +3,7 @@ const app = express();
 const cors = require("cors");
 const port = 3001;
 var url=require('url')
+var mongo=require('mongodb')
 const jwt = require('jsonwebtoken');
 const User = require("../node_api/models/Users");
 const Articles=require("../node_api/models/articles")
@@ -314,6 +315,11 @@ app.get("/mostlistenedartists",async(req,res)=>{
   })
   res.send(album)
 })
+app.post("/getcomments",async(req,res)=>{
+  const result=await Articles.findOne({title:req.body.title},{comments:1})
+  console.log(result)
+  res.send(result)
+})
 app.get("/:user/callback",(req,res)=>{
   var user=req.params.user
   var token=url.parse(req.url,true).query.token
@@ -377,6 +383,23 @@ app.post("/userlastfm",(req,res)=>{
   }catch(error){
     console.log(error)
   }
+})
+app.post("/postcomment",authenticateToken,async(req,res)=>{
+  console.log(req.user.username)
+  console.log(req.body)
+  let lastfm=await User.findOne({username:req.user.username},{lastfm:1})
+  console.log(lastfm)
+  let date_time = new Date();
+  let date = ("0" + date_time.getDate()).slice(-2);
+  let month = ("0" + (date_time.getMonth() + 1)).slice(-2);
+  let year = date_time.getFullYear();
+  let hours = date_time.getHours();
+  let minutes = date_time.getMinutes();
+  let seconds = date_time.getSeconds();
+  let time=year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds;
+  const result=await Articles.updateOne({title:req.body.title},{$push:{comments:{user:req.user.username,lastfm:lastfm["lastfm"],time:time,text:req.body.comment}}})
+  console.log(result)
+  res.send(result)
 })
 app.post("/user",(req,res)=>{
   try{

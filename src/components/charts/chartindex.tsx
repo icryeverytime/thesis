@@ -4,6 +4,8 @@ import { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import Commentform from "../comments/commentform";
+import { Comment } from "../comments/commentsection";
 import {
   Chart as ChartJS,
   BarElement,
@@ -24,6 +26,7 @@ import {
   chartingSongssfull,
   entry100,
   entry200,
+  getcomment,
   randomarticle,
   songtitle,
 } from "../../Api/shared";
@@ -35,6 +38,7 @@ function Barchartindex() {
   const params = useParams();
   const chart = params["chart"];
   const [label, setLabel] = useState("");
+  const [comments,setComments]=useState([])
   const [band, setBand] = useState(false);
   const [article,setArticle]=useState<any>([])
   const [data, setData] = useState({
@@ -160,6 +164,8 @@ function Barchartindex() {
       }
       console.log(article)
       setBand(true);
+      const result5= await getcomment(chart)
+      setComments(result5["data"]["comments"])
     };
     sync();
   }, []);
@@ -213,6 +219,22 @@ function Barchartindex() {
         <Article article={article}/>
         }
         </div>
+    </div>
+    <div className="bg-white w-80% mx-32 mb-12 pb-10 shadow-xl rounded-lg py-2 flex flex-col justify-center">
+        <div className="flex flex-col mx-auto">
+        <h1 className="text-2xl font-bold">Comment Section</h1>
+        {comments.length==0&&
+      <div>
+        <h1 className="text-xl">Be the first to comment</h1>
+        </div>
+      }
+      </div>
+      {comments.map(function(object,i){
+        return(
+          <Comment comment={object} key={i} />
+        )
+      })}
+      <Commentform title={chart}/>
     </div>
     </div>
   );

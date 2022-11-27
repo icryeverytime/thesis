@@ -273,6 +273,16 @@ export const userget=(user)=>{
         console.log(error)
     })
 }
+export const postcomment=(comment,title)=>{
+    return Api.post("/postcomment",{comment:comment,title:title},{withCredentials:true}).catch(error=>{
+        console.log(error)
+    })
+}
+export const getcomment=(title)=>{
+    return Api.post("/getcomments",{title:title},{withCredentials:true}).catch(error=>{
+        console.log(error)
+    })
+}
 export const userget2=(user)=>{
     return Api.post("/userlastfm",{user:user},{withCredentials:true}).catch(error=>{
         console.log(error)
