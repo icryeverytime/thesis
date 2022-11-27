@@ -1,26 +1,26 @@
 {
   "files": {
-    "main.css": "/thesis/static/css/main.51f39a6d.css",
-    "main.js": "/thesis/static/js/main.55075f8f.js",
-    "static/js/787.d6cb1aba.chunk.js": "/thesis/static/js/787.d6cb1aba.chunk.js",
-    "static/media/home.jpg": "/thesis/static/media/home.f068e1373dee38c414fd.jpg",
-    "static/media/header.png": "/thesis/static/media/header.13a0210d5b068658f791.png",
-    "static/media/documentation.png": "/thesis/static/media/documentation.014ebef5373d22e36244.png",
-    "static/media/component-profile-card.png": "/thesis/static/media/component-profile-card.52a3ee76a70356d2e910.png",
-    "static/media/landing.jpg": "/thesis/static/media/landing.8150f1b0f50babf23b18.jpg",
-    "static/media/profile.jpg": "/thesis/static/media/profile.c62f8a5b46b0d1826ede.jpg",
-    "static/media/login.jpg": "/thesis/static/media/login.9c1ecd37bdf6110890b8.jpg",
-    "static/media/component-info-2.png": "/thesis/static/media/component-info-2.5212a3a6a4cdd7663af1.png",
-    "static/media/component-info-card.png": "/thesis/static/media/component-info-card.d19a4464d2cb70bb8050.png",
+    "main.css": "/thesis/static/css/main.4352b308.css",
+    "main.js": "/thesis/static/js/main.ac1a8344.js",
+    "static/js/988.dd383736.chunk.js": "/thesis/static/js/988.dd383736.chunk.js",
+    "static/media/profileBG.jpg": "/thesis/static/media/profileBG.122d90c1cea270bedd02.jpg",
+    "static/media/crown.jpg": "/thesis/static/media/crown.fa6cd2f2bc9f21d44ddf.jpg",
+    "static/media/gem.jpg": "/thesis/static/media/gem.b92b67496d3d9a514a27.jpg",
+    "static/media/pic2.jpg": "/thesis/static/media/pic2.fa5a7ac2c81a43925586.jpg",
+    "static/media/documentation.png": "/thesis/static/media/documentation.a518e08adbba23cd14f4.png",
+    "static/media/charts.jpg": "/thesis/static/media/charts.2d76e63c580c8efd18be.jpg",
+    "static/media/home.jpg": "/thesis/static/media/home.341b69e16fd687636ed0.jpg",
     "static/media/headphones.jpg": "/thesis/static/media/headphones.c8f7482a539441fa8f6c.jpg",
-    "static/media/component-menu.png": "/thesis/static/media/component-menu.418bd9495e75d1cb2461.png",
+    "static/media/gold1.jpg": "/thesis/static/media/gold1.cd0240eade3356a660d5.jpg",
+    "static/media/disc.jpg": "/thesis/static/media/disc.df88256608978a487ad8.jpg",
+    "static/media/note.png": "/thesis/static/media/note.27cd7618203fde50f53d.png",
     "index.html": "/thesis/index.html",
-    "main.51f39a6d.css.map": "/thesis/static/css/main.51f39a6d.css.map",
-    "main.55075f8f.js.map": "/thesis/static/js/main.55075f8f.js.map",
-    "787.d6cb1aba.chunk.js.map": "/thesis/static/js/787.d6cb1aba.chunk.js.map"
+    "main.4352b308.css.map": "/thesis/static/css/main.4352b308.css.map",
+    "main.ac1a8344.js.map": "/thesis/static/js/main.ac1a8344.js.map",
+    "988.dd383736.chunk.js.map": "/thesis/static/js/988.dd383736.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.51f39a6d.css",
-    "static/js/main.55075f8f.js"
+    "static/css/main.4352b308.css",
+    "static/js/main.ac1a8344.js"
   ]
 }
