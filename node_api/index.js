@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const port = 3001;
+const { getChart } = require('billboard-top-100');
 var url=require('url')
 var mongo=require('mongodb')
 const jwt = require('jsonwebtoken');
@@ -18,6 +19,58 @@ const dotenv = require('dotenv');
 const axios=require('axios')
 var LastfmAPI = require('lastfmapi');
 const { useFetcher } = require("react-router-dom");
+const CronJob = require('cron').CronJob;
+
+const exampleJob = new CronJob(`53 20 * * 2`,()=>{
+    console.log("You will see this message whe cron is executed",new Date().getSeconds());
+});
+
+exampleJob.start();
+function promesa1(fecha){
+  //billboard-200
+  return new Promise((resolve,reject)=>{
+    getChart('hot-100', fecha, (err, chart) => {
+      if (err) reject(err);
+      resolve(chart);
+    });
+  }) 
+}
+function promesa2(fecha){
+  //billboard-200
+  return new Promise((resolve,reject)=>{
+    getChart('billboard-200', fecha, (err, chart) => {
+      if (err) reject(err);
+      resolve(chart);
+    });
+  }) 
+}
+const updateBillboard= new CronJob(`20 19 * * 3`,async()=>{
+  let date_time = new Date();
+  console.log("You will see this message whe cron is executed",new Date().getSeconds());
+  let date = ("0" + date_time.getDate()).slice(-2)-5;
+  // get current month
+  let month = ("0" + (date_time.getMonth() + 1)).slice(-2);
+  // get current year
+  let year = date_time.getFullYear();
+  let currentdate=year + "-" + month + "-" + date;
+  let resultado=await promesa1(currentdate);
+  let resultado2=await promesa2(currentdate)
+  console.log(resultado)
+  console.log(currentdate)
+  try{
+    const billboardDB = new billboard100({"chart":resultado});
+    console.log(billboardDB)
+    const billboard2DB=new billboard200({"chart":resultado2})
+    console.log(billboard2DB)
+    await billboardDB.save();
+    await billboard2DB.save();
+  }catch(error)
+  {
+    console.log(error)
+  }
+});
+
+updateBillboard.start();
 var lfm = new LastfmAPI({
 	'api_key' : '604024e30367d14d43eda34672a72cf2',
 	'secret' : '3cb61d7d9b472fa5b4213ba76a11c338'

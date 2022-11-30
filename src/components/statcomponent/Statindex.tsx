@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { articleget, countbillboard100, countbillboard200 } from "../../Api/shared";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../redux/app/store";
+import { useAppSelector } from "../../redux/app/hooks";
 import Article from "./articles";
+import { alltitles, resetTitles } from "../../redux/reducers/reducerTitles";
+import { bill100count, resetBill100 } from "../../redux/reducers/reducerBillboard100";
 function Stat()
 {
     const [countBillboard100,setBillboard100]=useState("")
@@ -21,39 +26,58 @@ function Stat()
     const [article2,setArticle2]=useState<any>([])
     const [article3,setArticle3]=useState<any>([])
     const [bandera,setBandera]=useState(false)
+    const [bandera2,setBandera2]=useState(false)
+    const dispatch=useDispatch<AppDispatch>()
+    const dataarticles=useAppSelector((state)=>state.titles)
+    const data100=useAppSelector((state)=>state.count100)
     useEffect(()=>{
-       
+        if(data100["intStatus"]===200)
+        {
+            console.log("Count 100:")
+            console.log(data100)
+            setBillboard100(data100["Result"]["count"])
+            setLastbillboard100(data100["Result"]["week"])
+            setUnique100(data100["Result"]["unique"])
+            setUniqueArtist100(data100["Result"]["uniqueartist"])
+            setYear100(data100["Result"]["year"])
+        dispatch(resetBill100())
+        }
+    },[data100])
+    useEffect(()=>{
+        console.log("Data articles:")
+        console.log(dataarticles)
+        if(dataarticles["intStatus"]===200)
+        {
+            for(let i=0;i<dataarticles["Result"].length;i++)
+        {
+            if(dataarticles["Result"][i]["tags"].includes("Billboard 100"))
+            {
+                article1.push(dataarticles["Result"][i])
+            }
+            if(dataarticles["Result"][i]["tags"].includes("Billboard 200"))
+            {
+                article2.push(dataarticles["Result"][i])
+            }
+            if(dataarticles["Result"][i]["tags"].includes("lastfm"))
+            {
+                article3.push(dataarticles["Result"][i])
+            }
+        }
+        dispatch(resetTitles())
+        setBandera2(true)
+        }
+    },[dataarticles])
+    useEffect(()=>{
+    dispatch(alltitles())
+    dispatch(bill100count())
+    
       const sync=async()=>{
-        const result=await countbillboard100()
         const result2=await countbillboard200()
-        setBillboard100(result["data"]["count"])
-        setLastbillboard100(result["data"]["week"])
-        setUnique100(result["data"]["unique"])
-        setUniqueArtist100(result["data"]["uniqueartist"])
         setBillboard200(result2["data"]["count"])
         setLastbillboard200(result2["data"]["week"])
         setUnique200(result2["data"]["unique"])
         setUniqueArtist200(result2["data"]["uniqueartist"])
-        setYear100(result["data"]["year"])
         setYear200(result2["data"]["year"])
-        const result3=await articleget()
-        
-        for(let i=0;i<result3["data"].length;i++)
-        {
-            if(result3["data"][i]["tags"].includes("Billboard 100"))
-            {
-                article1.push(result3["data"][i])
-            }
-            if(result3["data"][i]["tags"].includes("Billboard 200"))
-            {
-                article2.push(result3["data"][i])
-            }
-            if(result3["data"][i]["tags"].includes("lastfm"))
-            {
-                article3.push(result3["data"][i])
-            }
-        }
-
         setBandera(true)
       }
       sync()
@@ -114,10 +138,10 @@ function Stat()
             <div className="mt-10 flex justify-center">
                 <h1 className="text-2xl font-bold">Billboard 100</h1>
             </div>
-            {bandera===true &&
+            {bandera2===true &&
             <Article article={article1}/>
             }
-            {bandera===false &&
+            {bandera2===false &&
             <div className="mt-10 flex justify-center">
 
             <FontAwesomeIcon icon={faSpinner} className="w-52 h-52 animate-spin white-500"/>
@@ -127,10 +151,10 @@ function Stat()
             <div className="mt-10 flex justify-center">
                 <h1 className="text-2xl font-bold">Billboard 200</h1>
             </div>
-            {bandera===true &&
+            {bandera2===true &&
             <Article article={article2}/>
             }
-            {bandera===false &&
+            {bandera2===false &&
             <div className="mt-10 flex justify-center">
 
             <FontAwesomeIcon icon={faSpinner} className="w-52 h-52 animate-spin white-500"/>
@@ -140,10 +164,10 @@ function Stat()
             <div className="mt-10 flex justify-center">
                 <h1 className="text-2xl font-bold">Last.fm</h1>
             </div>
-            {bandera===true &&
+            {bandera2===true &&
             <Article article={article3}/>
             }
-            {bandera===false &&
+            {bandera2===false &&
             <div className="mt-10 flex justify-center">
 
             <FontAwesomeIcon icon={faSpinner} className="w-52 h-52 animate-spin white-500"/>

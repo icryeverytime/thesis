@@ -7,6 +7,10 @@ import reducerHomealbums from '../reducers/reducerHomealbums';
 import reducerLong from '../reducers/reducerLong';
 import reducerCheck from '../reducers/reducerCheck';
 import reducerUser from '../reducers/reducerUser';
+import reducerArticle from '../reducers/reducerArticle';
+import reducerComment from '../reducers/reducerComment';
+import reducerTitles from '../reducers/reducerTitles';
+import reducerBillboard100 from '../reducers/reducerBillboard100';
 export const store = configureStore({
     reducer: {
         users: reducerApp,
@@ -16,7 +20,11 @@ export const store = configureStore({
         statAlbums: reducerHomealbums,
         longSong: reducerLong,
         checklogin: reducerCheck, 
-        usercheck: reducerUser
+        usercheck: reducerUser,
+        randomarticle: reducerArticle,
+        comments:reducerComment,
+        titles:reducerTitles,
+        count100:reducerBillboard100
     },
 })
 export type AppDispatch = typeof store.dispatch
