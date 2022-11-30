@@ -5,6 +5,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import Commentform from "../comments/commentform";
 import { getcomment } from "../../Api/shared";
+import { useDispatch } from "react-redux";
+import { getComments, resetComment } from "../../redux/reducers/reducerComment";
+import { AppDispatch } from "../../redux/app/store";
+import { otherarticle, resetArticle } from "../../redux/reducers/reducerArticle";
+import { useAppSelector } from "../../redux/app/hooks";
 import { Comment } from "../comments/commentsection";
 import {
   Chart as ChartJS,
@@ -20,9 +25,14 @@ ChartJS.register(ArcElement);
 function Piedata() {
   const params = useParams();
   const chart = params["chart"];
+  const dispatch=useDispatch<AppDispatch>()
+  const datosarticle=useAppSelector((state)=>state.randomarticle)
+  const datoscomments=useAppSelector((state)=>state.comments)
   const [result, setResult] = useState("");
   const [lastfm, setLastfm] = useState("");
   const [comments,setComments]=useState([])
+  const [band2,setBand2]=useState(false)
+  const [band3,setBand3]=useState(false)
   const [article,setArticle]=useState<any>([])
   const [band,setBand]=useState(false)
   const [data, setData] = useState({
@@ -89,17 +99,40 @@ function Piedata() {
       },
     ],
   });
+  useEffect(()=>{
+    if(datosarticle["intStatus"]===200)
+    {
+      console.log("Datos articles:")
+      console.log(datosarticle)
+      for(let i=0;i<datosarticle["Result"].length;i++)
+      {
+        article.push(datosarticle["Result"][i])
+        
+      }
+      setBand3(true)
+      dispatch(resetArticle())
+    }
+  },[datosarticle])
+  useEffect(()=>{
+    if(datoscomments["intStatus"]===200 &&datoscomments["Result"]["comments"]!==undefined)
+    {
+      setComments(datoscomments["Result"]["comments"])
+      setBand2(true)
+      dispatch(resetComment())
+    }
+  },[datoscomments])
   useEffect(() => {
+    dispatch(getComments(chart))
+    dispatch(otherarticle(chart))
     const sync = async () => {
       console.log(chart);
       let data3
       let name:any=[]
       let play: any = [];
-      
-        let data = await checklogin();
-        setResult(data["data"]["data"]);
-        let data2 = await userget2(result);
-        console.log(data2["data"]["data"]["lastfm"]);
+      let data = await checklogin();
+      setResult(data["data"]["data"]);
+      let data2 = await userget2(result);
+      console.log(data2["data"]["data"]["lastfm"]);
      if (chart === "Pie chart of your top artists") {
         data3 = await usertopartist(data2["data"]["data"]["lastfm"]);
         for (let i = 0; i < data3["data"]["topartists"]["artist"].length; i++) {
@@ -216,16 +249,7 @@ function Piedata() {
           },
         ],
       });
-      const result4=await randomarticle(chart)
-      console.log(result4)
-      for(let x=0;x<result4["data"].length;x++)
-      {
-        article.push(result4["data"][x])
-      }
-      console.log(article)
       setBand(true);
-      const result5= await getcomment(chart)
-      setComments(result5["data"]["comments"])
     };
     sync();
   }, []);
@@ -252,7 +276,7 @@ function Piedata() {
       <div className="bg-white w-80% mx-32 mb-12 pb-10 shadow-xl rounded-lg py-2 flex justify-center">
         <div className="flex flex-col">
         <h1 className="text-2xl font-bold">Other interesting stats</h1>
-        {band===true &&
+        {band3===true &&
         <Article article={article}/>
         }
     </div>

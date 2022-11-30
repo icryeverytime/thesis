@@ -16,6 +16,7 @@ import { faChartLine } from "@fortawesome/free-solid-svg-icons";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { faMusic } from "@fortawesome/free-solid-svg-icons";
 import Stathome from "./homecomponent/stathome";
+import { NavLink } from "react-router-dom";
 function Home() {
   return (
     <div>
@@ -39,18 +40,12 @@ function Home() {
                 </a>
               </p>
               <div className="mt-12">
-                <a
-                  href="https://www.creative-tim.com/learning-lab/tailwind/react/overview/notus?ref=nr-index"
+                <NavLink
+                  to="/thesis/stat"
                   className="get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-lightBlue-500 active:bg-lightBlue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150"
                 >
                   Get started
-                </a>
-                <a
-                  href="https://github.com/creativetimofficial/notus-react?ref=nr-index"
-                  className="github-star ml-1 text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-blueGray-700 active:bg-blueGray-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150"
-                >
-                  Top Charts
-                </a>
+                </NavLink>
               </div>
             </div>
           </div>
@@ -101,12 +96,12 @@ function Home() {
                     See whats everyone talking about
                   </h4>
                   <p className="text-md font-light mt-2 text-white">
-                    Discover hundreds of blogs from people like you that have
-                    found patterns and secrets behind the statistics we publish
-                    each week.{" "}
-                    <a href="" className="underline-offset-8 ">
+                    Discover different stats from  lovers of music like you and
+                    find patterns and secrets behind the music our users
+                    listen to.{" "}
+                    <NavLink to="/thesis/stat" className="underline-offset-8 ">
                       Go read them...{" "}
-                    </a>
+                    </NavLink>
                   </p>
                 </blockquote>
               </div>
@@ -172,11 +167,10 @@ function Home() {
                         </i>
                       </div>
                       <h6 className="text-xl mb-1 font-semibold">
-                        Explore professional opinions
+                        Explore decades of data
                       </h6>
                       <p className="mb-4 text-blueGray-500">
-                        Find out what music analysts are talking about and
-                        compare it with the comunity
+                        Find out what year of data tell us about your favorite artists
                       </p>
                     </div>
                   </div>
@@ -220,13 +214,13 @@ function Home() {
                   Top 100
                 </span>
               </div>
-              <a
-                href="https://www.creative-tim.com/learning-lab/tailwind/react/alerts/notus?ref=nr-index"
+              <NavLink
+                to="/thesis/stat"
                 className="font-bold text-blueGray-700 hover:text-blueGray-500 ease-linear transition-all duration-150"
               >
                 View All {" >>"}
                 <i className="fa fa-angle-double-right ml-1 leading-relaxed"></i>
-              </a>
+              </NavLink>
             </div>
 
             <div className="w-full md:w-5/12 px-4 mr-auto ml-auto mt-32">

@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import Commentform from "../comments/commentform";
+import { otherarticle, resetArticle } from "../../redux/reducers/reducerArticle";
 import { Comment } from "../comments/commentsection";
 import {
   Chart as ChartJS,
@@ -30,8 +31,13 @@ import {
   randomarticle,
   songtitle,
 } from "../../Api/shared";
+import { useAppSelector } from "../../redux/app/hooks";
 import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../redux/app/store";
 import Article from "../statcomponent/articles";
+import { clear } from "console";
+import { getComments, resetComment } from "../../redux/reducers/reducerComment";
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, PointElement, Tooltip);
 function Barchartindex() {
@@ -40,6 +46,10 @@ function Barchartindex() {
   const [label, setLabel] = useState("");
   const [comments,setComments]=useState([])
   const [band, setBand] = useState(false);
+  const [band2,setBand2]=useState(false)
+  const dispatch=useDispatch<AppDispatch>()
+  const datosarticle=useAppSelector((state)=>state.randomarticle)
+  const datoscomments=useAppSelector((state)=>state.comments)
   const [article,setArticle]=useState<any>([])
   const [data, setData] = useState({
     labels: [],
@@ -51,10 +61,31 @@ function Barchartindex() {
       },
     ],
   });
-  const options = {};
+  useEffect(()=>{
+    console.log("datosarticle::")
+    console.log(datosarticle)
+    if(datosarticle["intStatus"]===200)
+    {
+      for(let i=0;i<datosarticle["Result"].length;i++)
+      {
+        article.push(datosarticle["Result"][i])
+      }
+      setBand2(true)
+      dispatch(resetArticle())
+    }
+  },[datosarticle])
+  useEffect(()=>{
+    if(datoscomments["intStatus"]===200 &&datoscomments["Result"]["comments"]!==undefined)
+    {
+      setComments(datoscomments["Result"]["comments"])
+      setBand2(true)
+      dispatch(resetComment())
+    }
+  },[datoscomments])
   useEffect(() => {
+    dispatch(otherarticle(chart))
+    dispatch(getComments(chart))
     const sync = async () => {
-      console.log(chart);
       let result: any;
       if (chart === "Longest Charting albums") {
         result = await chartingAlbumsfull();
@@ -156,16 +187,7 @@ function Barchartindex() {
           },
         ],
       });
-      const result4=await randomarticle(chart)
-      console.log(result4)
-      for(let x=0;x<result4["data"].length;x++)
-      {
-        article.push(result4["data"][x])
-      }
-      console.log(article)
       setBand(true);
-      const result5= await getcomment(chart)
-      setComments(result5["data"]["comments"])
     };
     sync();
   }, []);
@@ -214,8 +236,8 @@ function Barchartindex() {
       </div>
       <div className="bg-white w-80% mx-32 mb-12 pb-10 shadow-xl rounded-lg py-2 flex justify-center">
         <div className="flex flex-col">
-        <h1 className="text-2xl font-bold">Other interesting stats</h1>
-        {band===true &&
+        <h1 className="text-2xl font-bold mx-auto">Other interesting stats</h1>
+        {band2===true &&
         <Article article={article}/>
         }
         </div>

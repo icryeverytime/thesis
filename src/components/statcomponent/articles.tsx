@@ -11,7 +11,6 @@ function Article({article}){
                 <img className="w-52 h-52 rounded-tl-lg rounded-bl-lg" src={a["image"]}/> 
                 <div className="w-52 h-52 bg-blueGray-200 rounded-tr-lg rounded-br-lg">
                 <p className="mx-2 text-lg font-bold">{a["title"]}</p>
-                <p className="mt-1 mx-2 text-xl hover:underline font-semibold">{a["author"]}</p>
                 <div className="flex flex-wrap">
                 {data.includes("Billboard 100") &&
                 <div className="mx-1 w-18 px-1 py-1 bg-dodger-blue text-white rounded-md text-center">
@@ -29,7 +28,7 @@ function Article({article}){
                 </div>
                 }    
                 </div>
-                <p className="mt-2 mx-2 font-normal text-sm">{a["description"]}</p>
+                <p className="mt-2 mx-2 font-normal text-md">{a["description"]}</p>
                 </div>
             </div>
         )

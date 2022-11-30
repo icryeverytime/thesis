@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { artistsearch100, artistsearch200, getcomment, randomarticle, searchartistinfo, topalbumLast, toptracksLast } from "../../Api/shared";
 import { Bar } from "react-chartjs-2";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import Article from "../statcomponent/articles";
 import {
   Chart as ChartJS,
@@ -10,11 +12,19 @@ import {
   PointElement,
   Tooltip,
 } from "chart.js";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../redux/app/store";
 import { Comment } from "../comments/commentsection";
 import Commentform from "../comments/commentform";
+import { useAppSelector } from "../../redux/app/hooks";
+import { otherarticle, resetArticle } from "../../redux/reducers/reducerArticle";
+import { getComments, resetComment } from "../../redux/reducers/reducerComment";
 ChartJS.register(BarElement, CategoryScale, LinearScale, PointElement, Tooltip);
 function Searchartist() {
   const [comments,setComments]=useState([])
+  const dispatch=useDispatch<AppDispatch>()
+  const datosarticle=useAppSelector((state)=>state.randomarticle)
+  const datoscomments=useAppSelector((state)=>state.comments)
   const [data, setData] = useState({
     labels: [],
     datasets: [
@@ -42,43 +52,40 @@ function Searchartist() {
   const [bio, setBio] = useState("");
   const [tags,setTags]=useState<any>([])
   const [band,setBand]=useState(false)
+  const [band3,setBand3]=useState(false)
   const [albumname,setAlbumname]=useState<any>([])
   const [songname,setSongname]=useState<any>([])
   const [article,setArticle]=useState<any>([])
   const [albumplay,setAlbumplay]=useState<any>([])
-  const [resultado,setResultado]=useState<any>([])
   const [band2,setBand2]=useState(false)
   useEffect(()=>{
 
   },[band])
   useEffect(()=>{
-    console.log(resultado)
-    if(resultado["data"]!==undefined)
+    if(datosarticle["intStatus"]===200)
     {
-      for(let i=0;i<resultado["data"].length;i++)
+      for(let i=0;i<datosarticle["Result"].length;i++)
       {
-        console.log(resultado["data"][i])
-        article.push(resultado["data"][i])
+        article.push(datosarticle["Result"][i])
+        
       }
+      setBand3(true)
+      dispatch(resetArticle())
+    }
+  },[datosarticle])
+  useEffect(()=>{
+    if(datoscomments["intStatus"]===200 &&datoscomments["Result"]["comments"]!==undefined)
+    {
+      setComments(datoscomments["Result"]["comments"])
       setBand2(true)
+      dispatch(resetComment())
     }
-  },[resultado])
+  },[datoscomments])
   useEffect(()=>{
-    console.log(comments)
-  },[comments])
-  useEffect(()=>{
-    const sync = async () => {
-      const resul=await randomarticle("Search stats from your favorite artist")
-      setResultado(resul)
-      const comments2=await getcomment("Search stats from your favorite artist")
-      console.log(comments2["data"]["comments"])
-      setComments(comments2["data"]["comments"])
-      console.log(comments)
-    }
-    sync()
+    dispatch(otherarticle("Search stats from your favorite artist"))
+    dispatch(getComments("Search stats from your favorite artist"))
   },[])
   async function submit() {
-    console.log(artist);
     setBand(false)
     const result = await searchartistinfo(artist);
     setArtisttile(result["data"]["artist"]["name"]);
@@ -134,13 +141,11 @@ function Searchartist() {
     let datat2: any = [];
     for(let s=0;s<result4["data"].length;s++)
     {
-      console.log(result4["data"][s])
       etiquetas.push(result4["data"][s]["_id"]["title"])
       datat.push(result4["data"][s]["count"])
     }
     for(let s=0;s<result5["data"].length;s++)
     {
-      console.log(result5["data"][s])
       etiquetas2.push(result5["data"][s]["_id"]["title"])
       datat2.push(result5["data"][s]["count"])
     }
@@ -320,9 +325,15 @@ function Searchartist() {
           }
           <div className="bg-white w-80% mx-32 mb-12 pb-10 mt-4 shadow-xl rounded-lg py-2 flex justify-center">
         <div className="flex flex-col">
-        <h1 className="text-2xl font-bold">Other interesting stats</h1>
-        {band2===true &&
+        <h1 className="text-2xl font-bold mx-auto">Other interesting stats</h1>
+        {band3===true &&
         <Article article={article}/>
+        }
+        {band3==false &&
+          <div className="flex justify-center mt-4">
+
+          <FontAwesomeIcon icon={faSpinner} className="w-52 h-52 animate-spin white-500"/>
+          </div>
         }
     </div>
     </div>
@@ -330,11 +341,15 @@ function Searchartist() {
         <div className="flex flex-col mx-auto">
         <h1 className="text-2xl font-bold">Comment Section</h1>
       </div>
-      {comments.map(function(object,i){
-        return(
-          <Comment comment={object} key={i} />
-        )
-      })}
+      {(band2===true)  &&
+      <div>
+        {comments.map(function(object,i){
+          return(
+            <Comment comment={object} key={i} />
+          )
+        })}
+      </div>
+      }
       <Commentform title={"Search stats from your favorite artist"}/>
     </div>
       </div>
