@@ -14,7 +14,7 @@ let month = ("0" + (date_time.getMonth() + 1)).slice(-2);
 
 // get current year
 let year = date_time.getFullYear();
-let chartdate='2022-11-08';
+let chartdate='2022-11-27';
 // prints date in YYYY-MM-DD format
 let currentdate=year + "-" + month + "-" + date;
 let yearnumber=parseInt(year);
@@ -25,7 +25,7 @@ console.log(currentdate);
 function promesa(fecha){
   //billboard-200 hot-100
   return new Promise((resolve,reject)=>{
-    getChart('billboard-200', fecha, (err, chart) => {
+    getChart('hot-100', fecha, (err, chart) => {
       if (err) reject(err);
       resolve(chart);
     });
@@ -44,7 +44,7 @@ async function main()
         console.log(err)
       }
       else{
-        con.db('music').collection('billboard200').insertOne({chart:resultado},(err,results)=>{
+        con.db('music').collection('billboard100').insertOne({chart:resultado},(err,results)=>{
           if(err)
           {
             console.log(err)

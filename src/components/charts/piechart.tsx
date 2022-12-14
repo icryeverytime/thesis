@@ -129,34 +129,38 @@ function Piedata() {
       let data3
       let name:any=[]
       let play: any = [];
-      let data = await checklogin();
-      setResult(data["data"]["data"]);
-      let data2 = await userget2(result);
-      console.log(data2["data"]["data"]["lastfm"]);
-     if (chart === "Pie chart of your top artists") {
-        data3 = await usertopartist(data2["data"]["data"]["lastfm"]);
-        for (let i = 0; i < data3["data"]["topartists"]["artist"].length; i++) {
-            name.push(data3["data"]["topartists"]["artist"][i]["name"]);
-            play.push(data3["data"]["topartists"]["artist"][i]["playcount"]);
-            }
+      if(chart==="Pie chart of your top artists"|| chart==="Pie chart of your top albums"|| chart==="Pie chart of your top songs")
+      {
+        let data = await checklogin();
+        setResult(data["data"]["data"]);
+        let data2 = await userget2(result);
+        console.log(data2["data"]["data"]["lastfm"]);
+        if (chart === "Pie chart of your top artists") {
+          data3 = await usertopartist(data2["data"]["data"]["lastfm"]);
+          for (let i = 0; i < data3["data"]["topartists"]["artist"].length; i++) {
+              name.push(data3["data"]["topartists"]["artist"][i]["name"]);
+              play.push(data3["data"]["topartists"]["artist"][i]["playcount"]);
+              }
+        }
+        else if(chart==="Pie chart of your top songs")
+        {
+          data3 = await usertopsong(data2["data"]["data"]["lastfm"]);
+          console.log(data3)
+          for (let i = 0; i < data3["data"]["toptracks"]["track"].length; i++) {
+              name.push(data3["data"]["toptracks"]["track"][i]["artist"]["name"]+"-"+data3["data"]["toptracks"]["track"][i]["name"]);
+              play.push(data3["data"]["toptracks"]["track"][i]["playcount"]);
+              }
+        }else if(chart==="Pie chart of your top albums")
+        {
+          data3=await usertopalbum(data2["data"]["data"]["lastfm"])
+          console.log(data3)
+          for (let i = 0; i < data3["data"]["topalbums"]["album"].length; i++) {
+              name.push(data3["data"]["topalbums"]["album"][i]["artist"]["name"]+"-"+data3["data"]["topalbums"]["album"][i]["name"]);
+              play.push(data3["data"]["topalbums"]["album"][i]["playcount"]);
+              }
+        }
       }
-      else if(chart==="Pie chart of your top songs")
-      {
-        data3 = await usertopsong(data2["data"]["data"]["lastfm"]);
-        console.log(data3)
-        for (let i = 0; i < data3["data"]["toptracks"]["track"].length; i++) {
-            name.push(data3["data"]["toptracks"]["track"][i]["artist"]["name"]+"-"+data3["data"]["toptracks"]["track"][i]["name"]);
-            play.push(data3["data"]["toptracks"]["track"][i]["playcount"]);
-            }
-      }else if(chart==="Pie chart of your top albums")
-      {
-        data3=await usertopalbum(data2["data"]["data"]["lastfm"])
-        console.log(data3)
-        for (let i = 0; i < data3["data"]["topalbums"]["album"].length; i++) {
-            name.push(data3["data"]["topalbums"]["album"][i]["artist"]["name"]+"-"+data3["data"]["topalbums"]["album"][i]["name"]);
-            play.push(data3["data"]["topalbums"]["album"][i]["playcount"]);
-            }
-      }else if(chart==="Our users most listened to albums of all time")
+     if(chart==="Our users most listened to albums of all time")
       {
         console.log("tres")
         data3=await usersalbums()
