@@ -99,7 +99,19 @@ function Navbar() {
             }
             id="example-navbar-warning"
           >
+            <li className="flex items-center">
+                <a
+                  className="hover:text-blueGray-500 text-blueGray-700 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"
+                  href="https://github.com/icryeverytime/thesis"
+                  target="_blank"
+                >
+                  <i className="text-blueGray-400 far fa-file-alt text-lg leading-lg mr-2" />{" "}
+                  <i className="text-blueGray-400 far fa-file-alt text-lg leading-lg mr-2"><FontAwesomeIcon icon={faFileLines} /></i>
+                  Docs
+                </a>
+              </li>
             <ul className="flex flex-col lg:flex-row list-none mr-auto">
+              
             </ul>
             <ul className="flex flex-col lg:flex-row list-none lg:ml-auto">
               <li className="flex items-center">
@@ -107,7 +119,40 @@ function Navbar() {
               </li>
 
 
+              <li className="flex items-center">
+                <a
+                  className="hover:text-blueGray-500 text-blueGray-700 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"
+                  href="https://www.facebook.com/marcoalejandro.nx"
+                  target="_blank"
+                >
 
+                  <i className="text-gray text-lg leading-lg"><FontAwesomeIcon icon={faFacebook} /></i>
+                  <span className="lg:hidden inline-block ml-2">Share</span>
+                </a>
+              </li>
+
+              <li className="flex items-center">
+                <a
+                  className="hover:text-blueGray-500 text-blueGray-700 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"
+                  href="https://twitter.com/ICRIEDEVERYTIME"
+                  target="_blank"
+                >
+
+                  <i className="text-gray text-lg leading-lg"><FontAwesomeIcon icon={faTwitter} /></i>
+                  <span className="lg:hidden inline-block ml-2">Tweet</span>
+                </a>
+              </li>
+
+              <li className="flex items-center">
+                <a
+                  className="hover:text-blueGray-500 text-blueGray-700 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"
+                  href="https://github.com/icryeverytime/thesis"
+                  target="_blank"
+                >
+                  <i className="text-gray text-lg leading-lg"><FontAwesomeIcon icon={faGithub} /></i>
+                  <span className="lg:hidden inline-block ml-2">Star</span>
+                </a>
+              </li>
 
               <Link
                 to={"thesis/User/"+username}

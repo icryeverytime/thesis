@@ -102,7 +102,7 @@ function Statalbum2()
                   <h5 className="text-xl font-semibold pb-4 text-center">
                     Longest charting songs on Billboard 100
                   </h5>
-                  <Link to="/profile">
+                  <Link to="/thesis/barchart/Longest charting songs">
                     <div className="hover:-mt-4 relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded-lg ease-linear transition-all duration-150">
                       <div className="flex">
                         <img className="h-24" src={src1}></img>
