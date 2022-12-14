@@ -101,7 +101,7 @@ function Statalbum() {
         <h5 className="text-xl font-semibold pb-4 text-center">
           Longest charting albums on Billboard 200
         </h5>
-        <Link to="/auth/login">
+        <Link to="/thesis/barchart/Longest Charting albums">
           <div className="hover:-mt-4 relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded-lg ease-linear transition-all duration-150">
           <div className="flex">
               <img className="h-24" src={srcAl1}></img>
